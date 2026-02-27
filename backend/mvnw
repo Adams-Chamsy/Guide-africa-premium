@@ -1,0 +1,48 @@
+#!/bin/sh
+# Maven Wrapper script
+# Downloads and uses Maven without requiring a global installation
+
+set -e
+
+MAVEN_WRAPPER_JAR=".mvn/wrapper/maven-wrapper.jar"
+MAVEN_WRAPPER_PROPERTIES=".mvn/wrapper/maven-wrapper.properties"
+MAVEN_HOME="${HOME}/.m2/wrapper"
+
+# Find project base dir
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$SCRIPT_DIR"
+
+if [ -f "$MAVEN_WRAPPER_PROPERTIES" ]; then
+    DIST_URL=$(grep 'distributionUrl' "$MAVEN_WRAPPER_PROPERTIES" | cut -d'=' -f2- | tr -d '\r')
+fi
+
+if [ -z "$DIST_URL" ]; then
+    DIST_URL="https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.9.6/apache-maven-3.9.6-bin.zip"
+fi
+
+MAVEN_VERSION=$(echo "$DIST_URL" | sed 's/.*apache-maven-\([0-9.]*\)-.*/\1/')
+MAVEN_INSTALL_DIR="${MAVEN_HOME}/dists/apache-maven-${MAVEN_VERSION}"
+
+if [ ! -d "$MAVEN_INSTALL_DIR" ]; then
+    echo "Downloading Maven ${MAVEN_VERSION}..."
+    mkdir -p "${MAVEN_HOME}/dists"
+    TMPFILE=$(mktemp /tmp/maven-XXXXXX.zip)
+
+    if command -v curl > /dev/null 2>&1; then
+        curl -fsSL -o "$TMPFILE" "$DIST_URL"
+    elif command -v wget > /dev/null 2>&1; then
+        wget -q -O "$TMPFILE" "$DIST_URL"
+    else
+        echo "Error: curl or wget is required to download Maven" >&2
+        exit 1
+    fi
+
+    unzip -q -d "${MAVEN_HOME}/dists" "$TMPFILE"
+    rm -f "$TMPFILE"
+    echo "Maven ${MAVEN_VERSION} installed."
+fi
+
+export M2_HOME="$MAVEN_INSTALL_DIR"
+export PATH="${MAVEN_INSTALL_DIR}/bin:${PATH}"
+
+exec mvn "$@"
