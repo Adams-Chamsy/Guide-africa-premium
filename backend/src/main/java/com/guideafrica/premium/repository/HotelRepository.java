@@ -1,7 +1,12 @@
 package com.guideafrica.premium.repository;
 
 import com.guideafrica.premium.model.Hotel;
+import com.guideafrica.premium.model.enums.StatutEtablissement;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,4 +17,35 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
     List<Hotel> findByEtoilesGreaterThanEqual(Integer etoiles);
     List<Hotel> findByPrixParNuitLessThanEqual(Double prix);
     List<Hotel> findByCategories_Id(Long categoryId);
+
+    // Nouveaux filtres
+    List<Hotel> findByVilleId(Long villeId);
+    List<Hotel> findByVillePaysIgnoreCase(String pays);
+    List<Hotel> findByStatut(StatutEtablissement statut);
+    List<Hotel> findByPiscineTrue();
+    List<Hotel> findBySpaTrue();
+    List<Hotel> findByPetitDejeunerInclusTrue();
+
+    // Pagination
+    Page<Hotel> findAll(Pageable pageable);
+    Page<Hotel> findByNomContainingIgnoreCase(String nom, Pageable pageable);
+    Page<Hotel> findByVilleId(Long villeId, Pageable pageable);
+
+    // Recherche avancée
+    @Query("SELECT h FROM Hotel h WHERE " +
+            "(:nom IS NULL OR LOWER(h.nom) LIKE LOWER(CONCAT('%', :nom, '%'))) AND " +
+            "(:etoilesMin IS NULL OR h.etoiles >= :etoilesMin) AND " +
+            "(:prixMax IS NULL OR h.prixParNuit <= :prixMax) AND " +
+            "(:villeId IS NULL OR h.ville.id = :villeId) AND " +
+            "(:noteMin IS NULL OR h.note >= :noteMin)")
+    Page<Hotel> searchAdvanced(
+            @Param("nom") String nom,
+            @Param("etoilesMin") Integer etoilesMin,
+            @Param("prixMax") Double prixMax,
+            @Param("villeId") Long villeId,
+            @Param("noteMin") Double noteMin,
+            Pageable pageable);
+
+    long countByVilleId(Long villeId);
+    long countByVillePaysIgnoreCase(String pays);
 }

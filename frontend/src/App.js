@@ -9,6 +9,8 @@ import RestaurantForm from './pages/RestaurantForm';
 import HotelList from './pages/HotelList';
 import HotelDetail from './pages/HotelDetail';
 import HotelForm from './pages/HotelForm';
+import Destinations from './pages/Destinations';
+import AtlasCulinaire from './pages/AtlasCulinaire';
 import NotFound from './pages/NotFound';
 import './App.css';
 
@@ -28,6 +30,8 @@ const App = () => {
             <Route path="/hotels/new" element={<HotelForm />} />
             <Route path="/hotels/:id" element={<HotelDetail />} />
             <Route path="/hotels/:id/edit" element={<HotelForm />} />
+            <Route path="/destinations" element={<Destinations />} />
+            <Route path="/atlas" element={<AtlasCulinaire />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>

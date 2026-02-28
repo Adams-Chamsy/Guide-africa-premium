@@ -3,6 +3,8 @@ package com.guideafrica.premium.service;
 import com.guideafrica.premium.exception.ResourceNotFoundException;
 import com.guideafrica.premium.model.Restaurant;
 import com.guideafrica.premium.repository.RestaurantRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,10 @@ public class RestaurantService {
 
     public List<Restaurant> findAll() {
         return restaurantRepository.findAll();
+    }
+
+    public Page<Restaurant> findAll(Pageable pageable) {
+        return restaurantRepository.findAll(pageable);
     }
 
     public Restaurant findById(Long id) {
@@ -41,6 +47,19 @@ public class RestaurantService {
         return restaurantRepository.findByCategories_Id(categoryId);
     }
 
+    public List<Restaurant> findByVille(Long villeId) {
+        return restaurantRepository.findByVilleId(villeId);
+    }
+
+    public List<Restaurant> findByPays(String pays) {
+        return restaurantRepository.findByVillePaysIgnoreCase(pays);
+    }
+
+    public Page<Restaurant> searchAdvanced(String nom, String cuisine, Double noteMin,
+                                            Long villeId, Integer fourchettePrix, Pageable pageable) {
+        return restaurantRepository.searchAdvanced(nom, cuisine, noteMin, villeId, fourchettePrix, pageable);
+    }
+
     public Restaurant create(Restaurant restaurant) {
         return restaurantRepository.save(restaurant);
     }
@@ -58,6 +77,27 @@ public class RestaurantService {
         restaurant.setHoraires(details.getHoraires());
         restaurant.setGaleriePhotos(details.getGaleriePhotos());
         restaurant.setCategories(details.getCategories());
+        restaurant.setFourchettePrix(details.getFourchettePrix());
+        restaurant.setStatut(details.getStatut());
+        restaurant.setHalal(details.isHalal());
+        restaurant.setVegetarienFriendly(details.isVegetarienFriendly());
+        restaurant.setOptionsVegan(details.isOptionsVegan());
+        restaurant.setSansGluten(details.isSansGluten());
+        restaurant.setSiteWeb(details.getSiteWeb());
+        restaurant.setInstagram(details.getInstagram());
+        restaurant.setFacebook(details.getFacebook());
+        restaurant.setModesPayement(details.getModesPayement());
+        restaurant.setLanguesParlees(details.getLanguesParlees());
+        restaurant.setCodeVestimentaire(details.getCodeVestimentaire());
+        restaurant.setTerrasse(details.isTerrasse());
+        restaurant.setWifi(details.isWifi());
+        restaurant.setParking(details.isParking());
+        restaurant.setClimatisation(details.isClimatisation());
+        restaurant.setSallePrivee(details.isSallePrivee());
+        restaurant.setMusiqueLive(details.isMusiqueLive());
+        restaurant.setCapacite(details.getCapacite());
+        restaurant.setVille(details.getVille());
+        restaurant.setAmenities(details.getAmenities());
         return restaurantRepository.save(restaurant);
     }
 
@@ -65,5 +105,4 @@ public class RestaurantService {
         Restaurant restaurant = findById(id);
         restaurantRepository.delete(restaurant);
     }
-
 }

@@ -2,6 +2,10 @@ package com.guideafrica.premium.controller;
 
 import com.guideafrica.premium.model.Hotel;
 import com.guideafrica.premium.service.HotelService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +24,30 @@ public class HotelController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Hotel>> getAll(
+    public ResponseEntity<?> getAll(
             @RequestParam(required = false) String nom,
             @RequestParam(required = false) Integer etoilesMin,
             @RequestParam(required = false) Double prixMax,
-            @RequestParam(required = false) Long categoryId) {
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) Long villeId,
+            @RequestParam(required = false) String pays,
+            @RequestParam(required = false) Double noteMin,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(defaultValue = "nom") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction) {
+
+        if (page != null) {
+            Sort sort = "desc".equalsIgnoreCase(direction) ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+            Pageable pageable = PageRequest.of(page, size != null ? size : 12, sort);
+
+            if (nom != null || etoilesMin != null || prixMax != null || villeId != null || noteMin != null) {
+                return ResponseEntity.ok(hotelService.searchAdvanced(nom, etoilesMin, prixMax, villeId, noteMin, pageable));
+            }
+            return ResponseEntity.ok(hotelService.findAll(pageable));
+        }
 
         List<Hotel> hotels;
-
         if (nom != null && !nom.isBlank()) {
             hotels = hotelService.searchByNom(nom);
         } else if (etoilesMin != null) {
@@ -36,6 +56,10 @@ public class HotelController {
             hotels = hotelService.filterByMaxPrix(prixMax);
         } else if (categoryId != null) {
             hotels = hotelService.filterByCategory(categoryId);
+        } else if (villeId != null) {
+            hotels = hotelService.findByVille(villeId);
+        } else if (pays != null && !pays.isBlank()) {
+            hotels = hotelService.findByPays(pays);
         } else {
             hotels = hotelService.findAll();
         }

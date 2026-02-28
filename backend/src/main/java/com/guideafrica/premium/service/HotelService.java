@@ -2,8 +2,9 @@ package com.guideafrica.premium.service;
 
 import com.guideafrica.premium.exception.ResourceNotFoundException;
 import com.guideafrica.premium.model.Hotel;
-import com.guideafrica.premium.model.Review;
 import com.guideafrica.premium.repository.HotelRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,10 @@ public class HotelService {
 
     public List<Hotel> findAll() {
         return hotelRepository.findAll();
+    }
+
+    public Page<Hotel> findAll(Pageable pageable) {
+        return hotelRepository.findAll(pageable);
     }
 
     public Hotel findById(Long id) {
@@ -42,6 +47,19 @@ public class HotelService {
         return hotelRepository.findByCategories_Id(categoryId);
     }
 
+    public List<Hotel> findByVille(Long villeId) {
+        return hotelRepository.findByVilleId(villeId);
+    }
+
+    public List<Hotel> findByPays(String pays) {
+        return hotelRepository.findByVillePaysIgnoreCase(pays);
+    }
+
+    public Page<Hotel> searchAdvanced(String nom, Integer etoilesMin, Double prixMax,
+                                       Long villeId, Double noteMin, Pageable pageable) {
+        return hotelRepository.searchAdvanced(nom, etoilesMin, prixMax, villeId, noteMin, pageable);
+    }
+
     public Hotel create(Hotel hotel) {
         return hotelRepository.save(hotel);
     }
@@ -59,24 +77,34 @@ public class HotelService {
         hotel.setEmail(details.getEmail());
         hotel.setGaleriePhotos(details.getGaleriePhotos());
         hotel.setCategories(details.getCategories());
+        hotel.setStatut(details.getStatut());
+        hotel.setSiteWeb(details.getSiteWeb());
+        hotel.setInstagram(details.getInstagram());
+        hotel.setFacebook(details.getFacebook());
+        hotel.setModesPayement(details.getModesPayement());
+        hotel.setLanguesParlees(details.getLanguesParlees());
+        hotel.setWifi(details.isWifi());
+        hotel.setParking(details.isParking());
+        hotel.setPiscine(details.isPiscine());
+        hotel.setSpa(details.isSpa());
+        hotel.setRestaurantSurPlace(details.isRestaurantSurPlace());
+        hotel.setSalleSport(details.isSalleSport());
+        hotel.setNavette(details.isNavette());
+        hotel.setPetitDejeunerInclus(details.isPetitDejeunerInclus());
+        hotel.setAnimauxAcceptes(details.isAnimauxAcceptes());
+        hotel.setClimatisation(details.isClimatisation());
+        hotel.setRoomService(details.isRoomService());
+        hotel.setConciergerie(details.isConciergerie());
+        hotel.setCheckIn(details.getCheckIn());
+        hotel.setCheckOut(details.getCheckOut());
+        hotel.setNombreChambres(details.getNombreChambres());
+        hotel.setVille(details.getVille());
+        hotel.setAmenities(details.getAmenities());
         return hotelRepository.save(hotel);
     }
 
     public void delete(Long id) {
         Hotel hotel = findById(id);
         hotelRepository.delete(hotel);
-    }
-
-    public void recalculateNote(Hotel hotel) {
-        List<Review> reviews = hotel.getAvisUtilisateurs();
-        if (reviews == null || reviews.isEmpty()) {
-            return;
-        }
-        double average = reviews.stream()
-                .mapToInt(Review::getNote)
-                .average()
-                .orElse(0.0);
-        // Hotels don't have a "note" field, so we don't update it
-        // The average can be computed client-side from reviews
     }
 }
