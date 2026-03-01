@@ -8,6 +8,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +65,7 @@ public class Review {
     @Column(name = "photo_url")
     private List<String> photos = new ArrayList<>();
 
+    @Size(max = 200)
     private String titre;
 
     // --- Relations existantes ---

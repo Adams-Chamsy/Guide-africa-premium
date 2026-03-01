@@ -6,9 +6,18 @@ import ReviewForm from '../components/ReviewForm';
 import ConfirmDialog from '../components/ConfirmDialog';
 import Breadcrumbs from '../components/Breadcrumbs';
 import FavoriteButton from '../components/FavoriteButton';
-import ShareButton from '../components/ShareButton';
+import ShareButtons from '../components/ShareButtons';
 import BackToTop from '../components/BackToTop';
+import MapView from '../components/MapView';
+import ReservationForm from '../components/ReservationForm';
+import AddToCollectionModal from '../components/AddToCollectionModal';
+import RatingDistribution from '../components/RatingDistribution';
 import { SkeletonDetail } from '../components/Skeleton';
+import usePageTitle from '../hooks/usePageTitle';
+import LightboxGallery from '../components/LightboxGallery';
+import SEOHead from '../components/SEOHead';
+import AmenityIcon from '../components/AmenityIcon';
+import { hotelJsonLd } from '../components/SEOHead';
 
 const HotelDetail = () => {
   const { id } = useParams();
@@ -18,6 +27,9 @@ const HotelDetail = () => {
   const [error, setError] = useState('');
   const [showDelete, setShowDelete] = useState(false);
   const [activeTab, setActiveTab] = useState('info');
+  const [showCollectionModal, setShowCollectionModal] = useState(false);
+
+  usePageTitle(hotel?.nom || 'Hôtel');
 
   const fetchHotel = async () => {
     setLoading(true);
@@ -74,6 +86,12 @@ const HotelDetail = () => {
   if (hotel.animauxAcceptes) facilites.push('Animaux acceptés');
 
   return (
+    <>
+      <SEOHead
+        title={`${hotel.nom} — Guide Africa`}
+        description={hotel.description ? hotel.description.substring(0, 160) : ''}
+        jsonLd={hotelJsonLd(hotel)}
+      />
     <div className="detail-page">
       <Breadcrumbs items={[
         { label: 'Accueil', to: '/' },
@@ -83,12 +101,15 @@ const HotelDetail = () => {
 
       {hotel.image && (
         <div className="detail-hero">
-          <img src={hotel.image} alt={hotel.nom} className="detail-main-image"
+          <img src={hotel.image} alt={hotel.nom} className="detail-main-image" loading="lazy"
             onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800'; }} />
           <div className="detail-hero-overlay">
             <div className="detail-hero-actions">
               <FavoriteButton type="hotels" id={parseInt(id)} />
-              <ShareButton title={hotel.nom} text={`Découvrez ${hotel.nom} sur Guide Africa`} />
+              <ShareButtons title={hotel.nom} url={window.location.href} />
+              <button className="btn-collection" onClick={() => setShowCollectionModal(true)} title="Ajouter à une collection">
+                &#128194;
+              </button>
             </div>
           </div>
         </div>
@@ -129,6 +150,7 @@ const HotelDetail = () => {
           <button className={`tab-btn ${activeTab === 'avis' ? 'active' : ''}`} onClick={() => setActiveTab('avis')}>
             Avis ({hotel.avisUtilisateurs ? hotel.avisUtilisateurs.length : 0})
           </button>
+          <button className={`tab-btn ${activeTab === 'reserver' ? 'active' : ''}`} onClick={() => setActiveTab('reserver')}>Réserver</button>
         </div>
 
         {activeTab === 'info' && (
@@ -157,6 +179,25 @@ const HotelDetail = () => {
             {hotel.languesParlees && hotel.languesParlees.length > 0 && (
               <div className="detail-info-row"><strong>Langues :</strong> {hotel.languesParlees.join(', ')}</div>
             )}
+
+            {hotel.coordonneesGps && hotel.coordonneesGps.lat && hotel.coordonneesGps.lng && (
+              <div className="mini-map">
+                <div className="mini-map-label">Localisation</div>
+                <MapView
+                  markers={[{
+                    lat: hotel.coordonneesGps.lat,
+                    lng: hotel.coordonneesGps.lng,
+                    name: hotel.nom,
+                    type: 'hotel',
+                    id: hotel.id,
+                    note: hotel.note,
+                  }]}
+                  center={[hotel.coordonneesGps.lat, hotel.coordonneesGps.lng]}
+                  zoom={13}
+                  height="300px"
+                />
+              </div>
+            )}
           </div>
         )}
 
@@ -172,7 +213,7 @@ const HotelDetail = () => {
                 <h3 className="subsection-title">Services additionnels</h3>
                 <div className="amenity-grid">
                   {hotel.amenities.map(a => (
-                    <span key={a.id} className="amenity-item">{a.nom}</span>
+                    <AmenityIcon key={a.id} name={a.nom} />
                   ))}
                 </div>
               </div>
@@ -183,12 +224,7 @@ const HotelDetail = () => {
         {activeTab === 'photos' && (
           <div className="tab-content">
             {hotel.galeriePhotos && hotel.galeriePhotos.length > 0 ? (
-              <div className="gallery">
-                {hotel.galeriePhotos.map((url, idx) => (
-                  <img key={idx} src={url} alt={`${hotel.nom} ${idx + 1}`}
-                    onError={(e) => { e.target.style.display = 'none'; }} />
-                ))}
-              </div>
+              <LightboxGallery images={hotel.galeriePhotos} alt={hotel.nom} />
             ) : (
               <p style={{ color: 'var(--ivory-subtle)' }}>Aucune photo disponible.</p>
             )}
@@ -197,6 +233,7 @@ const HotelDetail = () => {
 
         {activeTab === 'avis' && (
           <div className="tab-content">
+            <RatingDistribution type="hotel" id={id} />
             {hotel.avisUtilisateurs && hotel.avisUtilisateurs.length > 0 ? (
               hotel.avisUtilisateurs.map((review) => (
                 <ReviewCard key={review.id} review={review} />
@@ -205,6 +242,12 @@ const HotelDetail = () => {
               <p style={{ color: 'var(--ivory-subtle)', margin: '16px 0' }}>Aucun avis pour le moment.</p>
             )}
             <ReviewForm onSubmit={handleAddReview} />
+          </div>
+        )}
+
+        {activeTab === 'reserver' && (
+          <div className="tab-content">
+            <ReservationForm type="HOTEL" establishmentId={parseInt(id)} establishmentName={hotel.nom} />
           </div>
         )}
 
@@ -223,7 +266,15 @@ const HotelDetail = () => {
         />
       )}
       <BackToTop />
+      <AddToCollectionModal
+        show={showCollectionModal}
+        onClose={() => setShowCollectionModal(false)}
+        type="HOTEL"
+        targetId={parseInt(id)}
+        targetName={hotel.nom}
+      />
     </div>
+    </>
   );
 };
 

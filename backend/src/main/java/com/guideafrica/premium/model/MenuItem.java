@@ -32,6 +32,12 @@ public class MenuItem {
 
     private String image;
 
+    private String accordMetsVins;
+
+    private boolean deSaison;
+
+    private String saison;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
     @JsonBackReference("restaurant-menu")
@@ -63,4 +69,10 @@ public class MenuItem {
     public void setImage(String image) { this.image = image; }
     public Restaurant getRestaurant() { return restaurant; }
     public void setRestaurant(Restaurant restaurant) { this.restaurant = restaurant; }
+    public String getAccordMetsVins() { return accordMetsVins; }
+    public void setAccordMetsVins(String accordMetsVins) { this.accordMetsVins = accordMetsVins; }
+    public boolean isDeSaison() { return deSaison; }
+    public void setDeSaison(boolean deSaison) { this.deSaison = deSaison; }
+    public String getSaison() { return saison; }
+    public void setSaison(String saison) { this.saison = saison; }
 }

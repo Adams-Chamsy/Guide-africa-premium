@@ -6,8 +6,10 @@ import Breadcrumbs from '../components/Breadcrumbs';
 import FavoriteButton from '../components/FavoriteButton';
 import BackToTop from '../components/BackToTop';
 import { SkeletonGrid } from '../components/Skeleton';
+import usePageTitle from '../hooks/usePageTitle';
 
 const HotelList = () => {
+  usePageTitle('Hôtels');
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -145,7 +147,7 @@ const HotelList = () => {
             {hotels.map((h) => (
               <Link to={`/hotels/${h.id}`} key={h.id} className="card">
                 <div className="card-image-wrapper">
-                  <img src={h.image} alt={h.nom} className="card-image"
+                  <img src={h.image} alt={h.nom} className="card-image" loading="lazy"
                     onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400'; }} />
                   <div className="card-image-overlay"></div>
                   <FavoriteButton type="hotels" id={h.id} className="card-favorite" />

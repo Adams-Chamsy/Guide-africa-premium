@@ -4,8 +4,10 @@ import { cityApi } from '../api/apiClient';
 import Breadcrumbs from '../components/Breadcrumbs';
 import BackToTop from '../components/BackToTop';
 import { SkeletonGrid } from '../components/Skeleton';
+import usePageTitle from '../hooks/usePageTitle';
 
 const Destinations = () => {
+  usePageTitle('Destinations');
   const [cities, setCities] = useState([]);
   const [loading, setLoading] = useState(true);
 

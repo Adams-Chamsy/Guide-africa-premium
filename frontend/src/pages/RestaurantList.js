@@ -8,8 +8,10 @@ import FavoriteButton from '../components/FavoriteButton';
 import DistinctionBadge from '../components/DistinctionBadge';
 import BackToTop from '../components/BackToTop';
 import { SkeletonGrid } from '../components/Skeleton';
+import usePageTitle from '../hooks/usePageTitle';
 
 const RestaurantList = () => {
+  usePageTitle('Restaurants');
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -153,7 +155,7 @@ const RestaurantList = () => {
             {restaurants.map((r) => (
               <Link to={`/restaurants/${r.id}`} key={r.id} className="card">
                 <div className="card-image-wrapper">
-                  <img src={r.image} alt={r.nom} className="card-image"
+                  <img src={r.image} alt={r.nom} className="card-image" loading="lazy"
                     onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400'; }} />
                   <div className="card-image-overlay"></div>
                   <FavoriteButton type="restaurants" id={r.id} className="card-favorite" />

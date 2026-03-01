@@ -9,6 +9,33 @@ const apiClient = axios.create({
   },
 });
 
+// JWT Interceptor - automatically attach token
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('guideafrica_token');
+    if (token) {
+      config.headers.Authorization = 'Bearer ' + token;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response interceptor - handle 401
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      const url = error.config?.url || '';
+      // Don't remove token for login/register failures
+      if (!url.includes('/auth/login') && !url.includes('/auth/register')) {
+        localStorage.removeItem('guideafrica_token');
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 // ========== Restaurants ==========
 export const restaurantApi = {
   getAll: (params) => apiClient.get('/restaurants', { params }),
@@ -106,6 +133,149 @@ export const favoritesApi = {
     const favs = favoritesApi.getAll();
     return (favs[type] || []).includes(id);
   },
+};
+
+// ========== Auth ==========
+export const authApi = {
+  register: (data) => apiClient.post('/auth/register', data),
+  login: (data) => apiClient.post('/auth/login', data),
+  me: () => apiClient.get('/auth/me'),
+  forgotPassword: (email) => apiClient.post('/auth/forgot-password', { email }),
+  resetPassword: (data) => apiClient.post('/auth/reset-password', data),
+};
+
+// ========== User (Authenticated) ==========
+export const userApi = {
+  getFavorites: (params) => apiClient.get('/user/favorites', { params }),
+  addFavorite: (data) => apiClient.post('/user/favorites', data),
+  removeFavorite: (id) => apiClient.delete('/user/favorites/' + id),
+  removeFavoriteByTarget: (type, targetId) => apiClient.delete('/user/favorites', { params: { type, targetId } }),
+  checkFavorite: (type, targetId) => apiClient.get('/user/favorites/check', { params: { type, targetId } }),
+  syncFavorites: (data) => apiClient.post('/user/favorites/sync', data),
+  getVisits: (params) => apiClient.get('/user/visits', { params }),
+  addVisit: (data) => apiClient.post('/user/visits', data),
+  updateProfile: (data) => apiClient.put('/user/profile', data),
+  changePassword: (data) => apiClient.put('/user/password', data),
+};
+
+// ========== Reservations ==========
+export const reservationApi = {
+  getAll: (params) => apiClient.get('/reservations', { params }),
+  create: (data) => apiClient.post('/reservations', data),
+  getById: (id) => apiClient.get('/reservations/' + id),
+  cancel: (id) => apiClient.put('/reservations/' + id + '/cancel'),
+};
+
+// ========== Admin ==========
+export const adminApi = {
+  getStats: () => apiClient.get('/admin/stats'),
+  getUsers: (params) => apiClient.get('/admin/users', { params }),
+  toggleUserActive: (id) => apiClient.put('/admin/users/' + id + '/toggle-active'),
+  getReviews: (params) => apiClient.get('/admin/reviews', { params }),
+  deleteReview: (id) => apiClient.delete('/admin/reviews/' + id),
+  getReservations: (params) => apiClient.get('/admin/reservations', { params }),
+  updateReservationStatut: (id, statut) => apiClient.put('/admin/reservations/' + id + '/statut', { statut }),
+};
+
+// ========== Collections ==========
+export const collectionApi = {
+  getAll: () => apiClient.get('/collections'),
+  create: (data) => apiClient.post('/collections', data),
+  getById: (id) => apiClient.get('/collections/' + id),
+  update: (id, data) => apiClient.put('/collections/' + id, data),
+  delete: (id) => apiClient.delete('/collections/' + id),
+  addItem: (id, data) => apiClient.post('/collections/' + id + '/items', data),
+  removeItem: (collectionId, itemId) => apiClient.delete('/collections/' + collectionId + '/items/' + itemId),
+  getPublic: () => apiClient.get('/collections/public'),
+};
+
+// ========== Search ==========
+export const searchApi = {
+  search: (q, limit) => apiClient.get('/search', { params: { q, limit } }),
+};
+
+// ========== Files ==========
+export const fileApi = {
+  upload: (file, onProgress) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return apiClient.post('/files/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      onUploadProgress: onProgress,
+    });
+  },
+  delete: (filename) => apiClient.delete('/files/' + filename),
+};
+
+// ========== Notifications ==========
+export const notificationApi = {
+  getAll: () => apiClient.get('/notifications'),
+  getUnreadCount: () => apiClient.get('/notifications/count'),
+  markAsRead: (id) => apiClient.put('/notifications/' + id + '/read'),
+  markAllAsRead: () => apiClient.put('/notifications/read-all'),
+};
+
+// ========== Ratings ==========
+export const ratingApi = {
+  getTopRestaurants: (limit) => apiClient.get('/ratings/top/restaurants', { params: { limit } }),
+  getTopHotels: (limit) => apiClient.get('/ratings/top/hotels', { params: { limit } }),
+  getDistribution: (type, id) => apiClient.get(`/ratings/distribution/${type}/${id}`),
+};
+
+// ========== Blog ==========
+export const blogApi = {
+  getAll: (params) => apiClient.get('/blog', { params }),
+  getPopular: () => apiClient.get('/blog/popular'),
+  getBySlug: (slug) => apiClient.get('/blog/' + slug),
+  create: (data) => apiClient.post('/blog', data),
+  update: (id, data) => apiClient.put('/blog/' + id, data),
+  delete: (id) => apiClient.delete('/blog/' + id),
+};
+
+// ========== Badges ==========
+export const badgeApi = {
+  getMyBadges: () => apiClient.get('/badges/my'),
+  checkBadges: () => apiClient.post('/badges/check'),
+};
+
+// ========== Events ==========
+export const eventApi = {
+  getAll: (params) => apiClient.get('/events', { params }),
+  getById: (id) => apiClient.get('/events/' + id),
+  create: (data) => apiClient.post('/events', data),
+  update: (id, data) => apiClient.put('/events/' + id, data),
+  delete: (id) => apiClient.delete('/events/' + id),
+};
+
+// ========== Social Feed ==========
+export const socialApi = {
+  getFeed: (params) => apiClient.get('/social', { params }),
+  getMyPosts: () => apiClient.get('/social/my'),
+  create: (data) => apiClient.post('/social', data),
+  like: (id) => apiClient.post('/social/' + id + '/like'),
+  delete: (id) => apiClient.delete('/social/' + id),
+};
+
+// ========== Newsletter ==========
+export const newsletterApi = {
+  subscribe: (email) => apiClient.post('/newsletter/subscribe', { email }),
+  unsubscribe: (email) => apiClient.post('/newsletter/unsubscribe', { email }),
+};
+
+// ========== Compare ==========
+export const compareApi = {
+  restaurants: (ids) => apiClient.get('/compare/restaurants', { params: { ids: ids.join(',') } }),
+  hotels: (ids) => apiClient.get('/compare/hotels', { params: { ids: ids.join(',') } }),
+};
+
+// ========== Loyalty ==========
+export const loyaltyApi = {
+  getPoints: () => apiClient.get('/user/loyalty/points'),
+};
+
+// ========== Admin Analytics ==========
+export const analyticsApi = {
+  getAnalytics: () => apiClient.get('/admin/analytics'),
 };
 
 export default apiClient;

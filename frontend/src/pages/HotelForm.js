@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { hotelApi, categoryApi, cityApi } from '../api/apiClient';
 import Breadcrumbs from '../components/Breadcrumbs';
+import ImageUpload from '../components/ImageUpload';
 
 const HotelForm = () => {
   const { id } = useParams();
@@ -266,10 +267,11 @@ const HotelForm = () => {
           </div>
         </div>
 
-        <div className="form-group">
-          <label>URL Image principale</label>
-          <input name="image" value={form.image} onChange={handleChange} placeholder="https://..." />
-        </div>
+        <ImageUpload
+          value={form.image}
+          onChange={(url) => setForm({ ...form, image: url })}
+          label="Image principale"
+        />
 
         <div className="form-row">
           <div className="form-group">

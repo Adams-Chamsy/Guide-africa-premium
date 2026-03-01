@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StarInput } from './StarRating';
+import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 
 const ReviewForm = ({ onSubmit }) => {
+  const { user, isAuthenticated } = useAuth();
+  const { showToast } = useToast();
   const [auteur, setAuteur] = useState('');
   const [titre, setTitre] = useState('');
   const [note, setNote] = useState(0);
@@ -14,6 +18,12 @@ const ReviewForm = ({ onSubmit }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      setAuteur(user.prenom + ' ' + user.nom.charAt(0) + '.');
+    }
+  }, [isAuthenticated, user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,6 +53,7 @@ const ReviewForm = ({ onSubmit }) => {
       if (typeVoyageur) reviewData.typeVoyageur = typeVoyageur;
 
       await onSubmit(reviewData);
+      showToast('Avis publié avec succès !', 'success');
       setAuteur('');
       setTitre('');
       setNote(0);
@@ -55,6 +66,7 @@ const ReviewForm = ({ onSubmit }) => {
       setShowDetails(false);
     } catch (err) {
       setError('Erreur lors de l\'envoi de l\'avis.');
+      showToast('Erreur lors de la publication', 'error');
     } finally {
       setLoading(false);
     }
@@ -72,6 +84,8 @@ const ReviewForm = ({ onSubmit }) => {
               value={auteur}
               onChange={(e) => setAuteur(e.target.value)}
               placeholder="Ex: Jean D."
+              readOnly={isAuthenticated}
+              style={isAuthenticated ? { opacity: 0.7, cursor: 'not-allowed' } : {}}
             />
           </div>
           <div className="form-group">

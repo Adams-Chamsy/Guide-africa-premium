@@ -1,0 +1,166 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "restaurants": "Restaurants",
+    "hotels": "Hôtels",
+    "destinations": "Destinations",
+    "map": "Carte",
+    "atlas": "Atlas Culinaire",
+    "rankings": "Classements",
+    "blog": "Magazine",
+    "events": "Événements",
+    "compare": "Comparer",
+    "community": "Communauté",
+    "login": "Connexion",
+    "search": "Rechercher"
+  },
+  "auth": {
+    "login": "Connexion",
+    "register": "Inscription",
+    "logout": "Déconnexion",
+    "email": "Adresse e-mail",
+    "password": "Mot de passe",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "loginBtn": "Se connecter",
+    "registerBtn": "S'inscrire",
+    "loginSuccess": "Connexion réussie !",
+    "registerSuccess": "Inscription réussie !",
+    "noAccount": "Pas encore de compte ?",
+    "hasAccount": "Déjà un compte ?",
+    "registerLink": "Inscrivez-vous",
+    "loginLink": "Connectez-vous",
+    "personalSpace": "Accédez à votre espace personnel",
+    "createAccount": "Créez votre compte Guide Africa",
+    "demoAccount": "Compte démo :",
+    "loginError": "Email ou mot de passe incorrect",
+    "forgotPassword": "Mot de passe oublié ?",
+    "forgotPasswordTitle": "Réinitialisation du mot de passe",
+    "forgotPasswordDesc": "Entrez votre email pour recevoir un code de réinitialisation",
+    "resetCode": "Code de réinitialisation",
+    "newPassword": "Nouveau mot de passe",
+    "confirmNewPassword": "Confirmer le nouveau mot de passe",
+    "sendCode": "Envoyer le code",
+    "resetPassword": "Réinitialiser",
+    "codeSent": "Un code a été envoyé à votre adresse email",
+    "passwordResetSuccess": "Mot de passe réinitialisé avec succès !",
+    "backToLogin": "Retour à la connexion",
+    "changePassword": "Changer le mot de passe",
+    "currentPassword": "Mot de passe actuel",
+    "passwordChanged": "Mot de passe modifié avec succès !"
+  },
+  "user": {
+    "profile": "Mon profil",
+    "favorites": "Mes favoris",
+    "visits": "Mes visites",
+    "reservations": "Mes réservations",
+    "collections": "Mes collections",
+    "admin": "Administration"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "add": "Ajouter",
+    "search": "Rechercher",
+    "noResults": "Aucun résultat",
+    "seeMore": "Voir plus",
+    "seeAll": "Voir tout",
+    "back": "Retour",
+    "confirm": "Confirmer",
+    "close": "Fermer",
+    "yes": "Oui",
+    "no": "Non",
+    "error": "Erreur",
+    "success": "Succès"
+  },
+  "home": {
+    "title": "Guide Africa",
+    "subtitle": "Découvrez l'excellence culinaire et hôtelière africaine",
+    "featuredRestaurants": "Restaurants d'exception",
+    "featuredHotels": "Hôtels de prestige",
+    "exploreCTA": "Explorer"
+  },
+  "favorites": {
+    "title": "Mes favoris",
+    "empty": "Vous n'avez pas encore de favoris.",
+    "emptyDesc": "Explorez nos restaurants et hôtels et ajoutez vos coups de cœur ici.",
+    "addedToast": "Ajouté aux favoris",
+    "removedToast": "Retiré des favoris",
+    "restaurants": "Restaurants",
+    "hotels": "Hôtels"
+  },
+  "visits": {
+    "title": "Mes visites",
+    "empty": "Aucune visite enregistrée.",
+    "emptyDesc": "Vos visites de restaurants et d'hôtels apparaîtront ici."
+  },
+  "profile": {
+    "title": "Mon profil",
+    "personalInfo": "Informations personnelles",
+    "updateSuccess": "Profil mis à jour avec succès !",
+    "dangerZone": "Zone sensible",
+    "deleteWarning": "Cette action est irréversible."
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "subtitle": "La page que vous recherchez n'existe pas ou a été déplacée.",
+    "backHome": "Retour à l'accueil"
+  },
+  "blog": {
+    "title": "Magazine",
+    "subtitle": "Articles, interviews et guides gastronomiques",
+    "readMore": "Lire la suite",
+    "featured": "À la une",
+    "popular": "Les plus lus",
+    "categories": "Catégories"
+  },
+  "events": {
+    "title": "Événements & Expériences",
+    "subtitle": "Dîners exclusifs, masterclass et dégustations",
+    "noEvents": "Aucun événement à venir",
+    "spotsLeft": "places restantes",
+    "free": "Gratuit"
+  },
+  "compare": {
+    "title": "Comparateur",
+    "subtitle": "Comparez jusqu'à 3 établissements côte à côte",
+    "addToCompare": "Ajouter au comparateur",
+    "search": "Rechercher un établissement"
+  },
+  "social": {
+    "title": "Communauté",
+    "subtitle": "Partagez vos expériences gastronomiques",
+    "newPost": "Partagez une expérience culinaire...",
+    "publish": "Publier",
+    "noPost": "Aucune publication"
+  },
+  "badges": {
+    "explorer": "Explorateur",
+    "critic": "Critique d'or",
+    "globetrotter": "Globe-trotter",
+    "connoisseur": "Connaisseur",
+    "gourmet": "Gourmet",
+    "premium": "Membre premium"
+  },
+  "settings": {
+    "theme": "Thème",
+    "dark": "Sombre",
+    "light": "Clair",
+    "sounds": "Effets sonores",
+    "highContrast": "Contraste élevé",
+    "language": "Langue"
+  },
+  "footer": {
+    "description": "Votre guide de référence pour les meilleures adresses culinaires et hôtelières du continent africain.",
+    "navigation": "Navigation",
+    "legal": "Légal",
+    "privacy": "Confidentialité",
+    "terms": "Conditions d'utilisation",
+    "contact": "Contact",
+    "followUs": "Suivez-nous",
+    "rights": "Tous droits réservés."
+  }
+}

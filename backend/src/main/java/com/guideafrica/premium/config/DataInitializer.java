@@ -4,6 +4,8 @@ import com.guideafrica.premium.model.*;
 import com.guideafrica.premium.model.enums.*;
 import com.guideafrica.premium.repository.*;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -12,6 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Component
+@Profile("dev")
 public class DataInitializer implements CommandLineRunner {
 
     private final CategoryRepository categoryRepository;
@@ -24,6 +27,9 @@ public class DataInitializer implements CommandLineRunner {
     private final DistinctionRepository distinctionRepository;
     private final AmenityRepository amenityRepository;
     private final RegionalCuisineRepository regionalCuisineRepository;
+    private final UtilisateurRepository utilisateurRepository;
+    private final FavoriRepository favoriRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public DataInitializer(CategoryRepository categoryRepository,
                            RestaurantRepository restaurantRepository,
@@ -34,7 +40,10 @@ public class DataInitializer implements CommandLineRunner {
                            MenuItemRepository menuItemRepository,
                            DistinctionRepository distinctionRepository,
                            AmenityRepository amenityRepository,
-                           RegionalCuisineRepository regionalCuisineRepository) {
+                           RegionalCuisineRepository regionalCuisineRepository,
+                           UtilisateurRepository utilisateurRepository,
+                           FavoriRepository favoriRepository,
+                           PasswordEncoder passwordEncoder) {
         this.categoryRepository = categoryRepository;
         this.restaurantRepository = restaurantRepository;
         this.hotelRepository = hotelRepository;
@@ -45,6 +54,9 @@ public class DataInitializer implements CommandLineRunner {
         this.distinctionRepository = distinctionRepository;
         this.amenityRepository = amenityRepository;
         this.regionalCuisineRepository = regionalCuisineRepository;
+        this.utilisateurRepository = utilisateurRepository;
+        this.favoriRepository = favoriRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -724,17 +736,57 @@ public class DataInitializer implements CommandLineRunner {
         rev11.setTypeVoyageur(TypeVoyageur.COUPLE);
         reviewRepository.save(rev11);
 
-        System.out.println("=== Données d'exemple chargées avec succès ===");
+        // ===== Utilisateurs =====
+        Utilisateur admin = new Utilisateur();
+        admin.setNom("Admin");
+        admin.setPrenom("Guide Africa");
+        admin.setEmail("admin@guideafrica.com");
+        admin.setMotDePasse(passwordEncoder.encode("admin123"));
+        admin.setRole(RoleUtilisateur.ADMIN);
+        admin.setAvatar("https://ui-avatars.com/api/?name=Admin+GA&background=C9A84C&color=0A0A0A");
+        utilisateurRepository.save(admin);
+
+        Utilisateur user = new Utilisateur();
+        user.setNom("Diallo");
+        user.setPrenom("Aminata");
+        user.setEmail("aminata@example.com");
+        user.setMotDePasse(passwordEncoder.encode("password123"));
+        user.setRole(RoleUtilisateur.USER);
+        user.setAvatar("https://ui-avatars.com/api/?name=Aminata+Diallo&background=1B6B4A&color=F5F0E8");
+        user = utilisateurRepository.save(user);
+
+        // Favoris pour l'utilisateur test
+        Favori fav1 = new Favori();
+        fav1.setUtilisateur(user);
+        fav1.setType(TypeEtablissement.RESTAURANT);
+        fav1.setTargetId(r1.getId());
+        favoriRepository.save(fav1);
+
+        Favori fav2 = new Favori();
+        fav2.setUtilisateur(user);
+        fav2.setType(TypeEtablissement.HOTEL);
+        fav2.setTargetId(h2.getId());
+        favoriRepository.save(fav2);
+
+        Favori fav3 = new Favori();
+        fav3.setUtilisateur(user);
+        fav3.setType(TypeEtablissement.RESTAURANT);
+        fav3.setTargetId(r3.getId());
+        favoriRepository.save(fav3);
+
+        System.out.println("=== Donn\u00e9es d'exemple charg\u00e9es avec succ\u00e8s ===");
         System.out.println("  - " + cityRepository.count() + " villes");
-        System.out.println("  - " + categoryRepository.count() + " catégories");
+        System.out.println("  - " + categoryRepository.count() + " cat\u00e9gories");
         System.out.println("  - " + amenityRepository.count() + " amenities");
         System.out.println("  - " + restaurantRepository.count() + " restaurants");
         System.out.println("  - " + chefRepository.count() + " chefs");
         System.out.println("  - " + menuItemRepository.count() + " items de menu");
         System.out.println("  - " + distinctionRepository.count() + " distinctions");
-        System.out.println("  - " + hotelRepository.count() + " hôtels");
+        System.out.println("  - " + hotelRepository.count() + " h\u00f4tels");
         System.out.println("  - " + reviewRepository.count() + " avis");
-        System.out.println("  - " + regionalCuisineRepository.count() + " cuisines régionales");
+        System.out.println("  - " + regionalCuisineRepository.count() + " cuisines r\u00e9gionales");
+        System.out.println("  - " + utilisateurRepository.count() + " utilisateurs");
+        System.out.println("  - " + favoriRepository.count() + " favoris");
     }
 
     private MenuItem createMenuItem(String nom, String description, Double prix, CategorieMenu categorie, boolean signature, Restaurant restaurant) {

@@ -7,10 +7,20 @@ import ReviewForm from '../components/ReviewForm';
 import ConfirmDialog from '../components/ConfirmDialog';
 import Breadcrumbs from '../components/Breadcrumbs';
 import FavoriteButton from '../components/FavoriteButton';
-import ShareButton from '../components/ShareButton';
 import DistinctionBadge from '../components/DistinctionBadge';
 import BackToTop from '../components/BackToTop';
+import MapView from '../components/MapView';
+import ReservationForm from '../components/ReservationForm';
+import AddToCollectionModal from '../components/AddToCollectionModal';
+import RatingDistribution from '../components/RatingDistribution';
 import { SkeletonDetail } from '../components/Skeleton';
+import usePageTitle from '../hooks/usePageTitle';
+import LightboxGallery from '../components/LightboxGallery';
+import SEOHead from '../components/SEOHead';
+import ShareButtons from '../components/ShareButtons';
+import ScrollReveal from '../components/ScrollReveal';
+import AmenityIcon from '../components/AmenityIcon';
+import { restaurantJsonLd } from '../components/SEOHead';
 
 const RestaurantDetail = () => {
   const { id } = useParams();
@@ -20,6 +30,9 @@ const RestaurantDetail = () => {
   const [error, setError] = useState('');
   const [showDelete, setShowDelete] = useState(false);
   const [activeTab, setActiveTab] = useState('info');
+  const [showCollectionModal, setShowCollectionModal] = useState(false);
+
+  usePageTitle(restaurant?.nom || 'Restaurant');
 
   const fetchRestaurant = async () => {
     setLoading(true);
@@ -72,6 +85,12 @@ const RestaurantDetail = () => {
   };
 
   return (
+    <>
+      <SEOHead
+        title={`${restaurant.nom} — Guide Africa`}
+        description={restaurant.description ? restaurant.description.substring(0, 160) : ''}
+        jsonLd={restaurantJsonLd(restaurant)}
+      />
     <div className="detail-page">
       <Breadcrumbs items={[
         { label: 'Accueil', to: '/' },
@@ -81,12 +100,15 @@ const RestaurantDetail = () => {
 
       {restaurant.image && (
         <div className="detail-hero">
-          <img src={restaurant.image} alt={restaurant.nom} className="detail-main-image"
+          <img src={restaurant.image} alt={restaurant.nom} className="detail-main-image" loading="lazy"
             onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800'; }} />
           <div className="detail-hero-overlay">
             <div className="detail-hero-actions">
               <FavoriteButton type="restaurants" id={parseInt(id)} />
-              <ShareButton title={restaurant.nom} text={`Découvrez ${restaurant.nom} sur Guide Africa`} />
+              <ShareButtons title={restaurant.nom} url={window.location.href} />
+              <button className="btn-collection" onClick={() => setShowCollectionModal(true)} title="Ajouter à une collection">
+                &#128194;
+              </button>
             </div>
           </div>
         </div>
@@ -141,6 +163,7 @@ const RestaurantDetail = () => {
           <button className={`tab-btn ${activeTab === 'avis' ? 'active' : ''}`} onClick={() => setActiveTab('avis')}>
             Avis ({restaurant.avisUtilisateurs ? restaurant.avisUtilisateurs.length : 0})
           </button>
+          <button className={`tab-btn ${activeTab === 'reserver' ? 'active' : ''}`} onClick={() => setActiveTab('reserver')}>Réserver</button>
         </div>
 
         {activeTab === 'info' && (
@@ -161,7 +184,7 @@ const RestaurantDetail = () => {
                 <h3 className="subsection-title">Équipements & Services</h3>
                 <div className="amenity-grid">
                   {restaurant.amenities.map(a => (
-                    <span key={a.id} className="amenity-item">{a.nom}</span>
+                    <AmenityIcon key={a.id} name={a.nom} />
                   ))}
                 </div>
               </div>
@@ -181,6 +204,25 @@ const RestaurantDetail = () => {
             {restaurant.languesParlees && restaurant.languesParlees.length > 0 && (
               <div className="detail-info-row"><strong>Langues :</strong> {restaurant.languesParlees.join(', ')}</div>
             )}
+
+            {restaurant.coordonneesGps && restaurant.coordonneesGps.lat && restaurant.coordonneesGps.lng && (
+              <div className="mini-map">
+                <div className="mini-map-label">Localisation</div>
+                <MapView
+                  markers={[{
+                    lat: restaurant.coordonneesGps.lat,
+                    lng: restaurant.coordonneesGps.lng,
+                    name: restaurant.nom,
+                    type: 'restaurant',
+                    id: restaurant.id,
+                    note: restaurant.note,
+                  }]}
+                  center={[restaurant.coordonneesGps.lat, restaurant.coordonneesGps.lng]}
+                  zoom={13}
+                  height="300px"
+                />
+              </div>
+            )}
           </div>
         )}
 
@@ -196,8 +238,12 @@ const RestaurantDetail = () => {
                         <span className="menu-item-name">
                           {item.signature && <span className="signature-star">&#9733;</span>}
                           {item.nom}
+                          {item.deSaison && <span className="seasonal-badge" title={item.saison}>&#127807;</span>}
                         </span>
                         <span className="menu-item-desc">{item.description}</span>
+                        {item.accordMetsVins && (
+                          <span className="wine-pairing">&#127863; {item.accordMetsVins}</span>
+                        )}
                       </div>
                       <span className="menu-item-prix">{item.prix}€</span>
                     </div>
@@ -212,7 +258,7 @@ const RestaurantDetail = () => {
           <div className="tab-content">
             <div className="chef-profile">
               {restaurant.chef.photo && (
-                <img src={restaurant.chef.photo} alt={restaurant.chef.nom} className="chef-photo"
+                <img src={restaurant.chef.photo} alt={restaurant.chef.nom} className="chef-photo" loading="lazy"
                   onError={(e) => { e.target.style.display = 'none'; }} />
               )}
               <div className="chef-info">
@@ -231,12 +277,7 @@ const RestaurantDetail = () => {
         {activeTab === 'photos' && (
           <div className="tab-content">
             {restaurant.galeriePhotos && restaurant.galeriePhotos.length > 0 ? (
-              <div className="gallery">
-                {restaurant.galeriePhotos.map((url, idx) => (
-                  <img key={idx} src={url} alt={`${restaurant.nom} ${idx + 1}`}
-                    onError={(e) => { e.target.style.display = 'none'; }} />
-                ))}
-              </div>
+              <LightboxGallery images={restaurant.galeriePhotos} alt={restaurant.nom} />
             ) : (
               <p style={{ color: 'var(--ivory-subtle)' }}>Aucune photo disponible.</p>
             )}
@@ -245,6 +286,7 @@ const RestaurantDetail = () => {
 
         {activeTab === 'avis' && (
           <div className="tab-content">
+            <RatingDistribution type="restaurant" id={id} />
             {restaurant.avisUtilisateurs && restaurant.avisUtilisateurs.length > 0 ? (
               restaurant.avisUtilisateurs.map((review) => (
                 <ReviewCard key={review.id} review={review} />
@@ -253,6 +295,12 @@ const RestaurantDetail = () => {
               <p style={{ color: 'var(--ivory-subtle)', margin: '16px 0' }}>Aucun avis pour le moment.</p>
             )}
             <ReviewForm onSubmit={handleAddReview} />
+          </div>
+        )}
+
+        {activeTab === 'reserver' && (
+          <div className="tab-content">
+            <ReservationForm type="RESTAURANT" establishmentId={parseInt(id)} establishmentName={restaurant.nom} />
           </div>
         )}
 
@@ -271,7 +319,15 @@ const RestaurantDetail = () => {
         />
       )}
       <BackToTop />
+      <AddToCollectionModal
+        show={showCollectionModal}
+        onClose={() => setShowCollectionModal(false)}
+        type="RESTAURANT"
+        targetId={parseInt(id)}
+        targetName={restaurant.nom}
+      />
     </div>
+    </>
   );
 };
 

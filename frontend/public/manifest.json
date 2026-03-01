@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Guide Africa",
+  "name": "Guide Africa Premium — Michelin Guide",
+  "description": "Votre guide de référence pour les meilleures adresses culinaires et hôtelières du continent africain.",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +21,9 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#0A0A0A",
+  "background_color": "#0A0A0A",
+  "orientation": "portrait-primary",
+  "categories": ["food", "travel", "lifestyle"],
+  "lang": "fr"
 }
