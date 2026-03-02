@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 const SplashScreen = ({ onComplete }) => {
   const [hiding, setHiding] = useState(false);
@@ -33,6 +34,10 @@ const SplashScreen = ({ onComplete }) => {
       <div className="splash-tagline">L'excellence culinaire africaine</div>
     </div>
   );
+};
+
+SplashScreen.propTypes = {
+  onComplete: PropTypes.func,
 };
 
 export default SplashScreen;

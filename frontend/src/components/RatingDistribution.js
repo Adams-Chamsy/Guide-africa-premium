@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import apiClient from '../api/apiClient';
+import PropTypes from 'prop-types';
 
 const RatingDistribution = ({ type, id }) => {
   const [data, setData] = useState(null);
@@ -57,6 +58,11 @@ const RatingDistribution = ({ type, id }) => {
       </div>
     </div>
   );
+};
+
+RatingDistribution.propTypes = {
+  distribution: PropTypes.object,
+  totalReviews: PropTypes.number,
 };
 
 export default RatingDistribution;

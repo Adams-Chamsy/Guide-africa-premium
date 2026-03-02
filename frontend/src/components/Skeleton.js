@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export function SkeletonCard() {
   return (
@@ -22,6 +23,10 @@ export function SkeletonGrid({ count = 6 }) {
     </div>
   );
 }
+
+SkeletonGrid.propTypes = {
+  count: PropTypes.number,
+};
 
 export function SkeletonDetail() {
   return (

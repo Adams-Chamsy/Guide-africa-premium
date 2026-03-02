@@ -7,9 +7,10 @@ import FavoriteButton from '../components/FavoriteButton';
 import BackToTop from '../components/BackToTop';
 import { SkeletonGrid } from '../components/Skeleton';
 import usePageTitle from '../hooks/usePageTitle';
+import SEOHead from '../components/SEOHead';
 
 const HotelList = () => {
-  usePageTitle('Hôtels');
+  usePageTitle('H\u00f4tels');
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -48,7 +49,7 @@ const HotelList = () => {
         setTotalElements(res.data.length);
       }
     } catch (err) {
-      setError('Erreur lors du chargement des hôtels.');
+      setError('Erreur lors du chargement des h\u00f4tels.');
     } finally {
       setLoading(false);
     }
@@ -74,108 +75,111 @@ const HotelList = () => {
   };
 
   return (
-    <div>
-      <Breadcrumbs items={[{ label: 'Accueil', to: '/' }, { label: 'Hôtels' }]} />
+    <>
+      <SEOHead title="Hotels" description="Les plus beaux hotels d'Afrique" />
+      <div>
+        <Breadcrumbs items={[{ label: 'Accueil', to: '/' }, { label: 'H\u00f4tels' }]} />
 
-      <div className="page-header">
-        <div className="page-label">Séjours d'Exception</div>
-        <h2>Hôtels</h2>
-        <p className="page-subtitle">{totalElements} établissements à découvrir</p>
-        <div className="gold-line" style={{ marginTop: 16 }}></div>
-      </div>
-
-      <div className="section-header" style={{ marginBottom: 0 }}>
-        <div></div>
-        <Link to="/hotels/new" className="btn btn-primary">+ Ajouter</Link>
-      </div>
-
-      <form className="search-bar" onSubmit={handleSearch}>
-        <input type="text" className="search-input" placeholder="Rechercher par nom..."
-          value={searchNom} onChange={(e) => setSearchNom(e.target.value)} />
-        <select className="search-select" value={filterEtoiles} onChange={(e) => { setFilterEtoiles(e.target.value); setPage(0); }}>
-          <option value="">Toutes les étoiles</option>
-          <option value="5">5 étoiles</option>
-          <option value="4">4+ étoiles</option>
-          <option value="3">3+ étoiles</option>
-        </select>
-        <select className="search-select" value={filterVille} onChange={(e) => { setFilterVille(e.target.value); setPage(0); }}>
-          <option value="">Toutes les villes</option>
-          {cities.map(c => <option key={c.id} value={c.id}>{c.nom}</option>)}
-        </select>
-        <select className="search-select" value={filterPrix} onChange={(e) => { setFilterPrix(e.target.value); setPage(0); }}>
-          <option value="">Tous les prix</option>
-          <option value="150">Moins de 150€/nuit</option>
-          <option value="300">Moins de 300€/nuit</option>
-          <option value="500">Moins de 500€/nuit</option>
-        </select>
-        <button type="submit" className="btn btn-primary btn-sm">Rechercher</button>
-        {(searchNom || filterEtoiles || filterVille || filterPrix) && (
-          <button type="button" className="btn btn-outline btn-sm" onClick={clearFilters}>Effacer</button>
-        )}
-      </form>
-
-      <div className="sort-controls">
-        <span className="sort-label">Trier par :</span>
-        <select className="sort-select" value={`${sortBy}-${direction}`} onChange={(e) => {
-          const [s, d] = e.target.value.split('-');
-          setSortBy(s);
-          setDirection(d);
-          setPage(0);
-        }}>
-          <option value="nom-asc">Nom (A-Z)</option>
-          <option value="nom-desc">Nom (Z-A)</option>
-          <option value="etoiles-desc">Plus d'étoiles</option>
-          <option value="prixParNuit-asc">Prix croissant</option>
-          <option value="prixParNuit-desc">Prix décroissant</option>
-          <option value="note-desc">Meilleure note</option>
-        </select>
-      </div>
-
-      {error && <div className="error-message">{error}</div>}
-
-      {loading ? (
-        <SkeletonGrid count={6} />
-      ) : hotels.length === 0 ? (
-        <div className="empty-state">
-          <div className="empty-icon">&#127976;</div>
-          <h3>Aucun hôtel trouvé</h3>
-          <p>Essayez de modifier vos critères de recherche.</p>
+        <div className="page-header">
+          <div className="page-label">S\u00e9jours d'Exception</div>
+          <h2>H\u00f4tels</h2>
+          <p className="page-subtitle">{totalElements} \u00e9tablissements \u00e0 d\u00e9couvrir</p>
+          <div className="gold-line" style={{ marginTop: 16 }}></div>
         </div>
-      ) : (
-        <>
-          <div className="card-grid">
-            {hotels.map((h) => (
-              <Link to={`/hotels/${h.id}`} key={h.id} className="card">
-                <div className="card-image-wrapper">
-                  <img src={h.image} alt={h.nom} className="card-image" loading="lazy"
-                    onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400'; }} />
-                  <div className="card-image-overlay"></div>
-                  <FavoriteButton type="hotels" id={h.id} className="card-favorite" />
-                </div>
-                <div className="card-body">
-                  <h3 className="card-title">{h.nom}</h3>
-                  <p className="card-subtitle">
-                    <span className="hotel-stars">{'★'.repeat(h.etoiles || 0)}{'☆'.repeat(5 - (h.etoiles || 0))}</span>
-                    {h.ville && <> &mdash; {h.ville.nom}, {h.ville.pays}</>}
-                  </p>
-                  <p className="card-description">{h.description}</p>
-                  <div className="card-footer">
-                    <span className="price">{h.prixParNuit}€ / nuit</span>
-                    <div className="badges">
-                      {h.wifi && <span className="badge badge-amenity">Wi-Fi</span>}
-                      {h.piscine && <span className="badge badge-amenity">Piscine</span>}
-                      {h.spa && <span className="badge badge-amenity">Spa</span>}
+
+        <div className="section-header" style={{ marginBottom: 0 }}>
+          <div></div>
+          <Link to="/hotels/new" className="btn btn-primary">+ Ajouter</Link>
+        </div>
+
+        <form className="search-bar" onSubmit={handleSearch}>
+          <input type="text" className="search-input" placeholder="Rechercher par nom..."
+            value={searchNom} onChange={(e) => setSearchNom(e.target.value)} />
+          <select className="search-select" value={filterEtoiles} onChange={(e) => { setFilterEtoiles(e.target.value); setPage(0); }}>
+            <option value="">Toutes les \u00e9toiles</option>
+            <option value="5">5 \u00e9toiles</option>
+            <option value="4">4+ \u00e9toiles</option>
+            <option value="3">3+ \u00e9toiles</option>
+          </select>
+          <select className="search-select" value={filterVille} onChange={(e) => { setFilterVille(e.target.value); setPage(0); }}>
+            <option value="">Toutes les villes</option>
+            {cities.map(c => <option key={c.id} value={c.id}>{c.nom}</option>)}
+          </select>
+          <select className="search-select" value={filterPrix} onChange={(e) => { setFilterPrix(e.target.value); setPage(0); }}>
+            <option value="">Tous les prix</option>
+            <option value="150">Moins de 150\u20ac/nuit</option>
+            <option value="300">Moins de 300\u20ac/nuit</option>
+            <option value="500">Moins de 500\u20ac/nuit</option>
+          </select>
+          <button type="submit" className="btn btn-primary btn-sm">Rechercher</button>
+          {(searchNom || filterEtoiles || filterVille || filterPrix) && (
+            <button type="button" className="btn btn-outline btn-sm" onClick={clearFilters}>Effacer</button>
+          )}
+        </form>
+
+        <div className="sort-controls">
+          <span className="sort-label">Trier par :</span>
+          <select className="sort-select" value={`${sortBy}-${direction}`} onChange={(e) => {
+            const [s, d] = e.target.value.split('-');
+            setSortBy(s);
+            setDirection(d);
+            setPage(0);
+          }}>
+            <option value="nom-asc">Nom (A-Z)</option>
+            <option value="nom-desc">Nom (Z-A)</option>
+            <option value="etoiles-desc">Plus d'\u00e9toiles</option>
+            <option value="prixParNuit-asc">Prix croissant</option>
+            <option value="prixParNuit-desc">Prix d\u00e9croissant</option>
+            <option value="note-desc">Meilleure note</option>
+          </select>
+        </div>
+
+        {error && <div className="error-message">{error}</div>}
+
+        {loading ? (
+          <SkeletonGrid count={6} />
+        ) : hotels.length === 0 ? (
+          <div className="empty-state">
+            <div className="empty-icon">&#127976;</div>
+            <h3>Aucun h\u00f4tel trouv\u00e9</h3>
+            <p>Essayez de modifier vos crit\u00e8res de recherche.</p>
+          </div>
+        ) : (
+          <>
+            <div className="card-grid">
+              {hotels.map((h) => (
+                <Link to={`/hotels/${h.id}`} key={h.id} className="card">
+                  <div className="card-image-wrapper">
+                    <img src={h.image} alt={h.nom} className="card-image" loading="lazy"
+                      onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400'; }} />
+                    <div className="card-image-overlay"></div>
+                    <FavoriteButton type="hotels" id={h.id} className="card-favorite" />
+                  </div>
+                  <div className="card-body">
+                    <h3 className="card-title">{h.nom}</h3>
+                    <p className="card-subtitle">
+                      <span className="hotel-stars">{'\u2605'.repeat(h.etoiles || 0)}{'\u2606'.repeat(5 - (h.etoiles || 0))}</span>
+                      {h.ville && <> &mdash; {h.ville.nom}, {h.ville.pays}</>}
+                    </p>
+                    <p className="card-description">{h.description}</p>
+                    <div className="card-footer">
+                      <span className="price">{h.prixParNuit}\u20ac / nuit</span>
+                      <div className="badges">
+                        {h.wifi && <span className="badge badge-amenity">Wi-Fi</span>}
+                        {h.piscine && <span className="badge badge-amenity">Piscine</span>}
+                        {h.spa && <span className="badge badge-amenity">Spa</span>}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-          <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
-        </>
-      )}
-      <BackToTop />
-    </div>
+                </Link>
+              ))}
+            </div>
+            <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
+          </>
+        )}
+        <BackToTop />
+      </div>
+    </>
   );
 };
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import apiClient from '../api/apiClient';
+import PropTypes from 'prop-types';
 
 const NotificationDropdown = ({ onClose, onRefresh }) => {
   const [notifications, setNotifications] = useState([]);
@@ -102,6 +103,12 @@ const NotificationDropdown = ({ onClose, onRefresh }) => {
       </div>
     </div>
   );
+};
+
+NotificationDropdown.propTypes = {
+  notifications: PropTypes.array,
+  onMarkRead: PropTypes.func,
+  onMarkAllRead: PropTypes.func,
 };
 
 export default NotificationDropdown;

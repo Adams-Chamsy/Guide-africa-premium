@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StarInput } from './StarRating';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import PropTypes from 'prop-types';
 
 const ReviewForm = ({ onSubmit }) => {
   const { user, isAuthenticated } = useAuth();
@@ -158,6 +159,10 @@ const ReviewForm = ({ onSubmit }) => {
       </form>
     </div>
   );
+};
+
+ReviewForm.propTypes = {
+  onSubmit: PropTypes.func,
 };
 
 export default ReviewForm;

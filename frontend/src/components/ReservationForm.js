@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { reservationApi } from '../api/apiClient';
+import PropTypes from 'prop-types';
 
 const ReservationForm = ({ type, establishmentId, establishmentName }) => {
   const { user, isAuthenticated } = useAuth();
@@ -234,6 +235,12 @@ const ReservationForm = ({ type, establishmentId, establishmentName }) => {
       </form>
     </div>
   );
+};
+
+ReservationForm.propTypes = {
+  type: PropTypes.string,
+  establishmentId: PropTypes.number,
+  establishmentName: PropTypes.string,
 };
 
 export default ReservationForm;

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 const FabButton = ({ actions = [], icon = '+' }) => {
   const [open, setOpen] = useState(false);
@@ -25,6 +26,10 @@ const FabButton = ({ actions = [], icon = '+' }) => {
       </button>
     </div>
   );
+};
+
+FabButton.propTypes = {
+  actions: PropTypes.array,
 };
 
 export default FabButton;

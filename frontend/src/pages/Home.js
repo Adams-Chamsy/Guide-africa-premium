@@ -11,6 +11,7 @@ import { motion } from 'framer-motion';
 import CountUp from 'react-countup';
 import { useInView } from 'react-intersection-observer';
 import { FiArrowRight } from 'react-icons/fi';
+import SEOHead from '../components/SEOHead';
 
 const Home = () => {
   usePageTitle('Accueil');
@@ -21,7 +22,7 @@ const Home = () => {
   const [totalHotels, setTotalHotels] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  const prixLabels = { 1: '€', 2: '€€', 3: '€€€', 4: '€€€€' };
+  const prixLabels = { 1: '\u20ac', 2: '\u20ac\u20ac', 3: '\u20ac\u20ac\u20ac', 4: '\u20ac\u20ac\u20ac\u20ac' };
   const [statsRef, statsInView] = useInView({ threshold: 0.3, triggerOnce: true });
 
   useEffect(() => {
@@ -49,212 +50,215 @@ const Home = () => {
   }, []);
 
   return (
-    <div>
-      {/* Hero */}
-      <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
-        <div className="hero">
-          <div className="african-pattern"></div>
-          <div className="hero-label">Guide Gastronomique</div>
-          <h1>
-            Découvrez l'Excellence<br />
-            <span className="gold-text">Culinaire Africaine</span>
-          </h1>
-          <p>
-            Une sélection prestigieuse des plus belles tables et des plus beaux
-            établissements du continent africain.
-          </p>
-          <div className="hero-actions">
-            <Link to="/restaurants" className="btn btn-primary">
-              Explorer les Restaurants <FiArrowRight style={{ marginLeft: 6, verticalAlign: 'middle' }} />
-            </Link>
-            <Link to="/hotels" className="btn btn-secondary">
-              Découvrir les Hôtels <FiArrowRight style={{ marginLeft: 6, verticalAlign: 'middle' }} />
-            </Link>
-          </div>
-        </div>
-      </motion.div>
-
-      <div className="section-divider ornamental"><span className="divider-icon">◆</span></div>
-
-      {/* Stats */}
-      {!loading && (
+    <>
+      <SEOHead title="Accueil" description="Guide Africa Premium - Les meilleurs restaurants et hotels d'Afrique" />
+      <div>
+        {/* Hero */}
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
-          <div className="home-stats" ref={statsRef}>
-            <div className="stat-card">
-              <div className="stat-number">
-                {statsInView ? <CountUp end={totalRestaurants} duration={2.5} separator=" " /> : 0}
-              </div>
-              <div className="stat-label">Restaurants</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-number">
-                {statsInView ? <CountUp end={totalHotels} duration={2.5} separator=" " /> : 0}
-              </div>
-              <div className="stat-label">Hôtels</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-number">
-                {statsInView ? <><CountUp end={cities.length} duration={2.5} separator=" " />+</> : '0+'}
-              </div>
-              <div className="stat-label">Destinations</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-number">
-                {statsInView ? <CountUp end={54} duration={2.5} separator=" " /> : 0}
-              </div>
-              <div className="stat-label">Pays Africains</div>
+          <div className="hero">
+            <div className="african-pattern"></div>
+            <div className="hero-label">Guide Gastronomique</div>
+            <h1>
+              D\u00e9couvrez l'Excellence<br />
+              <span className="gold-text">Culinaire Africaine</span>
+            </h1>
+            <p>
+              Une s\u00e9lection prestigieuse des plus belles tables et des plus beaux
+              \u00e9tablissements du continent africain.
+            </p>
+            <div className="hero-actions">
+              <Link to="/restaurants" className="btn btn-primary">
+                Explorer les Restaurants <FiArrowRight style={{ marginLeft: 6, verticalAlign: 'middle' }} />
+              </Link>
+              <Link to="/hotels" className="btn btn-secondary">
+                D\u00e9couvrir les H\u00f4tels <FiArrowRight style={{ marginLeft: 6, verticalAlign: 'middle' }} />
+              </Link>
             </div>
           </div>
         </motion.div>
-      )}
 
-      <div className="section-divider ornamental"><span className="divider-icon">◆</span></div>
+        <div className="section-divider ornamental"><span className="divider-icon">\u25c6</span></div>
 
-      {/* Featured Restaurants */}
-      <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
-        <div className="section">
-          <div className="section-header">
-            <div>
-              <h2 className="section-title">Restaurants en Vedette</h2>
-              <div className="section-divider"></div>
+        {/* Stats */}
+        {!loading && (
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
+            <div className="home-stats" ref={statsRef}>
+              <div className="stat-card">
+                <div className="stat-number">
+                  {statsInView ? <CountUp end={totalRestaurants} duration={2.5} separator=" " /> : 0}
+                </div>
+                <div className="stat-label">Restaurants</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-number">
+                  {statsInView ? <CountUp end={totalHotels} duration={2.5} separator=" " /> : 0}
+                </div>
+                <div className="stat-label">H\u00f4tels</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-number">
+                  {statsInView ? <><CountUp end={cities.length} duration={2.5} separator=" " />+</> : '0+'}
+                </div>
+                <div className="stat-label">Destinations</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-number">
+                  {statsInView ? <CountUp end={54} duration={2.5} separator=" " /> : 0}
+                </div>
+                <div className="stat-label">Pays Africains</div>
+              </div>
             </div>
-            <Link to="/restaurants" className="btn btn-outline btn-sm">
-              Voir tout <FiArrowRight style={{ marginLeft: 4, verticalAlign: 'middle' }} />
-            </Link>
-          </div>
-          {loading ? (
-            <SkeletonGrid count={3} />
-          ) : (
-            <div className="card-grid">
-              {restaurants.map((r) => (
-                <Link to={`/restaurants/${r.id}`} key={r.id} className="card">
-                  <div className="card-image-wrapper">
-                    <img src={r.image} alt={r.nom} className="card-image" loading="lazy"
-                      onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400'; }} />
-                    <div className="card-image-overlay"></div>
-                    <FavoriteButton type="restaurants" id={r.id} className="card-favorite" />
-                    {r.fourchettePrix && (
-                      <span className="card-prix-badge">{prixLabels[r.fourchettePrix]}</span>
-                    )}
-                    {r.distinctions && r.distinctions.length > 0 && (
-                      <div className="card-distinctions">
-                        {r.distinctions.slice(0, 1).map((d, i) => (
-                          <DistinctionBadge key={i} type={d.type} size="small" />
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <div className="card-body">
-                    <h3 className="card-title">{r.nom}</h3>
-                    <p className="card-subtitle">
-                      {r.cuisine}
-                      {r.ville && <> &mdash; {r.ville.nom}, {r.ville.pays}</>}
-                    </p>
-                    <p className="card-description">{r.description}</p>
-                    <div className="card-footer">
-                      <StarRating rating={r.note || 0} />
-                      <div className="badges">
-                        {r.categories && r.categories.slice(0, 2).map((c) => (
-                          <span key={c.id} className="badge">{c.nom}</span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
-        </div>
-      </motion.div>
+          </motion.div>
+        )}
 
-      <div className="gold-line"></div>
+        <div className="section-divider ornamental"><span className="divider-icon">\u25c6</span></div>
 
-      <div className="section-divider ornamental"><span className="divider-icon">◆</span></div>
-
-      {/* Destinations */}
-      {!loading && cities.length > 0 && (
+        {/* Featured Restaurants */}
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
           <div className="section">
             <div className="section-header">
               <div>
-                <h2 className="section-title">Destinations Populaires</h2>
+                <h2 className="section-title">Restaurants en Vedette</h2>
                 <div className="section-divider"></div>
               </div>
-              <Link to="/destinations" className="btn btn-outline btn-sm">
-                Toutes les destinations <FiArrowRight style={{ marginLeft: 4, verticalAlign: 'middle' }} />
+              <Link to="/restaurants" className="btn btn-outline btn-sm">
+                Voir tout <FiArrowRight style={{ marginLeft: 4, verticalAlign: 'middle' }} />
               </Link>
             </div>
-            <div className="destinations-grid">
-              {cities.map(city => (
-                <Link to={`/restaurants?villeId=${city.id}`} key={city.id} className="destination-card">
-                  <div className="destination-image-wrapper">
-                    <img src={city.image} alt={city.nom} className="destination-image" loading="lazy"
-                      onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=400'; }} />
-                    <div className="destination-overlay">
-                      <h3 className="destination-name">{city.nom}</h3>
-                      <p className="destination-country">{city.pays}</p>
+            {loading ? (
+              <SkeletonGrid count={3} />
+            ) : (
+              <div className="card-grid">
+                {restaurants.map((r) => (
+                  <Link to={`/restaurants/${r.id}`} key={r.id} className="card">
+                    <div className="card-image-wrapper">
+                      <img src={r.image} alt={r.nom} className="card-image" loading="lazy"
+                        onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400'; }} />
+                      <div className="card-image-overlay"></div>
+                      <FavoriteButton type="restaurants" id={r.id} className="card-favorite" />
+                      {r.fourchettePrix && (
+                        <span className="card-prix-badge">{prixLabels[r.fourchettePrix]}</span>
+                      )}
+                      {r.distinctions && r.distinctions.length > 0 && (
+                        <div className="card-distinctions">
+                          {r.distinctions.slice(0, 1).map((d, i) => (
+                            <DistinctionBadge key={i} type={d.type} size="small" />
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-      )}
-
-      <div className="gold-line"></div>
-
-      <div className="section-divider ornamental"><span className="divider-icon">◆</span></div>
-
-      {/* Featured Hotels */}
-      <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
-        <div className="section">
-          <div className="section-header">
-            <div>
-              <h2 className="section-title">Hôtels en Vedette</h2>
-              <div className="section-divider"></div>
-            </div>
-            <Link to="/hotels" className="btn btn-outline btn-sm">
-              Voir tout <FiArrowRight style={{ marginLeft: 4, verticalAlign: 'middle' }} />
-            </Link>
-          </div>
-          {loading ? (
-            <SkeletonGrid count={3} />
-          ) : (
-            <div className="card-grid">
-              {hotels.map((h) => (
-                <Link to={`/hotels/${h.id}`} key={h.id} className="card">
-                  <div className="card-image-wrapper">
-                    <img src={h.image} alt={h.nom} className="card-image" loading="lazy"
-                      onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400'; }} />
-                    <div className="card-image-overlay"></div>
-                    <FavoriteButton type="hotels" id={h.id} className="card-favorite" />
-                  </div>
-                  <div className="card-body">
-                    <h3 className="card-title">{h.nom}</h3>
-                    <p className="card-subtitle">
-                      <span className="hotel-stars">{'★'.repeat(h.etoiles || 0)}</span>
-                      {h.ville && <> &mdash; {h.ville.nom}, {h.ville.pays}</>}
-                    </p>
-                    <p className="card-description">{h.description}</p>
-                    <div className="card-footer">
-                      <span className="price">{h.prixParNuit}€ / nuit</span>
-                      <div className="badges">
-                        {h.wifi && <span className="badge badge-amenity">Wi-Fi</span>}
-                        {h.piscine && <span className="badge badge-amenity">Piscine</span>}
-                        {h.spa && <span className="badge badge-amenity">Spa</span>}
+                    <div className="card-body">
+                      <h3 className="card-title">{r.nom}</h3>
+                      <p className="card-subtitle">
+                        {r.cuisine}
+                        {r.ville && <> &mdash; {r.ville.nom}, {r.ville.pays}</>}
+                      </p>
+                      <p className="card-description">{r.description}</p>
+                      <div className="card-footer">
+                        <StarRating rating={r.note || 0} />
+                        <div className="badges">
+                          {r.categories && r.categories.slice(0, 2).map((c) => (
+                            <span key={c.id} className="badge">{c.nom}</span>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
-        </div>
-      </motion.div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        </motion.div>
 
-      <BackToTop />
-    </div>
+        <div className="gold-line"></div>
+
+        <div className="section-divider ornamental"><span className="divider-icon">\u25c6</span></div>
+
+        {/* Destinations */}
+        {!loading && cities.length > 0 && (
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
+            <div className="section">
+              <div className="section-header">
+                <div>
+                  <h2 className="section-title">Destinations Populaires</h2>
+                  <div className="section-divider"></div>
+                </div>
+                <Link to="/destinations" className="btn btn-outline btn-sm">
+                  Toutes les destinations <FiArrowRight style={{ marginLeft: 4, verticalAlign: 'middle' }} />
+                </Link>
+              </div>
+              <div className="destinations-grid">
+                {cities.map(city => (
+                  <Link to={`/restaurants?villeId=${city.id}`} key={city.id} className="destination-card">
+                    <div className="destination-image-wrapper">
+                      <img src={city.image} alt={city.nom} className="destination-image" loading="lazy"
+                        onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=400'; }} />
+                      <div className="destination-overlay">
+                        <h3 className="destination-name">{city.nom}</h3>
+                        <p className="destination-country">{city.pays}</p>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        <div className="gold-line"></div>
+
+        <div className="section-divider ornamental"><span className="divider-icon">\u25c6</span></div>
+
+        {/* Featured Hotels */}
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
+          <div className="section">
+            <div className="section-header">
+              <div>
+                <h2 className="section-title">H\u00f4tels en Vedette</h2>
+                <div className="section-divider"></div>
+              </div>
+              <Link to="/hotels" className="btn btn-outline btn-sm">
+                Voir tout <FiArrowRight style={{ marginLeft: 4, verticalAlign: 'middle' }} />
+              </Link>
+            </div>
+            {loading ? (
+              <SkeletonGrid count={3} />
+            ) : (
+              <div className="card-grid">
+                {hotels.map((h) => (
+                  <Link to={`/hotels/${h.id}`} key={h.id} className="card">
+                    <div className="card-image-wrapper">
+                      <img src={h.image} alt={h.nom} className="card-image" loading="lazy"
+                        onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400'; }} />
+                      <div className="card-image-overlay"></div>
+                      <FavoriteButton type="hotels" id={h.id} className="card-favorite" />
+                    </div>
+                    <div className="card-body">
+                      <h3 className="card-title">{h.nom}</h3>
+                      <p className="card-subtitle">
+                        <span className="hotel-stars">{'\u2605'.repeat(h.etoiles || 0)}</span>
+                        {h.ville && <> &mdash; {h.ville.nom}, {h.ville.pays}</>}
+                      </p>
+                      <p className="card-description">{h.description}</p>
+                      <div className="card-footer">
+                        <span className="price">{h.prixParNuit}\u20ac / nuit</span>
+                        <div className="badges">
+                          {h.wifi && <span className="badge badge-amenity">Wi-Fi</span>}
+                          {h.piscine && <span className="badge badge-amenity">Piscine</span>}
+                          {h.spa && <span className="badge badge-amenity">Spa</span>}
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        </motion.div>
+
+        <BackToTop />
+      </div>
+    </>
   );
 };
 

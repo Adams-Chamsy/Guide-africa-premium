@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import PropTypes from 'prop-types';
 
 const ScrollReveal = ({ children, direction = 'up', delay = 0, duration = 0.6, className = '' }) => {
   const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true });
@@ -24,6 +25,12 @@ const ScrollReveal = ({ children, direction = 'up', delay = 0, duration = 0.6, c
       {children}
     </motion.div>
   );
+};
+
+ScrollReveal.propTypes = {
+  children: PropTypes.node,
+  delay: PropTypes.number,
+  direction: PropTypes.string,
 };
 
 export default ScrollReveal;

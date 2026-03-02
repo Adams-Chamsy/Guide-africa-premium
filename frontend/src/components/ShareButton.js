@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 export default function ShareButton({ title, text, url }) {
   const [showMenu, setShowMenu] = useState(false);
@@ -62,3 +63,9 @@ export default function ShareButton({ title, text, url }) {
     </div>
   );
 }
+
+ShareButton.propTypes = {
+  title: PropTypes.string,
+  text: PropTypes.string,
+  url: PropTypes.string,
+};

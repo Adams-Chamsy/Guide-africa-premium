@@ -18,7 +18,7 @@ export function register(config) {
         // Running on localhost — check if SW still exists
         checkValidServiceWorker(swUrl, config);
         navigator.serviceWorker.ready.then(() => {
-          console.log('[Guide Africa] Service Worker actif en mode développement.');
+          if (process.env.NODE_ENV === 'development') console.log('[Guide Africa] Service Worker actif en mode d\u00e9veloppement.');
         });
       } else {
         // Production — register SW
@@ -39,12 +39,12 @@ function registerValidSW(swUrl, config) {
         installingWorker.onstatechange = () => {
           if (installingWorker.state === 'installed') {
             if (navigator.serviceWorker.controller) {
-              console.log('[Guide Africa] Nouvelle version disponible. Fermez tous les onglets pour mettre à jour.');
+              if (process.env.NODE_ENV === 'development') console.log('[Guide Africa] Nouvelle version disponible. Fermez tous les onglets pour mettre \u00e0 jour.');
               if (config && config.onUpdate) {
                 config.onUpdate(registration);
               }
             } else {
-              console.log('[Guide Africa] Contenu mis en cache pour utilisation hors ligne.');
+              if (process.env.NODE_ENV === 'development') console.log('[Guide Africa] Contenu mis en cache pour utilisation hors ligne.');
               if (config && config.onSuccess) {
                 config.onSuccess(registration);
               }
@@ -54,7 +54,7 @@ function registerValidSW(swUrl, config) {
       };
     })
     .catch((error) => {
-      console.error('[Guide Africa] Erreur lors de l\'enregistrement du service worker:', error);
+      if (process.env.NODE_ENV === 'development') console.error('[Guide Africa] Erreur lors de l\'enregistrement du service worker:', error);
     });
 }
 
@@ -73,7 +73,7 @@ function checkValidServiceWorker(swUrl, config) {
       }
     })
     .catch(() => {
-      console.log('[Guide Africa] Pas de connexion internet. L\'app fonctionne en mode hors ligne.');
+      if (process.env.NODE_ENV === 'development') console.log('[Guide Africa] Pas de connexion internet. L\'app fonctionne en mode hors ligne.');
     });
 }
 
@@ -84,7 +84,7 @@ export function unregister() {
         registration.unregister();
       })
       .catch((error) => {
-        console.error(error.message);
+        if (process.env.NODE_ENV === 'development') console.error(error.message);
       });
   }
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import CountUp from 'react-countup';
 import { useInView } from 'react-intersection-observer';
+import PropTypes from 'prop-types';
 
 const AnimatedCounter = ({ end, prefix = '', suffix = '', duration = 2.5, decimals = 0 }) => {
   const [ref, inView] = useInView({ threshold: 0.3, triggerOnce: true });
@@ -14,6 +15,13 @@ const AnimatedCounter = ({ end, prefix = '', suffix = '', duration = 2.5, decima
       )}
     </span>
   );
+};
+
+AnimatedCounter.propTypes = {
+  end: PropTypes.number,
+  duration: PropTypes.number,
+  prefix: PropTypes.string,
+  suffix: PropTypes.string,
 };
 
 export default AnimatedCounter;

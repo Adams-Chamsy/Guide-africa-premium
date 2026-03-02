@@ -4,6 +4,7 @@ import MapView from '../components/MapView';
 import Breadcrumbs from '../components/Breadcrumbs';
 import { useToast } from '../context/ToastContext';
 import usePageTitle from '../hooks/usePageTitle';
+import SEOHead from '../components/SEOHead';
 
 const CarteAfrique = () => {
   usePageTitle('Carte');
@@ -65,49 +66,52 @@ const CarteAfrique = () => {
   const allMarkers = [...restaurantMarkers, ...hotelMarkers];
 
   return (
-    <div>
-      <Breadcrumbs items={[
-        { label: 'Accueil', to: '/' },
-        { label: 'Carte' },
-      ]} />
+    <>
+      <SEOHead title="Carte" description="Carte interactive des etablissements" />
+      <div>
+        <Breadcrumbs items={[
+          { label: 'Accueil', to: '/' },
+          { label: 'Carte' },
+        ]} />
 
-      <div className="map-page-header">
-        <h2 className="section-title">Carte de l'Afrique</h2>
-        <p className="page-subtitle">Explorez nos \u00e9tablissements</p>
-      </div>
-
-      <div className="map-filters">
-        <label className="map-filter-toggle">
-          <input
-            type="checkbox"
-            checked={showRestaurants}
-            onChange={(e) => setShowRestaurants(e.target.checked)}
-          />
-          Restaurants
-        </label>
-        <label className="map-filter-toggle">
-          <input
-            type="checkbox"
-            checked={showHotels}
-            onChange={(e) => setShowHotels(e.target.checked)}
-          />
-          H&ocirc;tels
-        </label>
-      </div>
-
-      <div className="map-stats">
-        {restaurantMarkers.length} restaurant{restaurantMarkers.length !== 1 ? 's' : ''},{' '}
-        {hotelMarkers.length} h&ocirc;tel{hotelMarkers.length !== 1 ? 's' : ''} affich&eacute;{hotelMarkers.length !== 1 ? 's' : ''}
-      </div>
-
-      {loading ? (
-        <div className="loading-container">
-          <div className="spinner"></div>
+        <div className="map-page-header">
+          <h2 className="section-title">Carte de l'Afrique</h2>
+          <p className="page-subtitle">Explorez nos \u00e9tablissements</p>
         </div>
-      ) : (
-        <MapView markers={allMarkers} height="600px" />
-      )}
-    </div>
+
+        <div className="map-filters">
+          <label className="map-filter-toggle">
+            <input
+              type="checkbox"
+              checked={showRestaurants}
+              onChange={(e) => setShowRestaurants(e.target.checked)}
+            />
+            Restaurants
+          </label>
+          <label className="map-filter-toggle">
+            <input
+              type="checkbox"
+              checked={showHotels}
+              onChange={(e) => setShowHotels(e.target.checked)}
+            />
+            H&ocirc;tels
+          </label>
+        </div>
+
+        <div className="map-stats">
+          {restaurantMarkers.length} restaurant{restaurantMarkers.length !== 1 ? 's' : ''},{' '}
+          {hotelMarkers.length} h&ocirc;tel{hotelMarkers.length !== 1 ? 's' : ''} affich&eacute;{hotelMarkers.length !== 1 ? 's' : ''}
+        </div>
+
+        {loading ? (
+          <div className="loading-container">
+            <div className="spinner"></div>
+          </div>
+        ) : (
+          <MapView markers={allMarkers} height="600px" />
+        )}
+      </div>
+    </>
   );
 };
 

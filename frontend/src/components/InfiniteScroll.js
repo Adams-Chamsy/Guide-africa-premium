@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useCallback } from 'react';
+import PropTypes from 'prop-types';
 
 /**
  * Infinite Scroll wrapper (Item 67)
@@ -51,6 +52,13 @@ const InfiniteScroll = ({ children, loadMore, hasMore, loading, threshold = 300 
       )}
     </div>
   );
+};
+
+InfiniteScroll.propTypes = {
+  onLoadMore: PropTypes.func,
+  hasMore: PropTypes.bool,
+  children: PropTypes.node,
+  loading: PropTypes.bool,
 };
 
 export default InfiniteScroll;

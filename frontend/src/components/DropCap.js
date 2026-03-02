@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const DropCap = ({ children }) => {
   if (!children || typeof children !== 'string') return <p>{children}</p>;
@@ -9,6 +10,10 @@ const DropCap = ({ children }) => {
       {firstLetter}{rest}
     </p>
   );
+};
+
+DropCap.propTypes = {
+  children: PropTypes.node,
 };
 
 export default DropCap;

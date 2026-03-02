@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 const LuxuryTooltip = ({ children, text, position = 'top' }) => {
   const [visible, setVisible] = useState(false);
@@ -51,6 +52,11 @@ const LuxuryTooltip = ({ children, text, position = 'top' }) => {
       )}
     </div>
   );
+};
+
+LuxuryTooltip.propTypes = {
+  text: PropTypes.string,
+  children: PropTypes.node,
 };
 
 export default LuxuryTooltip;

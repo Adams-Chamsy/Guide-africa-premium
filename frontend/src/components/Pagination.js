@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function Pagination({ currentPage, totalPages, onPageChange }) {
   if (totalPages <= 1) return null;
@@ -27,11 +28,13 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
   };
 
   return (
-    <div className="pagination">
+    <nav className="pagination" role="navigation" aria-label="Pagination">
       <button
         className="pagination-btn"
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 0}
+        aria-label="Page precedente"
+        aria-disabled={currentPage === 0}
       >
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
@@ -44,6 +47,8 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
             key={page}
             className={`pagination-btn ${page === currentPage ? 'active' : ''}`}
             onClick={() => onPageChange(page)}
+            aria-label={`Page ${page + 1}`}
+            aria-current={page === currentPage ? 'page' : undefined}
           >
             {page + 1}
           </button>
@@ -54,9 +59,17 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
         className="pagination-btn"
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages - 1}
+        aria-label="Page suivante"
+        aria-disabled={currentPage === totalPages - 1}
       >
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
       </button>
-    </div>
+    </nav>
   );
 }
+
+Pagination.propTypes = {
+  currentPage: PropTypes.number.isRequired,
+  totalPages: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+};

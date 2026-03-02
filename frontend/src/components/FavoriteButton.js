@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { favoritesApi, userApi } from '../api/apiClient';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import PropTypes from 'prop-types';
 
 export default function FavoriteButton({ type, id, className = '' }) {
   const { isAuthenticated } = useAuth();
@@ -70,3 +71,9 @@ export default function FavoriteButton({ type, id, className = '' }) {
     </button>
   );
 }
+
+FavoriteButton.propTypes = {
+  type: PropTypes.string,
+  id: PropTypes.number,
+  className: PropTypes.string,
+};

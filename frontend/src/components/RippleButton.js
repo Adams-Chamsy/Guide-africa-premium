@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
 
 const RippleButton = ({ children, onClick, className = '', variant = 'primary', ...props }) => {
   const [ripples, setRipples] = useState([]);
@@ -21,6 +22,12 @@ const RippleButton = ({ children, onClick, className = '', variant = 'primary', 
       ))}
     </button>
   );
+};
+
+RippleButton.propTypes = {
+  children: PropTypes.node,
+  className: PropTypes.string,
+  onClick: PropTypes.func,
 };
 
 export default RippleButton;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { FiWifi, FiMapPin, FiStar, FiMusic, FiSun, FiCoffee, FiTruck, FiShield, FiDroplet, FiWind } from 'react-icons/fi';
 import { MdPool, MdSpa, MdRestaurant, MdFitnessCenter, MdRoomService, MdPets, MdLocalParking, MdAcUnit, MdOutdoorGrill, MdFreeBreakfast } from 'react-icons/md';
+import PropTypes from 'prop-types';
 
 const iconMap = {
   'wifi': FiWifi,
@@ -56,4 +57,10 @@ const AmenityIcon = ({ type, size = 20, showLabel = true }) => {
   );
 };
 
-export default AmenityIcon;
+AmenityIcon.propTypes = {
+  type: PropTypes.string,
+  size: PropTypes.number,
+  showLabel: PropTypes.bool,
+};
+
+export default React.memo(AmenityIcon);

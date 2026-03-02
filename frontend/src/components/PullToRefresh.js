@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react';
+import PropTypes from 'prop-types';
 
 const PullToRefresh = ({ children, onRefresh }) => {
   const [pulling, setPulling] = useState(false);
@@ -55,6 +56,11 @@ const PullToRefresh = ({ children, onRefresh }) => {
       {children}
     </div>
   );
+};
+
+PullToRefresh.propTypes = {
+  onRefresh: PropTypes.func,
+  children: PropTypes.node,
 };
 
 export default PullToRefresh;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const ReservationStepper = ({ steps, currentStep }) => {
   return (
@@ -21,6 +22,11 @@ const ReservationStepper = ({ steps, currentStep }) => {
       ))}
     </div>
   );
+};
+
+ReservationStepper.propTypes = {
+  steps: PropTypes.array,
+  currentStep: PropTypes.number,
 };
 
 export default ReservationStepper;

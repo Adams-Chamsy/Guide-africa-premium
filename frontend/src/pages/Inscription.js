@@ -40,8 +40,8 @@ const Inscription = () => {
       return;
     }
 
-    if (form.motDePasse.length < 6) {
-      setError('Le mot de passe doit contenir au moins 6 caractères');
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(form.motDePasse)) {
+      setError('Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre');
       return;
     }
 
@@ -122,9 +122,9 @@ const Inscription = () => {
               name="motDePasse"
               value={form.motDePasse}
               onChange={handleChange}
-              placeholder="Minimum 6 caractères"
+              placeholder="Min. 8 car., 1 majuscule, 1 chiffre"
               required
-              minLength={6}
+              minLength={8}
             />
           </div>
 

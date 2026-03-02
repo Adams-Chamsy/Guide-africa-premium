@@ -1,5 +1,6 @@
 import React from 'react';
 import { QRCodeSVG } from 'qrcode.react';
+import PropTypes from 'prop-types';
 
 const QRCodeCard = ({ reservationId, titre, date, lieu }) => {
   const qrValue = `guideafrica://reservation/${reservationId}`;
@@ -25,6 +26,11 @@ const QRCodeCard = ({ reservationId, titre, date, lieu }) => {
       </div>
     </div>
   );
+};
+
+QRCodeCard.propTypes = {
+  data: PropTypes.string,
+  size: PropTypes.number,
 };
 
 export default QRCodeCard;

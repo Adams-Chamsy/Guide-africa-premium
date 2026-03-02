@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import StarRating from './StarRating';
 import { reviewApi } from '../api/apiClient';
+import PropTypes from 'prop-types';
 
 const ReviewCard = ({ review, onUpdate }) => {
   const [voted, setVoted] = useState(false);
@@ -119,7 +120,7 @@ const ReviewCard = ({ review, onUpdate }) => {
       {review.reponseProprietaire && (
         <div className="review-response">
           <div className="review-response-header">
-            <span className="review-response-label">Réponse de l'établissement</span>
+            <span className="review-response-label">R\u00e9ponse de l'\u00e9tablissement</span>
             {review.dateReponse && <span className="review-date">{formatDate(review.dateReponse)}</span>}
           </div>
           <p className="review-response-text">{review.reponseProprietaire}</p>
@@ -129,4 +130,9 @@ const ReviewCard = ({ review, onUpdate }) => {
   );
 };
 
-export default ReviewCard;
+ReviewCard.propTypes = {
+  review: PropTypes.object,
+  onUpdate: PropTypes.func,
+};
+
+export default React.memo(ReviewCard);

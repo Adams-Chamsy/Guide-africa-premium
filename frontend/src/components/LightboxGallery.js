@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiX, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import PropTypes from 'prop-types';
 
 const LightboxGallery = ({ images = [], isOpen, onClose, initialIndex = 0 }) => {
   const [current, setCurrent] = useState(initialIndex);
@@ -38,15 +39,18 @@ const LightboxGallery = ({ images = [], isOpen, onClose, initialIndex = 0 }) => 
     <AnimatePresence>
       <motion.div
         className="lightbox-overlay"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Galerie photo"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
       >
-        <button className="lightbox-close" onClick={onClose}><FiX size={20} /></button>
+        <button className="lightbox-close" onClick={onClose} aria-label="Fermer la galerie"><FiX size={20} /></button>
         <div className="lightbox-counter">{current + 1} / {images.length}</div>
 
-        <button className="lightbox-nav prev" onClick={(e) => { e.stopPropagation(); goPrev(); }}>
+        <button className="lightbox-nav prev" aria-label="Photo precedente" onClick={(e) => { e.stopPropagation(); goPrev(); }}>
           <FiChevronLeft size={24} />
         </button>
 
@@ -61,7 +65,7 @@ const LightboxGallery = ({ images = [], isOpen, onClose, initialIndex = 0 }) => 
           onClick={(e) => e.stopPropagation()}
         />
 
-        <button className="lightbox-nav next" onClick={(e) => { e.stopPropagation(); goNext(); }}>
+        <button className="lightbox-nav next" aria-label="Photo suivante" onClick={(e) => { e.stopPropagation(); goNext(); }}>
           <FiChevronRight size={24} />
         </button>
 
@@ -79,6 +83,13 @@ const LightboxGallery = ({ images = [], isOpen, onClose, initialIndex = 0 }) => 
       </motion.div>
     </AnimatePresence>
   );
+};
+
+LightboxGallery.propTypes = {
+  images: PropTypes.arrayOf(PropTypes.string),
+  isOpen: PropTypes.bool,
+  onClose: PropTypes.func,
+  initialIndex: PropTypes.number,
 };
 
 export default LightboxGallery;

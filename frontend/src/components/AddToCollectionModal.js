@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { collectionApi } from '../api/apiClient';
 import { useToast } from '../context/ToastContext';
+import PropTypes from 'prop-types';
 
 const AddToCollectionModal = ({ show, onClose, type, targetId, targetName }) => {
   const [collections, setCollections] = useState([]);
@@ -76,7 +77,7 @@ const AddToCollectionModal = ({ show, onClose, type, targetId, targetName }) => 
   if (!show) return null;
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label="Ajouter a une collection">
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h3>Ajouter à une collection</h3>
@@ -127,6 +128,13 @@ const AddToCollectionModal = ({ show, onClose, type, targetId, targetName }) => 
       </div>
     </div>
   );
+};
+
+AddToCollectionModal.propTypes = {
+  isOpen: PropTypes.bool,
+  onClose: PropTypes.func,
+  itemType: PropTypes.string,
+  itemId: PropTypes.number,
 };
 
 export default AddToCollectionModal;

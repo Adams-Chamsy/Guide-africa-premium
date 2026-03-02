@@ -6,16 +6,21 @@ services:
     environment:
       POSTGRES_DB: guideafrica
       POSTGRES_USER: guideafrica
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-guideafrica_secret}
-    ports:
-      - "5432:5432"
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - internal
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U guideafrica"]
       interval: 10s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
 
   backend:
     build: ./backend
@@ -23,12 +28,10 @@ services:
       - "8080:8080"
     environment:
       SPRING_PROFILES_ACTIVE: prod
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_NAME: guideafrica
-      DB_USERNAME: guideafrica
-      DB_PASSWORD: ${DB_PASSWORD:-guideafrica_secret}
-      JWT_SECRET: ${JWT_SECRET:-GuideAfricaPremium2024SecretKeyForJWTTokenGeneration256bitMinimum}
+      DATABASE_URL: jdbc:postgresql://postgres:5432/guideafrica?prepareThreshold=0
+      DATABASE_USERNAME: guideafrica
+      DATABASE_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost,http://localhost:80}
       UPLOAD_DIR: /app/uploads
       MAIL_HOST: ${MAIL_HOST:-smtp.gmail.com}
@@ -38,17 +41,44 @@ services:
       MAIL_FROM: ${MAIL_FROM:-noreply@guideafrica.com}
     volumes:
       - uploads_data:/app/uploads
+    networks:
+      - internal
+      - web
     depends_on:
       postgres:
         condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          memory: 1G
 
   frontend:
     build: ./frontend
     ports:
       - "80:80"
+    networks:
+      - web
     depends_on:
       - backend
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
 
 volumes:
   postgres_data:
   uploads_data:
+
+networks:
+  internal:
+    driver: bridge
+  web:
+    driver: bridge

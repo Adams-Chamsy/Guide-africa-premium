@@ -68,8 +68,8 @@ const MonProfil = () => {
       showToast('Les mots de passe ne correspondent pas', 'error');
       return;
     }
-    if (passwordForm.newPassword.length < 8) {
-      showToast('Le mot de passe doit contenir au moins 8 caractères', 'error');
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(passwordForm.newPassword)) {
+      showToast('Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre', 'error');
       return;
     }
     setChangingPassword(true);

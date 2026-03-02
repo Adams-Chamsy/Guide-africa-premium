@@ -3,14 +3,17 @@ package com.guideafrica.premium.controller;
 import com.guideafrica.premium.repository.HotelRepository;
 import com.guideafrica.premium.repository.RestaurantRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Size;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/search")
+@Validated
 public class SearchController {
 
     private final RestaurantRepository restaurantRepository;
@@ -24,7 +27,7 @@ public class SearchController {
 
     @GetMapping
     public ResponseEntity<Map<String, Object>> search(
-            @RequestParam String q,
+            @RequestParam @Size(min = 2, max = 100) String q,
             @RequestParam(defaultValue = "5") int limit) {
         Map<String, Object> results = new HashMap<>();
         results.put("restaurants", restaurantRepository.findByNomContainingIgnoreCase(q)

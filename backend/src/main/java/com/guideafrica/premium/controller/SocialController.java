@@ -26,12 +26,15 @@ public class SocialController {
     }
 
     @PostMapping
-    public ResponseEntity<SocialPost> createPost(
+    public ResponseEntity<?> createPost(
             @RequestBody Map<String, String> body,
             Authentication authentication) {
         String contenu = body.get("contenu");
+        if (contenu == null || contenu.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Le contenu ne peut pas etre vide"));
+        }
         String image = body.getOrDefault("image", null);
-        return ResponseEntity.ok(socialService.createPost(contenu, image, authentication.getName()));
+        return ResponseEntity.ok(socialService.createPost(contenu.trim(), image, authentication.getName()));
     }
 
     @PostMapping("/{id}/like")

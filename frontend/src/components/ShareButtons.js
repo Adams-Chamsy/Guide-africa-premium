@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FiShare2, FiCopy, FiCheck } from 'react-icons/fi';
 import { FaWhatsapp, FaTwitter, FaFacebookF } from 'react-icons/fa';
+import PropTypes from 'prop-types';
 
 const ShareButtons = ({ url, title, description }) => {
   const [copied, setCopied] = useState(false);
@@ -66,6 +67,11 @@ const ShareButtons = ({ url, title, description }) => {
       </button>
     </div>
   );
+};
+
+ShareButtons.propTypes = {
+  title: PropTypes.string,
+  url: PropTypes.string,
 };
 
 export default ShareButtons;

@@ -23,6 +23,10 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(
                         "Utilisateur introuvable avec l'email: " + email));
 
+        if (!utilisateur.isActif()) {
+            throw new UsernameNotFoundException("Compte desactive: " + email);
+        }
+
         return User.builder()
                 .username(utilisateur.getEmail())
                 .password(utilisateur.getMotDePasse())

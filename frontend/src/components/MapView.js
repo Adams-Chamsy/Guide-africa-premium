@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 // Fix Leaflet default icon issue
 delete L.Icon.Default.prototype._getIconUrl;
@@ -71,6 +72,12 @@ const MapView = ({ markers = [], center = [5, 20], zoom = 4, height = '500px' })
       </MapContainer>
     </div>
   );
+};
+
+MapView.propTypes = {
+  latitude: PropTypes.number,
+  longitude: PropTypes.number,
+  markers: PropTypes.array,
 };
 
 export default MapView;

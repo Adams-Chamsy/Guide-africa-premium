@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import PropTypes from 'prop-types';
 
 /**
  * SEO component for dynamic meta tags, Open Graph, Twitter Cards, and JSON-LD
@@ -61,6 +62,16 @@ const SEOHead = ({
       )}
     </Helmet>
   );
+};
+
+SEOHead.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  image: PropTypes.string,
+  url: PropTypes.string,
+  type: PropTypes.string,
+  jsonLd: PropTypes.object,
+  noIndex: PropTypes.bool,
 };
 
 /**

@@ -21,15 +21,70 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor - handle 401
+// Token refresh state
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  failedQueue = [];
+};
+
+// Response interceptor - handle 401 with token refresh attempt
 apiClient.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (error.response && error.response.status === 401) {
-      const url = error.config?.url || '';
-      // Don't remove token for login/register failures
-      if (!url.includes('/auth/login') && !url.includes('/auth/register')) {
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+      const url = originalRequest?.url || '';
+      // Don't retry for login/register failures
+      if (url.includes('/auth/login') || url.includes('/auth/register')) {
+        return Promise.reject(error);
+      }
+
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then((token) => {
+            originalRequest.headers.Authorization = 'Bearer ' + token;
+            return apiClient(originalRequest);
+          })
+          .catch((err) => Promise.reject(err));
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      try {
+        // Attempt to re-validate current token via /auth/me
+        const token = localStorage.getItem('guideafrica_token');
+        if (!token) {
+          throw new Error('No token');
+        }
+        const response = await axios.get(API_BASE_URL + '/auth/me', {
+          headers: { Authorization: 'Bearer ' + token },
+        });
+        if (response.data) {
+          processQueue(null, token);
+          return apiClient(originalRequest);
+        }
+        throw new Error('Invalid token');
+      } catch (refreshError) {
+        processQueue(refreshError, null);
         localStorage.removeItem('guideafrica_token');
+        localStorage.removeItem('guideafrica_user');
+        window.dispatchEvent(new CustomEvent('auth:logout'));
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
       }
     }
     return Promise.reject(error);

@@ -4312,8 +4312,14 @@
   gap: 12px;
 }
 
-.search-result-item:hover {
+.search-result-item:hover,
+.search-result-item.active {
   background: rgba(201, 168, 76, 0.08);
+}
+
+.search-result-item.active {
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
 }
 
 .search-result-info {

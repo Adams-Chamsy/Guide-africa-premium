@@ -8,7 +8,9 @@ RUN npm run build
 
 # Runtime stage
 FROM nginx:alpine
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 COPY --from=build /app/build /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
+USER appuser
 CMD ["nginx", "-g", "daemon off;"]

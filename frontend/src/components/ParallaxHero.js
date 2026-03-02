@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 const ParallaxHero = ({ image, height = '60vh', children, overlay = true, className = '' }) => {
   const [offset, setOffset] = useState(0);
@@ -38,6 +39,12 @@ const ParallaxHero = ({ image, height = '60vh', children, overlay = true, classN
       </div>
     </div>
   );
+};
+
+ParallaxHero.propTypes = {
+  image: PropTypes.string,
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
 };
 
 export default ParallaxHero;

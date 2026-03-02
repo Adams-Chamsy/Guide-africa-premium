@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import VanillaTilt from 'vanilla-tilt';
+import PropTypes from 'prop-types';
 
 const TiltCard = ({ children, className = '', maxTilt = 8, glare = true, glareMaxOpacity = 0.15 }) => {
   const tiltRef = useRef(null);
@@ -26,6 +27,11 @@ const TiltCard = ({ children, className = '', maxTilt = 8, glare = true, glareMa
       {children}
     </div>
   );
+};
+
+TiltCard.propTypes = {
+  children: PropTypes.node,
+  className: PropTypes.string,
 };
 
 export default TiltCard;
