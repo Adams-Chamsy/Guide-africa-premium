@@ -49,6 +49,8 @@ public class SecurityConfig {
                 .antMatchers("/api/v1/auth/**").permitAll()
                 // Actuator health - public
                 .antMatchers("/actuator/health").permitAll()
+                // Swagger UI - public
+                .antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                 // Admin endpoints - ADMIN only (must be before the general GET permit)
                 .antMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
                 // All GET requests - public (read-only access)
