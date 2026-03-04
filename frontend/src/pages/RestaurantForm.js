@@ -141,23 +141,23 @@ const RestaurantForm = () => {
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Nom *</label>
-          <input name="nom" value={form.nom} onChange={handleChange} placeholder="Nom du restaurant" />
+          <label htmlFor="nom">Nom *</label>
+          <input id="nom" name="nom" value={form.nom} onChange={handleChange} placeholder="Nom du restaurant" />
         </div>
 
         <div className="form-group">
-          <label>Description</label>
-          <textarea name="description" value={form.description} onChange={handleChange} placeholder="Description du restaurant" />
+          <label htmlFor="description">Description</label>
+          <textarea id="description" name="description" value={form.description} onChange={handleChange} placeholder="Description du restaurant" />
         </div>
 
         <div className="form-row">
           <div className="form-group">
-            <label>Cuisine</label>
-            <input name="cuisine" value={form.cuisine} onChange={handleChange} placeholder="Ex: Sénégalaise" />
+            <label htmlFor="cuisine">Cuisine</label>
+            <input id="cuisine" name="cuisine" value={form.cuisine} onChange={handleChange} placeholder="Ex: Sénégalaise" />
           </div>
           <div className="form-group">
-            <label>Ville</label>
-            <select name="villeId" value={form.villeId} onChange={handleChange}>
+            <label htmlFor="villeId">Ville</label>
+            <select id="villeId" name="villeId" value={form.villeId} onChange={handleChange}>
               <option value="">Sélectionner une ville</option>
               {cities.map(c => <option key={c.id} value={c.id}>{c.nom}, {c.pays}</option>)}
             </select>
@@ -165,14 +165,14 @@ const RestaurantForm = () => {
         </div>
 
         <div className="form-group">
-          <label>Adresse *</label>
-          <input name="adresse" value={form.adresse} onChange={handleChange} placeholder="Adresse complète" />
+          <label htmlFor="adresse">Adresse *</label>
+          <input id="adresse" name="adresse" value={form.adresse} onChange={handleChange} placeholder="Adresse complète" />
         </div>
 
         <div className="form-row">
           <div className="form-group">
-            <label>Fourchette de prix</label>
-            <select name="fourchettePrix" value={form.fourchettePrix} onChange={handleChange}>
+            <label htmlFor="fourchettePrix">Fourchette de prix</label>
+            <select id="fourchettePrix" name="fourchettePrix" value={form.fourchettePrix} onChange={handleChange}>
               <option value="">Sélectionner</option>
               <option value="1">€ - Économique</option>
               <option value="2">€€ - Modéré</option>
@@ -181,41 +181,41 @@ const RestaurantForm = () => {
             </select>
           </div>
           <div className="form-group">
-            <label>Capacité (places)</label>
-            <input name="capacite" type="number" min="0" value={form.capacite} onChange={handleChange} placeholder="80" />
+            <label htmlFor="capacite">Capacité (places)</label>
+            <input id="capacite" name="capacite" type="number" min="0" value={form.capacite} onChange={handleChange} placeholder="80" />
           </div>
         </div>
 
         <div className="form-row">
           <div className="form-group">
-            <label>Horaires</label>
-            <input name="horaires" value={form.horaires} onChange={handleChange} placeholder="Ex: Lun-Sam: 11h-23h" />
+            <label htmlFor="horaires">Horaires</label>
+            <input id="horaires" name="horaires" value={form.horaires} onChange={handleChange} placeholder="Ex: Lun-Sam: 11h-23h" />
           </div>
           <div className="form-group">
-            <label>Code vestimentaire</label>
-            <input name="codeVestimentaire" value={form.codeVestimentaire} onChange={handleChange} placeholder="Ex: Smart casual" />
-          </div>
-        </div>
-
-        <div className="form-row">
-          <div className="form-group">
-            <label>Téléphone</label>
-            <input name="telephone" value={form.telephone} onChange={handleChange} placeholder="+XXX XX XXX XX XX" />
-          </div>
-          <div className="form-group">
-            <label>Email</label>
-            <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="contact@restaurant.com" />
+            <label htmlFor="codeVestimentaire">Code vestimentaire</label>
+            <input id="codeVestimentaire" name="codeVestimentaire" value={form.codeVestimentaire} onChange={handleChange} placeholder="Ex: Smart casual" />
           </div>
         </div>
 
         <div className="form-row">
           <div className="form-group">
-            <label>Site web</label>
-            <input name="siteWeb" value={form.siteWeb} onChange={handleChange} placeholder="https://..." />
+            <label htmlFor="telephone">Téléphone</label>
+            <input id="telephone" name="telephone" value={form.telephone} onChange={handleChange} placeholder="+XXX XX XXX XX XX" />
           </div>
           <div className="form-group">
-            <label>Instagram</label>
-            <input name="instagram" value={form.instagram} onChange={handleChange} placeholder="@restaurant" />
+            <label htmlFor="email">Email</label>
+            <input id="email" name="email" type="email" value={form.email} onChange={handleChange} placeholder="contact@restaurant.com" />
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="siteWeb">Site web</label>
+            <input id="siteWeb" name="siteWeb" value={form.siteWeb} onChange={handleChange} placeholder="https://..." />
+          </div>
+          <div className="form-group">
+            <label htmlFor="instagram">Instagram</label>
+            <input id="instagram" name="instagram" value={form.instagram} onChange={handleChange} placeholder="@restaurant" />
           </div>
         </div>
 
@@ -269,18 +269,18 @@ const RestaurantForm = () => {
 
         <div className="form-row">
           <div className="form-group">
-            <label>Latitude</label>
-            <input name="latitude" type="number" step="any" value={form.latitude} onChange={handleChange} placeholder="14.6937" />
+            <label htmlFor="latitude">Latitude</label>
+            <input id="latitude" name="latitude" type="number" step="any" value={form.latitude} onChange={handleChange} placeholder="14.6937" />
           </div>
           <div className="form-group">
-            <label>Longitude</label>
-            <input name="longitude" type="number" step="any" value={form.longitude} onChange={handleChange} placeholder="-17.4441" />
+            <label htmlFor="longitude">Longitude</label>
+            <input id="longitude" name="longitude" type="number" step="any" value={form.longitude} onChange={handleChange} placeholder="-17.4441" />
           </div>
         </div>
 
         <div className="form-group">
-          <label>URLs Galerie photos (séparées par des virgules)</label>
-          <textarea name="galeriePhotos" value={form.galeriePhotos} onChange={handleChange} placeholder="https://..., https://..." rows={2} />
+          <label htmlFor="galeriePhotos">URLs Galerie photos (séparées par des virgules)</label>
+          <textarea id="galeriePhotos" name="galeriePhotos" value={form.galeriePhotos} onChange={handleChange} placeholder="https://..., https://..." rows={2} />
         </div>
 
         {allCategories.length > 0 && (
@@ -298,7 +298,7 @@ const RestaurantForm = () => {
           </div>
         )}
 
-        {error && <p className="form-error">{error}</p>}
+        {error && <p className="form-error" role="alert">{error}</p>}
 
         <div className="form-actions">
           <button type="submit" className="btn btn-success" disabled={saving}>

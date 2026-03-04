@@ -3,23 +3,23 @@ import { FiMessageCircle, FiX, FiSend } from 'react-icons/fi';
 
 const QUICK_REPLIES = [
   'Recommandez-moi un restaurant',
-  'Quel hôtel choisir ?',
-  'Comment réserver ?',
-  'Quels événements à venir ?',
+  'Quel h\u00f4tel choisir ?',
+  'Comment r\u00e9server ?',
+  'Quels \u00e9v\u00e9nements \u00e0 venir ?',
 ];
 
 const BOT_RESPONSES = {
-  default: 'Merci pour votre message ! Notre équipe de concierges vous répondra bientôt. En attendant, explorez nos restaurants et hôtels d\'exception.',
-  restaurant: 'Pour des recommandations personnalisées, consultez notre section Classements ou utilisez le Comparateur. Nos restaurants étoilés offrent une expérience culinaire unique !',
-  hotel: 'Découvrez nos hôtels de prestige dans la section Hôtels. Utilisez les filtres pour trouver l\'établissement parfait pour votre séjour.',
-  reserver: 'Pour réserver, rendez-vous sur la page du restaurant ou de l\'hôtel de votre choix et cliquez sur "Réserver". Vous recevrez une confirmation par email.',
-  event: 'Consultez notre page Événements pour découvrir les dîners exclusifs, masterclass et dégustations à venir à travers l\'Afrique.',
+  default: 'Merci pour votre message ! Notre \u00e9quipe de concierges vous r\u00e9pondra bient\u00f4t. En attendant, explorez nos restaurants et h\u00f4tels d\'exception.',
+  restaurant: 'Pour des recommandations personnalis\u00e9es, consultez notre section Classements ou utilisez le Comparateur. Nos restaurants \u00e9toil\u00e9s offrent une exp\u00e9rience culinaire unique !',
+  hotel: 'D\u00e9couvrez nos h\u00f4tels de prestige dans la section H\u00f4tels. Utilisez les filtres pour trouver l\'\u00e9tablissement parfait pour votre s\u00e9jour.',
+  reserver: 'Pour r\u00e9server, rendez-vous sur la page du restaurant ou de l\'h\u00f4tel de votre choix et cliquez sur "R\u00e9server". Vous recevrez une confirmation par email.',
+  event: 'Consultez notre page \u00c9v\u00e9nements pour d\u00e9couvrir les d\u00eeners exclusifs, masterclass et d\u00e9gustations \u00e0 venir \u00e0 travers l\'Afrique.',
 };
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { id: 1, type: 'bot', text: 'Bienvenue chez Guide Africa ! Comment puis-je vous aider à trouver l\'expérience parfaite ?' }
+    { id: 1, type: 'bot', text: 'Bienvenue chez Guide Africa ! Comment puis-je vous aider \u00e0 trouver l\'exp\u00e9rience parfaite ?' }
   ]);
   const [input, setInput] = useState('');
   const messagesEnd = useRef(null);
@@ -31,9 +31,9 @@ const ChatWidget = () => {
   const getBotResponse = (text) => {
     const lower = text.toLowerCase();
     if (lower.includes('restaurant') || lower.includes('manger') || lower.includes('cuisine')) return BOT_RESPONSES.restaurant;
-    if (lower.includes('hotel') || lower.includes('hôtel') || lower.includes('dormir') || lower.includes('séjour')) return BOT_RESPONSES.hotel;
-    if (lower.includes('réserv') || lower.includes('book')) return BOT_RESPONSES.reserver;
-    if (lower.includes('événement') || lower.includes('event') || lower.includes('masterclass')) return BOT_RESPONSES.event;
+    if (lower.includes('hotel') || lower.includes('h\u00f4tel') || lower.includes('dormir') || lower.includes('s\u00e9jour')) return BOT_RESPONSES.hotel;
+    if (lower.includes('r\u00e9serv') || lower.includes('book')) return BOT_RESPONSES.reserver;
+    if (lower.includes('\u00e9v\u00e9nement') || lower.includes('event') || lower.includes('masterclass')) return BOT_RESPONSES.event;
     return BOT_RESPONSES.default;
   };
 
@@ -67,7 +67,7 @@ const ChatWidget = () => {
       )}
 
       {isOpen && (
-        <div className="chat-panel">
+        <div className="chat-panel" role="dialog" aria-label="Chat concierge">
           <div className="chat-header">
             <div>
               <h3>Concierge Guide Africa</h3>
@@ -75,13 +75,14 @@ const ChatWidget = () => {
             </div>
             <button
               onClick={() => setIsOpen(false)}
+              aria-label="Fermer le chat"
               style={{ background: 'none', border: 'none', color: 'var(--ivory-muted)', cursor: 'pointer' }}
             >
               <FiX size={20} />
             </button>
           </div>
 
-          <div className="chat-messages">
+          <div className="chat-messages" role="log" aria-live="polite">
             {messages.map(msg => (
               <div key={msg.id} className={`chat-message ${msg.type}`}>
                 {msg.text}
@@ -115,8 +116,9 @@ const ChatWidget = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Votre message..."
+              aria-label="Votre message"
             />
-            <button type="submit" disabled={!input.trim()}>
+            <button type="submit" disabled={!input.trim()} aria-label="Envoyer">
               <FiSend size={16} />
             </button>
           </form>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { searchApi } from '../api/apiClient';
+import { searchApi, activiteApi, voitureApi } from '../api/apiClient';
+import { FiCompass, FiTruck } from 'react-icons/fi';
 import PropTypes from 'prop-types';
 
 const HISTORY_KEY = 'guideafrica_search_history';
@@ -47,13 +48,28 @@ const SearchAutocomplete = ({ onClose }) => {
       setResults(null);
       return;
     }
-    searchApi.search(searchQuery.trim(), 5)
-      .then(res => {
-        setResults(res.data);
-      })
-      .catch(() => {
-        setResults({ restaurants: [], hotels: [] });
+    const trimmed = searchQuery.trim();
+
+    // Fetch restaurants/hotels, activities and voitures in parallel
+    Promise.all([
+      searchApi.search(trimmed, 5).then(res => res.data).catch(() => ({ restaurants: [], hotels: [] })),
+      activiteApi.getAll({ search: trimmed, size: 5 }).then(res => {
+        const data = res.data;
+        // Handle paginated or array response
+        return Array.isArray(data) ? data : (data.content || data.results || []);
+      }).catch(() => []),
+      voitureApi.getAll({ search: trimmed, size: 5 }).then(res => {
+        const data = res.data;
+        return Array.isArray(data) ? data : (data.content || data.results || []);
+      }).catch(() => []),
+    ]).then(([searchData, activites, voitures]) => {
+      setResults({
+        restaurants: searchData.restaurants || [],
+        hotels: searchData.hotels || [],
+        activites: activites || [],
+        voitures: voitures || [],
       });
+    });
   }, []);
 
   const handleInputChange = (e) => {
@@ -89,7 +105,14 @@ const SearchAutocomplete = ({ onClose }) => {
 
   const handleResultClick = (type, id, name) => {
     addToHistory(name);
-    const path = type === 'RESTAURANT' ? '/restaurants/' + id : '/hotels/' + id;
+    let path;
+    switch (type) {
+      case 'RESTAURANT': path = '/restaurants/' + id; break;
+      case 'HOTEL': path = '/hotels/' + id; break;
+      case 'ACTIVITE': path = '/activites/' + id; break;
+      case 'VOITURE': path = '/voitures/' + id; break;
+      default: path = '/';
+    }
     navigate(path);
     if (onClose) onClose();
   };
@@ -111,6 +134,12 @@ const SearchAutocomplete = ({ onClose }) => {
       }
       if (results.hotels) {
         results.hotels.forEach(h => items.push({ type: 'hotel', id: h.id, nom: h.nom }));
+      }
+      if (results.activites) {
+        results.activites.forEach(a => items.push({ type: 'activite', id: a.id, nom: a.nom }));
+      }
+      if (results.voitures) {
+        results.voitures.forEach(v => items.push({ type: 'voiture', id: v.id, nom: v.marque ? `${v.marque} ${v.modele || ''}`.trim() : (v.nom || 'Voiture') }));
       }
     }
     return items;
@@ -135,6 +164,10 @@ const SearchAutocomplete = ({ onClose }) => {
         handleResultClick('RESTAURANT', item.id, item.nom);
       } else if (item.type === 'hotel') {
         handleResultClick('HOTEL', item.id, item.nom);
+      } else if (item.type === 'activite') {
+        handleResultClick('ACTIVITE', item.id, item.nom);
+      } else if (item.type === 'voiture') {
+        handleResultClick('VOITURE', item.id, item.nom);
       }
       setActiveIndex(-1);
     }
@@ -147,7 +180,9 @@ const SearchAutocomplete = ({ onClose }) => {
 
   const hasResults = results && (
     (results.restaurants && results.restaurants.length > 0) ||
-    (results.hotels && results.hotels.length > 0)
+    (results.hotels && results.hotels.length > 0) ||
+    (results.activites && results.activites.length > 0) ||
+    (results.voitures && results.voitures.length > 0)
   );
 
   const noResults = results && !hasResults;
@@ -167,20 +202,20 @@ const SearchAutocomplete = ({ onClose }) => {
           onChange={handleInputChange}
           onFocus={handleFocus}
           onKeyDown={handleKeyDown}
-          placeholder="Rechercher un restaurant, hôtel..."
+          placeholder="Rechercher un restaurant, h\u00f4tel, activit\u00e9..."
           className="search-input"
           role="searchbox"
           aria-autocomplete="list"
           aria-controls="search-listbox"
           aria-activedescendant={activeIndex >= 0 ? `search-option-${activeIndex}` : undefined}
-          aria-label="Rechercher un restaurant ou hôtel"
+          aria-label="Rechercher un restaurant, h\u00f4tel ou activit\u00e9"
         />
       </div>
 
       {showHistory && history.length > 0 && !query.trim() && (
-        <div className="search-results-dropdown" id="search-listbox" role="listbox" aria-label="Recherches récentes">
+        <div className="search-results-dropdown" id="search-listbox" role="listbox" aria-label="Recherches r\u00e9centes">
           <div className="search-result-group">
-            <div className="search-result-group-title" role="presentation">Recherches récentes</div>
+            <div className="search-result-group-title" role="presentation">Recherches r&eacute;centes</div>
             {history.map((h, i) => {
               const itemIndex = i;
               return (
@@ -204,7 +239,7 @@ const SearchAutocomplete = ({ onClose }) => {
       {hasResults && (() => {
         runningIndex = 0;
         return (
-          <div className="search-results-dropdown" id="search-listbox" role="listbox" aria-label="Résultats de recherche">
+          <div className="search-results-dropdown" id="search-listbox" role="listbox" aria-label="R\u00e9sultats de recherche">
             {results.restaurants && results.restaurants.length > 0 && (
               <div className="search-result-group">
                 <div className="search-result-group-title" role="presentation">Restaurants</div>
@@ -223,7 +258,7 @@ const SearchAutocomplete = ({ onClose }) => {
                         <span className="search-result-name">{r.nom}</span>
                         <span className="search-result-meta">
                           {r.ville && r.ville.nom}
-                          {r.note && (' - ' + '★'.repeat(Math.round(r.note)) + ' ' + r.note + '/5')}
+                          {r.note && (' - ' + '\u2605'.repeat(Math.round(r.note)) + ' ' + r.note + '/5')}
                         </span>
                       </div>
                     </div>
@@ -233,7 +268,7 @@ const SearchAutocomplete = ({ onClose }) => {
             )}
             {results.hotels && results.hotels.length > 0 && (
               <div className="search-result-group">
-                <div className="search-result-group-title" role="presentation">Hôtels</div>
+                <div className="search-result-group-title" role="presentation">H&ocirc;tels</div>
                 {results.hotels.map(h => {
                   const itemIndex = runningIndex++;
                   return (
@@ -249,7 +284,66 @@ const SearchAutocomplete = ({ onClose }) => {
                         <span className="search-result-name">{h.nom}</span>
                         <span className="search-result-meta">
                           {h.ville && h.ville.nom}
-                          {h.note && (' - ' + '★'.repeat(Math.round(h.note)) + ' ' + h.note + '/5')}
+                          {h.note && (' - ' + '\u2605'.repeat(Math.round(h.note)) + ' ' + h.note + '/5')}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            {results.activites && results.activites.length > 0 && (
+              <div className="search-result-group">
+                <div className="search-result-group-title" role="presentation">
+                  <FiCompass size={14} style={{ marginRight: 6, verticalAlign: 'middle' }} />
+                  Activit&eacute;s
+                </div>
+                {results.activites.map(a => {
+                  const itemIndex = runningIndex++;
+                  return (
+                    <div
+                      key={'a-' + a.id}
+                      id={`search-option-${itemIndex}`}
+                      role="option"
+                      aria-selected={activeIndex === itemIndex}
+                      className={`search-result-item${activeIndex === itemIndex ? ' active' : ''}`}
+                      onClick={() => handleResultClick('ACTIVITE', a.id, a.nom)}
+                    >
+                      <div className="search-result-info">
+                        <span className="search-result-name">{a.nom}</span>
+                        <span className="search-result-meta">
+                          {a.ville && a.ville.nom}
+                          {a.note && (' - ' + '\u2605'.repeat(Math.round(a.note)) + ' ' + a.note + '/5')}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            {results.voitures && results.voitures.length > 0 && (
+              <div className="search-result-group">
+                <div className="search-result-group-title" role="presentation">
+                  <FiTruck size={14} style={{ marginRight: 6, verticalAlign: 'middle' }} />
+                  Location de voitures
+                </div>
+                {results.voitures.map(v => {
+                  const itemIndex = runningIndex++;
+                  const displayName = v.marque ? `${v.marque} ${v.modele || ''}`.trim() : (v.nom || 'Voiture');
+                  return (
+                    <div
+                      key={'v-' + v.id}
+                      id={`search-option-${itemIndex}`}
+                      role="option"
+                      aria-selected={activeIndex === itemIndex}
+                      className={`search-result-item${activeIndex === itemIndex ? ' active' : ''}`}
+                      onClick={() => handleResultClick('VOITURE', v.id, displayName)}
+                    >
+                      <div className="search-result-info">
+                        <span className="search-result-name">{displayName}</span>
+                        <span className="search-result-meta">
+                          {v.ville && v.ville.nom}
+                          {v.prixParJour && ` - ${v.prixParJour} FCFA/jour`}
                         </span>
                       </div>
                     </div>
@@ -265,7 +359,7 @@ const SearchAutocomplete = ({ onClose }) => {
         <div className="search-results-dropdown">
           <div className="search-result-group">
             <div className="search-result-item search-no-result">
-              Aucun résultat pour "{query}"
+              Aucun r&eacute;sultat pour "{query}"
             </div>
           </div>
         </div>

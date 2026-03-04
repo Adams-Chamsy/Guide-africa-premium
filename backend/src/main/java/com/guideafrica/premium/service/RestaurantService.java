@@ -6,6 +6,7 @@ import com.guideafrica.premium.repository.RestaurantRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -60,10 +61,12 @@ public class RestaurantService {
         return restaurantRepository.searchAdvanced(nom, cuisine, noteMin, villeId, fourchettePrix, pageable);
     }
 
+    @Transactional
     public Restaurant create(Restaurant restaurant) {
         return restaurantRepository.save(restaurant);
     }
 
+    @Transactional
     public Restaurant update(Long id, Restaurant details) {
         Restaurant restaurant = findById(id);
         restaurant.setNom(details.getNom());
@@ -101,8 +104,10 @@ public class RestaurantService {
         return restaurantRepository.save(restaurant);
     }
 
+    @Transactional
     public void delete(Long id) {
         Restaurant restaurant = findById(id);
-        restaurantRepository.delete(restaurant);
+        restaurant.setActif(false);
+        restaurantRepository.save(restaurant);
     }
 }

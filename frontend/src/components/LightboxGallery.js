@@ -3,12 +3,21 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiX, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import PropTypes from 'prop-types';
 
-const LightboxGallery = ({ images = [], isOpen, onClose, initialIndex = 0 }) => {
-  const [current, setCurrent] = useState(initialIndex);
+const LightboxGallery = ({ images = [], isOpen: isOpenProp, onClose: onCloseProp, initialIndex = 0 }) => {
+  // Self-managed mode: if isOpen prop is not provided (undefined), manage state internally
+  const isSelfManaged = isOpenProp === undefined;
+  const [internalOpen, setInternalOpen] = useState(false);
+  const [internalIndex, setInternalIndex] = useState(0);
+
+  const isOpen = isSelfManaged ? internalOpen : isOpenProp;
+  const onClose = isSelfManaged ? () => setInternalOpen(false) : onCloseProp;
+  const effectiveInitialIndex = isSelfManaged ? internalIndex : initialIndex;
+
+  const [current, setCurrent] = useState(effectiveInitialIndex);
 
   useEffect(() => {
-    if (isOpen) setCurrent(initialIndex);
-  }, [isOpen, initialIndex]);
+    if (isOpen) setCurrent(effectiveInitialIndex);
+  }, [isOpen, effectiveInitialIndex]);
 
   const goNext = useCallback(() => {
     setCurrent(prev => (prev + 1) % images.length);
@@ -32,6 +41,33 @@ const LightboxGallery = ({ images = [], isOpen, onClose, initialIndex = 0 }) => 
       document.body.style.overflow = '';
     };
   }, [isOpen, onClose, goNext, goPrev]);
+
+  const handleThumbnailClick = (index) => {
+    if (isSelfManaged) {
+      setInternalIndex(index);
+      setInternalOpen(true);
+    }
+    setCurrent(index);
+  };
+
+  // Self-managed mode: render a thumbnail grid when closed
+  if (isSelfManaged && !isOpen) {
+    if (images.length === 0) return null;
+    return (
+      <div className="lightbox-thumbnail-grid">
+        {images.map((img, idx) => (
+          <img
+            key={idx}
+            src={img}
+            alt={`Photo ${idx + 1}`}
+            className="lightbox-thumb clickable"
+            style={{ cursor: 'pointer' }}
+            onClick={() => handleThumbnailClick(idx)}
+          />
+        ))}
+      </div>
+    );
+  }
 
   if (!isOpen || images.length === 0) return null;
 

@@ -85,6 +85,8 @@ public class Hotel {
 
     private Integer nombreChambres;
 
+    private boolean actif = true;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "city_id")
     private City ville;
@@ -210,6 +212,8 @@ public class Hotel {
     public void setCategories(Set<Category> categories) { this.categories = categories; }
     public List<Review> getAvisUtilisateurs() { return avisUtilisateurs; }
     public void setAvisUtilisateurs(List<Review> avisUtilisateurs) { this.avisUtilisateurs = avisUtilisateurs; }
+    public boolean isActif() { return actif; }
+    public void setActif(boolean actif) { this.actif = actif; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 }

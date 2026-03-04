@@ -6,7 +6,6 @@ import SEOHead from '../components/SEOHead';
 import Breadcrumbs from '../components/Breadcrumbs';
 import ImageUpload from '../components/ImageUpload';
 import usePageTitle from '../hooks/usePageTitle';
-import PropTypes from 'prop-types';
 
 const VoitureForm = () => {
   const { id } = useParams();
@@ -141,23 +140,23 @@ const VoitureForm = () => {
         <form onSubmit={handleSubmit}>
           <div className="form-row">
             <div className="form-group">
-              <label>Marque *</label>
-              <input name="marque" value={form.marque} onChange={handleChange} placeholder="Ex: Toyota" />
+              <label htmlFor="marque">Marque *</label>
+              <input id="marque" name="marque" value={form.marque} onChange={handleChange} placeholder="Ex: Toyota" />
             </div>
             <div className="form-group">
-              <label>Mod\u00e8le *</label>
-              <input name="modele" value={form.modele} onChange={handleChange} placeholder="Ex: Land Cruiser" />
+              <label htmlFor="modele">Mod\u00e8le *</label>
+              <input id="modele" name="modele" value={form.modele} onChange={handleChange} placeholder="Ex: Land Cruiser" />
             </div>
           </div>
 
           <div className="form-row">
             <div className="form-group">
-              <label>Ann\u00e9e</label>
-              <input name="annee" type="number" min="1990" max="2030" value={form.annee} onChange={handleChange} placeholder="2023" />
+              <label htmlFor="annee">Ann\u00e9e</label>
+              <input id="annee" name="annee" type="number" min="1990" max="2030" value={form.annee} onChange={handleChange} placeholder="2023" />
             </div>
             <div className="form-group">
-              <label>Cat\u00e9gorie</label>
-              <select name="categorie" value={form.categorie} onChange={handleChange}>
+              <label htmlFor="categorie">Cat\u00e9gorie</label>
+              <select id="categorie" name="categorie" value={form.categorie} onChange={handleChange}>
                 <option value="">S\u00e9lectionner</option>
                 <option value="BERLINE">Berline</option>
                 <option value="SUV">SUV</option>
@@ -171,15 +170,15 @@ const VoitureForm = () => {
           </div>
 
           <div className="form-group">
-            <label>Description</label>
-            <textarea name="description" value={form.description} onChange={handleChange}
+            <label htmlFor="description">Description</label>
+            <textarea id="description" name="description" value={form.description} onChange={handleChange}
               placeholder="D\u00e9crivez votre v\u00e9hicule (confort, \u00e9tat, particularit\u00e9s...)" rows={4} />
           </div>
 
           <div className="form-row">
             <div className="form-group">
-              <label>Carburant</label>
-              <select name="carburant" value={form.carburant} onChange={handleChange}>
+              <label htmlFor="carburant">Carburant</label>
+              <select id="carburant" name="carburant" value={form.carburant} onChange={handleChange}>
                 <option value="">S\u00e9lectionner</option>
                 <option value="ESSENCE">Essence</option>
                 <option value="DIESEL">Diesel</option>
@@ -188,8 +187,8 @@ const VoitureForm = () => {
               </select>
             </div>
             <div className="form-group">
-              <label>Transmission</label>
-              <select name="transmission" value={form.transmission} onChange={handleChange}>
+              <label htmlFor="transmission">Transmission</label>
+              <select id="transmission" name="transmission" value={form.transmission} onChange={handleChange}>
                 <option value="">S\u00e9lectionner</option>
                 <option value="MANUELLE">Manuelle</option>
                 <option value="AUTOMATIQUE">Automatique</option>
@@ -199,48 +198,48 @@ const VoitureForm = () => {
 
           <div className="form-row">
             <div className="form-group">
-              <label>Nombre de places</label>
-              <input name="nombrePlaces" type="number" min="1" max="50" value={form.nombrePlaces} onChange={handleChange} placeholder="5" />
+              <label htmlFor="nombrePlaces">Nombre de places</label>
+              <input id="nombrePlaces" name="nombrePlaces" type="number" min="1" max="50" value={form.nombrePlaces} onChange={handleChange} placeholder="5" />
             </div>
             <div className="form-group">
-              <label>Nombre de portes</label>
-              <input name="nombrePortes" type="number" min="2" max="6" value={form.nombrePortes} onChange={handleChange} placeholder="4" />
-            </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label>Prix par jour (FCFA) *</label>
-              <input name="prixParJour" type="number" min="0" value={form.prixParJour} onChange={handleChange} placeholder="25000" />
-            </div>
-            <div className="form-group">
-              <label>Kilom\u00e9trage inclus</label>
-              <input name="kilometrageInclus" value={form.kilometrageInclus} onChange={handleChange} placeholder="Ex: 200 km/jour" />
+              <label htmlFor="nombrePortes">Nombre de portes</label>
+              <input id="nombrePortes" name="nombrePortes" type="number" min="2" max="6" value={form.nombrePortes} onChange={handleChange} placeholder="4" />
             </div>
           </div>
 
           <div className="form-row">
             <div className="form-group">
-              <label>Ville</label>
-              <select name="villeId" value={form.villeId} onChange={handleChange}>
+              <label htmlFor="prixParJour">Prix par jour (FCFA) *</label>
+              <input id="prixParJour" name="prixParJour" type="number" min="0" value={form.prixParJour} onChange={handleChange} placeholder="25000" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="kilometrageInclus">Kilom\u00e9trage inclus</label>
+              <input id="kilometrageInclus" name="kilometrageInclus" value={form.kilometrageInclus} onChange={handleChange} placeholder="Ex: 200 km/jour" />
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="villeId">Ville</label>
+              <select id="villeId" name="villeId" value={form.villeId} onChange={handleChange}>
                 <option value="">S\u00e9lectionner une ville</option>
                 {cities.map(c => <option key={c.id} value={c.id}>{c.nom}, {c.pays}</option>)}
               </select>
             </div>
             <div className="form-group">
-              <label>Adresse</label>
-              <input name="adresse" value={form.adresse} onChange={handleChange} placeholder="Adresse de r\u00e9cup\u00e9ration" />
+              <label htmlFor="adresse">Adresse</label>
+              <input id="adresse" name="adresse" value={form.adresse} onChange={handleChange} placeholder="Adresse de r\u00e9cup\u00e9ration" />
             </div>
           </div>
 
           <div className="form-row">
             <div className="form-group">
-              <label>T\u00e9l\u00e9phone</label>
-              <input name="telephone" value={form.telephone} onChange={handleChange} placeholder="+XXX XX XXX XX XX" />
+              <label htmlFor="telephone">T\u00e9l\u00e9phone</label>
+              <input id="telephone" name="telephone" value={form.telephone} onChange={handleChange} placeholder="+XXX XX XXX XX XX" />
             </div>
             <div className="form-group">
-              <label>WhatsApp</label>
-              <input name="whatsapp" value={form.whatsapp} onChange={handleChange} placeholder="+XXX XX XXX XX XX" />
+              <label htmlFor="whatsapp">WhatsApp</label>
+              <input id="whatsapp" name="whatsapp" value={form.whatsapp} onChange={handleChange} placeholder="+XXX XX XXX XX XX" />
             </div>
           </div>
 
@@ -263,8 +262,8 @@ const VoitureForm = () => {
           </div>
 
           <div className="form-group">
-            <label>Conditions de location</label>
-            <textarea name="conditions" value={form.conditions} onChange={handleChange}
+            <label htmlFor="conditions">Conditions de location</label>
+            <textarea id="conditions" name="conditions" value={form.conditions} onChange={handleChange}
               placeholder="Conditions de location, d\u00e9p\u00f4t de garantie, documents requis..." rows={3} />
           </div>
 
@@ -275,12 +274,12 @@ const VoitureForm = () => {
           />
 
           <div className="form-group">
-            <label>URLs Galerie photos (s\u00e9par\u00e9es par des virgules)</label>
-            <textarea name="galeriePhotos" value={form.galeriePhotos} onChange={handleChange}
+            <label htmlFor="galeriePhotos">URLs Galerie photos (s\u00e9par\u00e9es par des virgules)</label>
+            <textarea id="galeriePhotos" name="galeriePhotos" value={form.galeriePhotos} onChange={handleChange}
               placeholder="https://..., https://..." rows={2} />
           </div>
 
-          {error && <p className="form-error">{error}</p>}
+          {error && <p className="form-error" role="alert">{error}</p>}
 
           <div className="form-actions">
             <button type="submit" className="btn btn-success" disabled={saving}>
@@ -297,7 +296,5 @@ const VoitureForm = () => {
     </>
   );
 };
-
-VoitureForm.propTypes = {};
 
 export default VoitureForm;

@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -22,6 +23,7 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -49,28 +51,19 @@ public class SecurityConfig {
                 .antMatchers("/api/v1/auth/**").permitAll()
                 // Actuator health - public
                 .antMatchers("/actuator/health").permitAll()
-                // Swagger UI - public
-                .antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                 // Admin endpoints - ADMIN only (must be before the general GET permit)
                 .antMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
                 // All GET requests - public (read-only access)
                 .antMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
                 // Newsletter subscribe - public
                 .antMatchers(HttpMethod.POST, "/api/v1/newsletter/**").permitAll()
-                // Social feed like - public
-                .antMatchers(HttpMethod.POST, "/api/v1/social/*/like").permitAll()
                 // File upload requires auth
                 .antMatchers(HttpMethod.POST, "/api/v1/files/**").authenticated()
-                // H2 console - dev only
-                .antMatchers("/h2-console/**").permitAll()
                 // Everything else requires authentication
                 .anyRequest().authenticated()
             .and()
             .addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
-        // H2 console needs frames
-        http.headers().frameOptions().sameOrigin();
 
         return http.build();
     }

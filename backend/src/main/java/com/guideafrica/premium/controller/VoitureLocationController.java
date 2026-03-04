@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class VoitureLocationController {
     }
 
     @PostMapping
-    public ResponseEntity<VoitureLocation> create(@RequestBody VoitureLocation voiture,
+    public ResponseEntity<VoitureLocation> create(@Valid @RequestBody VoitureLocation voiture,
                                                     Authentication authentication) {
         Utilisateur user = utilisateurRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouve"));
@@ -63,7 +64,7 @@ public class VoitureLocationController {
 
     @PutMapping("/{id}")
     public ResponseEntity<VoitureLocation> update(@PathVariable Long id,
-                                                    @RequestBody VoitureLocation voiture,
+                                                    @Valid @RequestBody VoitureLocation voiture,
                                                     Authentication authentication) {
         Utilisateur user = utilisateurRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouve"));

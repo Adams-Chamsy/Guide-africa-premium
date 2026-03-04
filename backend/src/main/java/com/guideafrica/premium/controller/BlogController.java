@@ -5,7 +5,10 @@ import com.guideafrica.premium.service.BlogService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -38,16 +41,19 @@ public class BlogController {
         return ResponseEntity.ok(blogService.findBySlug(slug));
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
-    public ResponseEntity<BlogArticle> create(@RequestBody BlogArticle article) {
+    public ResponseEntity<BlogArticle> create(@Valid @RequestBody BlogArticle article) {
         return ResponseEntity.ok(blogService.create(article));
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<BlogArticle> update(@PathVariable Long id, @RequestBody BlogArticle article) {
+    public ResponseEntity<BlogArticle> update(@PathVariable Long id, @Valid @RequestBody BlogArticle article) {
         return ResponseEntity.ok(blogService.update(id, article));
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         blogService.delete(id);

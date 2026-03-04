@@ -147,33 +147,33 @@ const HotelForm = () => {
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Nom *</label>
-          <input name="nom" value={form.nom} onChange={handleChange} placeholder="Nom de l'hôtel" />
+          <label htmlFor="nom">Nom *</label>
+          <input id="nom" name="nom" value={form.nom} onChange={handleChange} placeholder="Nom de l'hôtel" />
         </div>
 
         <div className="form-group">
-          <label>Description</label>
-          <textarea name="description" value={form.description} onChange={handleChange} placeholder="Description de l'hôtel" />
+          <label htmlFor="description">Description</label>
+          <textarea id="description" name="description" value={form.description} onChange={handleChange} placeholder="Description de l'hôtel" />
         </div>
 
         <div className="form-row">
           <div className="form-group">
-            <label>Ville</label>
-            <select name="villeId" value={form.villeId} onChange={handleChange}>
+            <label htmlFor="villeId">Ville</label>
+            <select id="villeId" name="villeId" value={form.villeId} onChange={handleChange}>
               <option value="">Sélectionner une ville</option>
               {cities.map(c => <option key={c.id} value={c.id}>{c.nom}, {c.pays}</option>)}
             </select>
           </div>
           <div className="form-group">
-            <label>Adresse *</label>
-            <input name="adresse" value={form.adresse} onChange={handleChange} placeholder="Adresse complète" />
+            <label htmlFor="adresse">Adresse *</label>
+            <input id="adresse" name="adresse" value={form.adresse} onChange={handleChange} placeholder="Adresse complète" />
           </div>
         </div>
 
         <div className="form-row">
           <div className="form-group">
-            <label>Étoiles (1-5)</label>
-            <select name="etoiles" value={form.etoiles} onChange={handleChange}>
+            <label htmlFor="etoiles">Étoiles (1-5)</label>
+            <select id="etoiles" name="etoiles" value={form.etoiles} onChange={handleChange}>
               <option value="">Sélectionner</option>
               <option value="1">1 ★</option>
               <option value="2">2 ★★</option>
@@ -183,45 +183,45 @@ const HotelForm = () => {
             </select>
           </div>
           <div className="form-group">
-            <label>Prix par nuit (€)</label>
-            <input name="prixParNuit" type="number" step="0.01" min="0" value={form.prixParNuit} onChange={handleChange} placeholder="120.00" />
+            <label htmlFor="prixParNuit">Prix par nuit (€)</label>
+            <input id="prixParNuit" name="prixParNuit" type="number" step="0.01" min="0" value={form.prixParNuit} onChange={handleChange} placeholder="120.00" />
           </div>
         </div>
 
         <div className="form-row">
           <div className="form-group">
-            <label>Check-in</label>
-            <input name="checkIn" value={form.checkIn} onChange={handleChange} placeholder="14:00" />
+            <label htmlFor="checkIn">Check-in</label>
+            <input id="checkIn" name="checkIn" value={form.checkIn} onChange={handleChange} placeholder="14:00" />
           </div>
           <div className="form-group">
-            <label>Check-out</label>
-            <input name="checkOut" value={form.checkOut} onChange={handleChange} placeholder="11:00" />
+            <label htmlFor="checkOut">Check-out</label>
+            <input id="checkOut" name="checkOut" value={form.checkOut} onChange={handleChange} placeholder="11:00" />
           </div>
           <div className="form-group">
-            <label>Nombre de chambres</label>
-            <input name="nombreChambres" type="number" min="0" value={form.nombreChambres} onChange={handleChange} placeholder="120" />
-          </div>
-        </div>
-
-        <div className="form-row">
-          <div className="form-group">
-            <label>Téléphone</label>
-            <input name="telephone" value={form.telephone} onChange={handleChange} placeholder="+XXX XX XXX XX XX" />
-          </div>
-          <div className="form-group">
-            <label>Email</label>
-            <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="reservation@hotel.com" />
+            <label htmlFor="nombreChambres">Nombre de chambres</label>
+            <input id="nombreChambres" name="nombreChambres" type="number" min="0" value={form.nombreChambres} onChange={handleChange} placeholder="120" />
           </div>
         </div>
 
         <div className="form-row">
           <div className="form-group">
-            <label>Site web</label>
-            <input name="siteWeb" value={form.siteWeb} onChange={handleChange} placeholder="https://..." />
+            <label htmlFor="telephone">Téléphone</label>
+            <input id="telephone" name="telephone" value={form.telephone} onChange={handleChange} placeholder="+XXX XX XXX XX XX" />
           </div>
           <div className="form-group">
-            <label>Instagram</label>
-            <input name="instagram" value={form.instagram} onChange={handleChange} placeholder="@hotel" />
+            <label htmlFor="email">Email</label>
+            <input id="email" name="email" type="email" value={form.email} onChange={handleChange} placeholder="reservation@hotel.com" />
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="siteWeb">Site web</label>
+            <input id="siteWeb" name="siteWeb" value={form.siteWeb} onChange={handleChange} placeholder="https://..." />
+          </div>
+          <div className="form-group">
+            <label htmlFor="instagram">Instagram</label>
+            <input id="instagram" name="instagram" value={form.instagram} onChange={handleChange} placeholder="@hotel" />
           </div>
         </div>
 
@@ -275,18 +275,18 @@ const HotelForm = () => {
 
         <div className="form-row">
           <div className="form-group">
-            <label>Latitude</label>
-            <input name="latitude" type="number" step="any" value={form.latitude} onChange={handleChange} placeholder="-1.2921" />
+            <label htmlFor="latitude">Latitude</label>
+            <input id="latitude" name="latitude" type="number" step="any" value={form.latitude} onChange={handleChange} placeholder="-1.2921" />
           </div>
           <div className="form-group">
-            <label>Longitude</label>
-            <input name="longitude" type="number" step="any" value={form.longitude} onChange={handleChange} placeholder="36.8219" />
+            <label htmlFor="longitude">Longitude</label>
+            <input id="longitude" name="longitude" type="number" step="any" value={form.longitude} onChange={handleChange} placeholder="36.8219" />
           </div>
         </div>
 
         <div className="form-group">
-          <label>URLs Galerie photos (séparées par des virgules)</label>
-          <textarea name="galeriePhotos" value={form.galeriePhotos} onChange={handleChange} placeholder="https://..., https://..." rows={2} />
+          <label htmlFor="galeriePhotos">URLs Galerie photos (séparées par des virgules)</label>
+          <textarea id="galeriePhotos" name="galeriePhotos" value={form.galeriePhotos} onChange={handleChange} placeholder="https://..., https://..." rows={2} />
         </div>
 
         {allCategories.length > 0 && (
@@ -304,7 +304,7 @@ const HotelForm = () => {
           </div>
         )}
 
-        {error && <p className="form-error">{error}</p>}
+        {error && <p className="form-error" role="alert">{error}</p>}
 
         <div className="form-actions">
           <button type="submit" className="btn btn-success" disabled={saving}>

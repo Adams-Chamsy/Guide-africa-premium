@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider } from './context/AuthContext';
@@ -55,17 +55,18 @@ const ActiviteDetail = React.lazy(() => import('./pages/ActiviteDetail'));
 const VoitureList = React.lazy(() => import('./pages/VoitureList'));
 const VoitureDetail = React.lazy(() => import('./pages/VoitureDetail'));
 const VoitureForm = React.lazy(() => import('./pages/VoitureForm'));
+const Confidentialite = React.lazy(() => import('./pages/Confidentialite'));
+const Conditions = React.lazy(() => import('./pages/Conditions'));
+const Contact = React.lazy(() => import('./pages/Contact'));
 
 const App = () => {
-  const [splashDone, setSplashDone] = useState(false);
-
   return (
     <ErrorBoundary>
     <HelmetProvider>
     <ThemeProvider>
     <AuthProvider>
       <ToastProvider>
-        <SplashScreen onComplete={() => setSplashDone(true)} />
+        <SplashScreen onComplete={() => {}} />
         <GoldCursor />
         <Router>
           <ScrollToTop />
@@ -121,6 +122,10 @@ const App = () => {
                 <Route path="/voitures/proposer" element={<ProtectedRoute><VoitureForm /></ProtectedRoute>} />
                 <Route path="/voitures/:id/edit" element={<ProtectedRoute><VoitureForm /></ProtectedRoute>} />
                 <Route path="/voitures/:id" element={<VoitureDetail />} />
+                {/* Pages légales & contact */}
+                <Route path="/confidentialite" element={<Confidentialite />} />
+                <Route path="/conditions" element={<Conditions />} />
+                <Route path="/contact" element={<Contact />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
               </React.Suspense>

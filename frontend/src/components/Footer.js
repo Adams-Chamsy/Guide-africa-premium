@@ -18,17 +18,18 @@ const Footer = () => {
               <span className="footer-brand-text">Guide Africa</span>
             </div>
             <p className="footer-description">{t('footer.description')}</p>
+            {/* Social links - TODO: replace with real URLs when available */}
             <div className="footer-social">
-              <a href="#" className="footer-social-link" aria-label="Instagram" rel="noopener noreferrer">
+              <a href="#" className="footer-social-link" aria-label="Instagram" rel="noopener noreferrer" onClick={(e) => e.preventDefault()}>
                 <FiInstagram size={18} />
               </a>
-              <a href="#" className="footer-social-link" aria-label="Twitter" rel="noopener noreferrer">
+              <a href="#" className="footer-social-link" aria-label="Twitter" rel="noopener noreferrer" onClick={(e) => e.preventDefault()}>
                 <FiTwitter size={18} />
               </a>
-              <a href="#" className="footer-social-link" aria-label="Facebook" rel="noopener noreferrer">
+              <a href="#" className="footer-social-link" aria-label="Facebook" rel="noopener noreferrer" onClick={(e) => e.preventDefault()}>
                 <FiFacebook size={18} />
               </a>
-              <a href="#" className="footer-social-link" aria-label="Email" rel="noopener noreferrer">
+              <a href="#" className="footer-social-link" aria-label="Email" rel="noopener noreferrer" onClick={(e) => e.preventDefault()}>
                 <FiMail size={18} />
               </a>
             </div>
@@ -50,7 +51,7 @@ const Footer = () => {
 
           {/* Discover column */}
           <div className="footer-col">
-            <h4 className="footer-col-title">Discover</h4>
+            <h4 className="footer-col-title">{t('footer.discover')}</h4>
             <ul className="footer-links">
               <li><Link to="/atlas">{t('nav.atlas')}</Link></li>
               <li><Link to="/blog">{t('nav.blog')}</Link></li>

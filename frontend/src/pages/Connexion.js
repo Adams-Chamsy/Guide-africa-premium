@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import SEOHead from '../components/SEOHead';
 import usePageTitle from '../hooks/usePageTitle';
 
 const Connexion = () => {
@@ -44,6 +45,7 @@ const Connexion = () => {
 
   return (
     <div className="auth-page">
+      <SEOHead title="Connexion — Guide Africa Premium" />
       <div className="auth-container">
         <div className="auth-header">
           <span className="brand-icon">&#9733;</span>
@@ -61,6 +63,7 @@ const Connexion = () => {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="votre@email.com"
               required
+              autoFocus
               autoComplete="email"
             />
           </div>
@@ -76,9 +79,10 @@ const Connexion = () => {
               required
               autoComplete="current-password"
             />
+            <Link to="/mot-de-passe-oublie" style={{ color: 'var(--gold)', fontSize: '0.85rem', display: 'block', textAlign: 'right', marginTop: 4 }}>Mot de passe oublié ?</Link>
           </div>
 
-          {error && <div className="form-error">{error}</div>}
+          {error && <div className="form-error" role="alert">{error}</div>}
 
           <button type="submit" className="btn btn-primary auth-btn" disabled={loading}>
             {loading ? 'Connexion...' : 'Se connecter'}

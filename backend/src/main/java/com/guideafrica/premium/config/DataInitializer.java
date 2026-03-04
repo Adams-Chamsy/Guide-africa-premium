@@ -744,11 +744,13 @@ public class DataInitializer implements CommandLineRunner {
         reviewRepository.save(rev11);
 
         // ===== Utilisateurs =====
+        // DEV ONLY - These demo accounts with weak passwords must NEVER be used in production.
+        // This entire class is @Profile("dev") so it will not run in production.
         Utilisateur admin = new Utilisateur();
         admin.setNom("Admin");
         admin.setPrenom("Guide Africa");
         admin.setEmail("admin@guideafrica.com");
-        admin.setMotDePasse(passwordEncoder.encode("admin123"));
+        admin.setMotDePasse(passwordEncoder.encode("admin123")); // DEV ONLY - weak password
         admin.setRole(RoleUtilisateur.ADMIN);
         admin.setAvatar("https://ui-avatars.com/api/?name=Admin+GA&background=C9A84C&color=0A0A0A");
         utilisateurRepository.save(admin);
@@ -757,7 +759,7 @@ public class DataInitializer implements CommandLineRunner {
         user.setNom("Diallo");
         user.setPrenom("Aminata");
         user.setEmail("aminata@example.com");
-        user.setMotDePasse(passwordEncoder.encode("password123"));
+        user.setMotDePasse(passwordEncoder.encode("password123")); // DEV ONLY - weak password
         user.setRole(RoleUtilisateur.USER);
         user.setAvatar("https://ui-avatars.com/api/?name=Aminata+Diallo&background=1B6B4A&color=F5F0E8");
         user = utilisateurRepository.save(user);

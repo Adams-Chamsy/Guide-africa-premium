@@ -38,7 +38,7 @@ public class SocialController {
     }
 
     @PostMapping("/{id}/like")
-    public ResponseEntity<SocialPost> likePost(@PathVariable Long id) {
+    public ResponseEntity<SocialPost> likePost(@PathVariable Long id, Authentication authentication) {
         return ResponseEntity.ok(socialService.likePost(id));
     }
 

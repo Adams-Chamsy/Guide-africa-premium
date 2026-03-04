@@ -6,8 +6,10 @@ import com.guideafrica.premium.model.enums.DifficulteActivite;
 import com.guideafrica.premium.service.ActiviteService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -45,16 +47,19 @@ public class ActiviteController {
         return ResponseEntity.ok(activiteService.findTopRated());
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
-    public ResponseEntity<Activite> create(@RequestBody Activite activite) {
+    public ResponseEntity<Activite> create(@Valid @RequestBody Activite activite) {
         return ResponseEntity.ok(activiteService.create(activite));
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<Activite> update(@PathVariable Long id, @RequestBody Activite activite) {
+    public ResponseEntity<Activite> update(@PathVariable Long id, @Valid @RequestBody Activite activite) {
         return ResponseEntity.ok(activiteService.update(id, activite));
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         activiteService.delete(id);

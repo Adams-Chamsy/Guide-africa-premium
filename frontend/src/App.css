@@ -64,7 +64,7 @@
   --max-width: 1280px;
 
   /* Transitions */
-  --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-fast: all 0.2s ease;
   --transition-slow: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
@@ -136,6 +136,19 @@
   pointer-events: none;
   opacity: 0.06;
   background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9A84C' fill-opacity='1' fill-rule='evenodd'%3E%3Cpath d='M0 20L20 0h2L0 22zM20 20L40 0v2L22 20l18 18v2L20 20zM0 18L18 0h-2L0 16zM40 40L20 20h2l18 18z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ===== Screen Reader Only ===== */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* ===== Global App Layout ===== */
@@ -349,8 +362,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: transparent;
   border: 1px solid transparent;
@@ -733,7 +746,7 @@
 /* ===== Cards — Glassmorphism ===== */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr));
   gap: 28px;
 }
 
@@ -918,7 +931,6 @@
   font-size: 0.9rem;
   color: var(--ivory);
   transition: var(--transition);
-  outline: none;
   backdrop-filter: var(--glass-blur);
 }
 
@@ -940,7 +952,6 @@
   font-size: 0.9rem;
   color: var(--ivory);
   cursor: pointer;
-  outline: none;
   transition: var(--transition);
   -webkit-appearance: none;
   appearance: none;
@@ -1382,7 +1393,6 @@
   font-size: 0.95rem;
   color: var(--ivory);
   transition: var(--transition);
-  outline: none;
 }
 
 .form-group input::placeholder,
@@ -2012,7 +2022,7 @@
   font-size: 0.85rem;
   cursor: pointer;
 }
-.sort-select:focus { border-color: var(--gold); outline: none; }
+.sort-select:focus { border-color: var(--gold); }
 
 /* Page Subtitle */
 .page-subtitle {
@@ -2028,8 +2038,8 @@
   background: rgba(10, 10, 10, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2426,7 +2436,7 @@
 /* Atlas Culinaire */
 .atlas-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr));
   gap: 24px;
   margin-top: 24px;
 }
@@ -2819,12 +2829,6 @@
 }
 
 /* ===== Favorites Page ===== */
-.empty-state {
-  text-align: center;
-  padding: 60px 20px;
-  color: var(--ivory-muted);
-  font-size: 1.1rem;
-}
 
 .empty-state a {
   color: var(--gold);
@@ -2902,8 +2906,8 @@
   position: absolute;
   top: 12px;
   right: 12px;
-  width: 28px;
-  height: 28px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.6);
   color: var(--ivory-muted);
@@ -3130,7 +3134,7 @@
   margin-bottom: 16px;
 }
 
-.btn-danger {
+.btn-danger-filled {
   background: rgba(196, 90, 60, 0.2);
   color: #e07a5f;
   border: 1px solid rgba(196, 90, 60, 0.4);
@@ -3141,7 +3145,7 @@
   transition: var(--transition-fast);
 }
 
-.btn-danger:hover {
+.btn-danger-filled:hover {
   background: rgba(196, 90, 60, 0.35);
 }
 
@@ -3871,7 +3875,6 @@
 .admin-select:hover,
 .admin-select:focus {
   border-color: var(--gold);
-  outline: none;
   box-shadow: 0 0 0 2px rgba(201, 168, 76, 0.15);
 }
 
@@ -4188,7 +4191,6 @@
 }
 
 .collection-create-input:focus {
-  outline: none;
   border-color: var(--gold);
 }
 
@@ -4215,11 +4217,6 @@
   background: rgba(201, 168, 76, 0.3);
   border-color: var(--gold);
   transform: scale(1.1);
-}
-
-.btn-sm {
-  padding: 8px 16px;
-  font-size: 0.85rem;
 }
 
 /* ============================================================
@@ -4267,10 +4264,6 @@
   color: var(--ivory);
   font-size: 0.95rem;
   font-family: var(--font-body);
-}
-
-.search-input:focus {
-  outline: none;
 }
 
 .search-input::placeholder {
@@ -4365,6 +4358,17 @@
   }
   .collection-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-autocomplete {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    width: auto;
+    top: auto;
+    z-index: 1001;
   }
 }
 
@@ -5387,8 +5391,8 @@
   background: rgba(201, 168, 76, 0.15);
   border: 1px solid rgba(201, 168, 76, 0.3);
   color: var(--gold);
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -5726,7 +5730,7 @@
     padding-bottom: 80px;
   }
 
-  .footer {
+  .app-footer {
     padding-bottom: 80px;
   }
 }
@@ -5817,8 +5821,8 @@
 }
 
 .fab-action-btn {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: var(--bg-deep);
   border: 1px solid var(--border-gold);
@@ -5846,8 +5850,8 @@
 
 /* ===== Theme Toggle ===== */
 .theme-toggle {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: transparent;
   border: 1px solid var(--border-gold);
@@ -6740,4 +6744,87 @@ textarea:focus-visible {
 [data-theme="light"] .footer-links a:hover,
 [data-theme="light"] .footer-social-link:hover {
   color: var(--gold);
+}
+
+/* ===== Extra Small Mobile (375px) ===== */
+@media (max-width: 375px) {
+  .page-title { font-size: 1.5rem; }
+  .page-subtitle { font-size: 0.85rem; }
+  .hero-title { font-size: 1.8rem; }
+  .hero-subtitle { font-size: 0.9rem; }
+  .search-bar { padding: 12px; gap: 8px; }
+  .search-input, .search-select { font-size: 0.85rem; padding: 10px; }
+  .detail-title { font-size: 1.4rem; }
+  .card-body { padding: 12px; }
+  .card-title { font-size: 0.95rem; }
+  .btn { padding: 10px 16px; font-size: 0.8rem; }
+  .form-container { padding: 16px; }
+  .form-row { flex-direction: column; gap: 12px; }
+}
+
+/* ===== Large Desktop (1440px+) ===== */
+@media (min-width: 1440px) {
+  .page-container { max-width: 1400px; }
+  .card-grid { grid-template-columns: repeat(auto-fill, minmax(min(380px, 100%), 1fr)); }
+  .hero-section { min-height: 80vh; }
+  .detail-page { max-width: 1200px; }
+}
+
+/* ===== Hover Guards for Touch Devices ===== */
+@media (hover: none) {
+  .card:hover { transform: none; box-shadow: var(--shadow-gold); }
+  .btn:hover { transform: none; }
+  .footer-social-link:hover { transform: none; }
+  .nav-link:hover::after { width: 0; }
+}
+
+/* ===== Safe Area Insets ===== */
+.app-header {
+  padding-top: env(safe-area-inset-top, 0);
+}
+.toast-container {
+  bottom: calc(20px + env(safe-area-inset-bottom, 0));
+}
+.chat-widget-button {
+  bottom: calc(24px + env(safe-area-inset-bottom, 0));
+}
+.back-to-top {
+  bottom: calc(24px + env(safe-area-inset-bottom, 0));
+}
+.fab-container {
+  bottom: calc(80px + env(safe-area-inset-bottom, 0));
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .gold-cursor-dot, .gold-cursor-ring {
+    display: none !important;
+  }
+  .parallax-section {
+    transform: none !important;
+  }
+}
+
+@media (pointer: coarse) {
+  .gold-cursor-dot, .gold-cursor-ring { display: none !important; }
+}
+
+/* ===== Print Styles ===== */
+@media print {
+  .app-header, .app-footer, .bottom-nav, .chat-widget-button, .chat-panel,
+  .gold-cursor-dot, .gold-cursor-ring, .back-to-top, .fab-container,
+  .newsletter-modal, .confirm-dialog, .toast-container, .search-bar,
+  .sort-controls, .pagination { display: none !important; }
+  body { background: white !important; color: black !important; }
+  .page-container { max-width: 100%; padding: 0; }
+  .card { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
+  .detail-page { max-width: 100%; }
+  a { color: black; text-decoration: underline; }
+  img { max-width: 100%; }
 }

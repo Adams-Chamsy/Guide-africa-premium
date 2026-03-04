@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { authApi } from '../api/apiClient';
 import { useToast } from '../context/ToastContext';
+import SEOHead from '../components/SEOHead';
 
 const MotDePasseOublie = () => {
   const [step, setStep] = useState(1);
@@ -39,8 +40,8 @@ const MotDePasseOublie = () => {
       return;
     }
 
-    if (newPassword.length < 8) {
-      setError('Le mot de passe doit contenir au moins 8 caract\u00e8res');
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(newPassword)) {
+      setError('Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre');
       return;
     }
 
@@ -76,6 +77,7 @@ const MotDePasseOublie = () => {
 
   return (
     <div className="auth-page">
+      <SEOHead title="Mot de passe oublié — Guide Africa Premium" />
       <div className="auth-container">
         <div className="auth-header">
           <span className="brand-icon">&#9733;</span>
@@ -102,7 +104,7 @@ const MotDePasseOublie = () => {
               />
             </div>
 
-            {error && <div className="form-error">{error}</div>}
+            {error && <div className="form-error" role="alert">{error}</div>}
 
             <button type="submit" className="btn btn-primary auth-btn" disabled={loading}>
               {loading ? 'Envoi...' : 'Envoyer le code'}
@@ -151,7 +153,7 @@ const MotDePasseOublie = () => {
               />
             </div>
 
-            {error && <div className="form-error">{error}</div>}
+            {error && <div className="form-error" role="alert">{error}</div>}
 
             <button type="submit" className="btn btn-primary auth-btn" disabled={loading}>
               {loading ? 'R\u00e9initialisation...' : 'R\u00e9initialiser'}

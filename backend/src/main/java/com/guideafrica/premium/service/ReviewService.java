@@ -30,6 +30,11 @@ public class ReviewService {
         this.hotelRepository = hotelRepository;
     }
 
+    public Review findById(Long id) {
+        return reviewRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Avis", id));
+    }
+
     public List<Review> findByRestaurantId(Long restaurantId) {
         return reviewRepository.findByRestaurantId(restaurantId);
     }

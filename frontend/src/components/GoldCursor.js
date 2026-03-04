@@ -3,8 +3,13 @@ import React, { useEffect, useRef } from 'react';
 const GoldCursor = () => {
   const dotRef = useRef(null);
   const ringRef = useRef(null);
+  const rafRef = useRef(null);
+
+  // Touch device detection
+  const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
 
   useEffect(() => {
+    if (isTouchDevice) return;
     if (window.innerWidth < 768) return;
 
     const dot = dotRef.current;
@@ -34,21 +39,24 @@ const GoldCursor = () => {
       ring.style.left = `${ringX - 16}px`;
       ring.style.top = `${ringY - 16}px`;
 
-      requestAnimationFrame(animate);
+      rafRef.current = requestAnimationFrame(animate);
     };
 
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mousedown', handleMouseDown);
     document.addEventListener('mouseup', handleMouseUp);
-    animate();
+    rafRef.current = requestAnimationFrame(animate);
 
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mousedown', handleMouseDown);
       document.removeEventListener('mouseup', handleMouseUp);
+      cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+  }, [isTouchDevice]);
 
+  // Don't render on touch devices or small screens
+  if (isTouchDevice) return null;
   if (typeof window !== 'undefined' && window.innerWidth < 768) return null;
 
   return (

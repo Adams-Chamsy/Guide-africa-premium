@@ -17,8 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.Random;
+import java.util.UUID;
 
 @Service
 public class AuthService {
@@ -132,8 +133,8 @@ public class AuthService {
         // Delete any existing tokens for this user
         passwordResetTokenRepository.deleteByUtilisateurId(utilisateur.getId());
 
-        // Generate 6-digit code
-        String code = String.format("%06d", new Random().nextInt(999999));
+        // Generate secure 32-character reset code
+        String code = UUID.randomUUID().toString().replace("-", "").substring(0, 32);
 
         PasswordResetToken resetToken = new PasswordResetToken();
         resetToken.setToken(code);

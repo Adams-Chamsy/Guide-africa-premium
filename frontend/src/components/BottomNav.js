@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FiHome, FiCompass, FiMap, FiHeart, FiUser } from 'react-icons/fi';
 
@@ -13,17 +13,35 @@ const items = [
 const BottomNav = () => {
   const location = useLocation();
   const [visible, setVisible] = useState(true);
-  const [lastScroll, setLastScroll] = useState(0);
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== 'undefined' ? window.innerWidth <= 768 : true
+  );
+  const lastScrollRef = useRef(0);
+
+  // Desktop detection via resize listener
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Scroll handler using ref to avoid stale closure
+  const handleScroll = useCallback(() => {
+    const currentScroll = window.scrollY;
+    setVisible(currentScroll < lastScrollRef.current || currentScroll < 100);
+    lastScrollRef.current = currentScroll;
+  }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScroll = window.scrollY;
-      setVisible(currentScroll < lastScroll || currentScroll < 100);
-      setLastScroll(currentScroll);
-    };
+    if (!isMobile) return;
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScroll]);
+  }, [isMobile, handleScroll]);
+
+  // Don't render on desktop
+  if (!isMobile) return null;
 
   return (
     <nav className={`bottom-nav ${!visible ? 'hidden' : ''}`}>

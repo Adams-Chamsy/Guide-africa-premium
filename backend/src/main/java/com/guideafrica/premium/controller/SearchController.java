@@ -2,6 +2,7 @@ package com.guideafrica.premium.controller;
 
 import com.guideafrica.premium.repository.HotelRepository;
 import com.guideafrica.premium.repository.RestaurantRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.Size;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/search")
@@ -30,10 +30,8 @@ public class SearchController {
             @RequestParam @Size(min = 2, max = 100) String q,
             @RequestParam(defaultValue = "5") int limit) {
         Map<String, Object> results = new HashMap<>();
-        results.put("restaurants", restaurantRepository.findByNomContainingIgnoreCase(q)
-                .stream().limit(limit).collect(Collectors.toList()));
-        results.put("hotels", hotelRepository.findByNomContainingIgnoreCase(q)
-                .stream().limit(limit).collect(Collectors.toList()));
+        results.put("restaurants", restaurantRepository.findByNomContainingIgnoreCase(q, PageRequest.of(0, limit)).getContent());
+        results.put("hotels", hotelRepository.findByNomContainingIgnoreCase(q, PageRequest.of(0, limit)).getContent());
         return ResponseEntity.ok(results);
     }
 }

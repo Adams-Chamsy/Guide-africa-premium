@@ -6,6 +6,7 @@ import com.guideafrica.premium.repository.HotelRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -60,10 +61,12 @@ public class HotelService {
         return hotelRepository.searchAdvanced(nom, etoilesMin, prixMax, villeId, noteMin, pageable);
     }
 
+    @Transactional
     public Hotel create(Hotel hotel) {
         return hotelRepository.save(hotel);
     }
 
+    @Transactional
     public Hotel update(Long id, Hotel details) {
         Hotel hotel = findById(id);
         hotel.setNom(details.getNom());
@@ -103,8 +106,10 @@ public class HotelService {
         return hotelRepository.save(hotel);
     }
 
+    @Transactional
     public void delete(Long id) {
         Hotel hotel = findById(id);
-        hotelRepository.delete(hotel);
+        hotel.setActif(false);
+        hotelRepository.save(hotel);
     }
 }

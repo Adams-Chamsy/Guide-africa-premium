@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import SEOHead from '../components/SEOHead';
 import usePageTitle from '../hooks/usePageTitle';
 
 const Inscription = () => {
@@ -65,6 +66,7 @@ const Inscription = () => {
 
   return (
     <div className="auth-page">
+      <SEOHead title="Inscription — Guide Africa Premium" />
       <div className="auth-container">
         <div className="auth-header">
           <span className="brand-icon">&#9733;</span>
@@ -84,6 +86,7 @@ const Inscription = () => {
                 onChange={handleChange}
                 placeholder="Votre prénom"
                 required
+                autoFocus
               />
             </div>
             <div className="form-group">
@@ -141,7 +144,7 @@ const Inscription = () => {
             />
           </div>
 
-          {error && <div className="form-error">{error}</div>}
+          {error && <div className="form-error" role="alert">{error}</div>}
 
           <button type="submit" className="btn btn-primary auth-btn" disabled={loading}>
             {loading ? 'Création...' : 'Créer mon compte'}

@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -85,12 +87,21 @@ public class ReviewController {
     // ===== Review CRUD =====
 
     @PutMapping("/reviews/{id}")
-    public ResponseEntity<Review> update(@PathVariable Long id, @Valid @RequestBody Review review) {
+    public ResponseEntity<Review> update(@PathVariable Long id, @Valid @RequestBody Review review,
+                                          Authentication authentication) {
+        Review existing = reviewService.findById(id);
+        if (!existing.getAuteur().equals(authentication.getName())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         return ResponseEntity.ok(reviewService.update(id, review));
     }
 
     @DeleteMapping("/reviews/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id, Authentication authentication) {
+        Review existing = reviewService.findById(id);
+        if (!existing.getAuteur().equals(authentication.getName())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         reviewService.delete(id);
         return ResponseEntity.noContent().build();
     }
@@ -102,6 +113,7 @@ public class ReviewController {
         return ResponseEntity.ok(reviewService.voteUseful(id));
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/reviews/{id}/response")
     public ResponseEntity<Review> addOwnerResponse(
             @PathVariable Long id,
