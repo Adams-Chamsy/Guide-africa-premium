@@ -7,10 +7,12 @@ import com.guideafrica.premium.model.Utilisateur;
 import com.guideafrica.premium.model.enums.StatutReservation;
 import com.guideafrica.premium.model.enums.TypeNotification;
 import com.guideafrica.premium.model.enums.TypeReservation;
+import com.guideafrica.premium.repository.ActiviteRepository;
 import com.guideafrica.premium.repository.HotelRepository;
 import com.guideafrica.premium.repository.ReservationRepository;
 import com.guideafrica.premium.repository.RestaurantRepository;
 import com.guideafrica.premium.repository.UtilisateurRepository;
+import com.guideafrica.premium.repository.VoitureLocationRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,8 @@ public class ReservationService {
     private final UtilisateurRepository utilisateurRepository;
     private final RestaurantRepository restaurantRepository;
     private final HotelRepository hotelRepository;
+    private final ActiviteRepository activiteRepository;
+    private final VoitureLocationRepository voitureLocationRepository;
     private final EmailService emailService;
     private final NotificationService notificationService;
 
@@ -32,12 +36,16 @@ public class ReservationService {
                               UtilisateurRepository utilisateurRepository,
                               RestaurantRepository restaurantRepository,
                               HotelRepository hotelRepository,
+                              ActiviteRepository activiteRepository,
+                              VoitureLocationRepository voitureLocationRepository,
                               EmailService emailService,
                               NotificationService notificationService) {
         this.reservationRepository = reservationRepository;
         this.utilisateurRepository = utilisateurRepository;
         this.restaurantRepository = restaurantRepository;
         this.hotelRepository = hotelRepository;
+        this.activiteRepository = activiteRepository;
+        this.voitureLocationRepository = voitureLocationRepository;
         this.emailService = emailService;
         this.notificationService = notificationService;
     }
@@ -173,6 +181,22 @@ public class ReservationService {
                 reservation.setImageEtablissement(h.getImage());
                 if (h.getVille() != null) {
                     reservation.setVilleEtablissement(h.getVille().getNom());
+                }
+            });
+        } else if (reservation.getTypeReservation() == TypeReservation.ACTIVITE) {
+            activiteRepository.findById(reservation.getTargetId()).ifPresent(a -> {
+                reservation.setNomEtablissement(a.getTitre());
+                reservation.setImageEtablissement(a.getImageCouverture());
+                if (a.getVille() != null) {
+                    reservation.setVilleEtablissement(a.getVille().getNom());
+                }
+            });
+        } else if (reservation.getTypeReservation() == TypeReservation.VOITURE) {
+            voitureLocationRepository.findById(reservation.getTargetId()).ifPresent(v -> {
+                reservation.setNomEtablissement(v.getMarque() + " " + v.getModele());
+                reservation.setImageEtablissement(v.getImagePrincipale());
+                if (v.getVille() != null) {
+                    reservation.setVilleEtablissement(v.getVille().getNom());
                 }
             });
         }

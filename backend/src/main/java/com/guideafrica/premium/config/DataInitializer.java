@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -29,6 +30,8 @@ public class DataInitializer implements CommandLineRunner {
     private final RegionalCuisineRepository regionalCuisineRepository;
     private final UtilisateurRepository utilisateurRepository;
     private final FavoriRepository favoriRepository;
+    private final ActiviteRepository activiteRepository;
+    private final VoitureLocationRepository voitureLocationRepository;
     private final PasswordEncoder passwordEncoder;
 
     public DataInitializer(CategoryRepository categoryRepository,
@@ -43,6 +46,8 @@ public class DataInitializer implements CommandLineRunner {
                            RegionalCuisineRepository regionalCuisineRepository,
                            UtilisateurRepository utilisateurRepository,
                            FavoriRepository favoriRepository,
+                           ActiviteRepository activiteRepository,
+                           VoitureLocationRepository voitureLocationRepository,
                            PasswordEncoder passwordEncoder) {
         this.categoryRepository = categoryRepository;
         this.restaurantRepository = restaurantRepository;
@@ -56,6 +61,8 @@ public class DataInitializer implements CommandLineRunner {
         this.regionalCuisineRepository = regionalCuisineRepository;
         this.utilisateurRepository = utilisateurRepository;
         this.favoriRepository = favoriRepository;
+        this.activiteRepository = activiteRepository;
+        this.voitureLocationRepository = voitureLocationRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -777,6 +784,224 @@ public class DataInitializer implements CommandLineRunner {
         System.out.println("=== Donn\u00e9es d'exemple charg\u00e9es avec succ\u00e8s ===");
         System.out.println("  - " + cityRepository.count() + " villes");
         System.out.println("  - " + categoryRepository.count() + " cat\u00e9gories");
+        // ====== ACTIVITES ======
+        Activite act1 = new Activite();
+        act1.setTitre("Safari Masai Mara");
+        act1.setDescription("Decouvrez la reserve nationale du Masai Mara, l'une des plus belles reserves au monde. Observez les Big Five dans leur habitat naturel.");
+        act1.setImageCouverture("https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800");
+        act1.setLieu("Reserve nationale du Masai Mara");
+        act1.setAdresse("Masai Mara, Narok County");
+        act1.setVille(cityRepository.findAll().stream().filter(c -> c.getNom().contains("Nairobi")).findFirst().orElse(null));
+        act1.setPrix(new BigDecimal("350000"));
+        act1.setDuree("3 jours");
+        act1.setCategorie(CategorieActivite.SAFARI);
+        act1.setDifficulte(DifficulteActivite.MOYEN);
+        act1.setPlacesMax(12);
+        act1.setNote(4.8);
+        act1.setTelephone("+254 700 123 456");
+        act1.setLanguesDisponibles(Arrays.asList("Francais", "Anglais", "Swahili"));
+        act1.setInclus(Arrays.asList("Transport 4x4", "Guide expert", "Hebergement lodge", "Repas complets", "Eau minerale"));
+        act1.setNonInclus(Arrays.asList("Vols internationaux", "Visa", "Pourboires", "Assurance voyage"));
+        activiteRepository.save(act1);
+
+        Activite act2 = new Activite();
+        act2.setTitre("Tour culturel Marrakech");
+        act2.setDescription("Explorez les souks, la place Jemaa el-Fna et les riads secrets de la ville rouge. Une immersion complete dans la culture marocaine.");
+        act2.setImageCouverture("https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=800");
+        act2.setLieu("Medina de Marrakech");
+        act2.setAdresse("Place Jemaa el-Fna, Marrakech");
+        act2.setVille(cityRepository.findAll().stream().filter(c -> c.getNom().contains("Casablanca") || c.getNom().contains("Marrakech")).findFirst().orElse(null));
+        act2.setPrix(new BigDecimal("25000"));
+        act2.setDuree("4 heures");
+        act2.setCategorie(CategorieActivite.CULTURE);
+        act2.setDifficulte(DifficulteActivite.FACILE);
+        act2.setPlacesMax(20);
+        act2.setNote(4.6);
+        act2.setTelephone("+212 600 123 456");
+        act2.setLanguesDisponibles(Arrays.asList("Francais", "Anglais", "Arabe"));
+        act2.setInclus(Arrays.asList("Guide local certifie", "Degustation the a la menthe", "Entree monuments"));
+        act2.setNonInclus(Arrays.asList("Repas", "Transport hotel", "Achats personnels"));
+        activiteRepository.save(act2);
+
+        Activite act3 = new Activite();
+        act3.setTitre("Cours de cuisine senegalaise");
+        act3.setDescription("Apprenez a preparer le thieboudienne, le yassa et d'autres classiques de la cuisine senegalaise avec un chef local.");
+        act3.setImageCouverture("https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800");
+        act3.setLieu("Atelier culinaire de Dakar");
+        act3.setAdresse("Rue Mohamed V, Plateau, Dakar");
+        act3.setVille(cityRepository.findAll().stream().filter(c -> c.getNom().contains("Dakar")).findFirst().orElse(null));
+        act3.setPrix(new BigDecimal("35000"));
+        act3.setDuree("3 heures");
+        act3.setCategorie(CategorieActivite.GASTRONOMIE);
+        act3.setDifficulte(DifficulteActivite.FACILE);
+        act3.setPlacesMax(8);
+        act3.setNote(4.9);
+        act3.setTelephone("+221 77 123 45 67");
+        act3.setLanguesDisponibles(Arrays.asList("Francais", "Wolof"));
+        act3.setInclus(Arrays.asList("Ingredients frais", "Tablier", "Recettes a emporter", "Degustation"));
+        act3.setNonInclus(Arrays.asList("Transport", "Boissons alcoolisees"));
+        activiteRepository.save(act3);
+
+        Activite act4 = new Activite();
+        act4.setTitre("Plongee sous-marine Zanzibar");
+        act4.setDescription("Explorez les recifs coralliens de l'ocean Indien et nagez avec les dauphins au large de Zanzibar.");
+        act4.setImageCouverture("https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800");
+        act4.setLieu("Cote nord de Zanzibar");
+        act4.setPrix(new BigDecimal("85000"));
+        act4.setDuree("Journee complete");
+        act4.setCategorie(CategorieActivite.AVENTURE);
+        act4.setDifficulte(DifficulteActivite.MOYEN);
+        act4.setPlacesMax(6);
+        act4.setNote(4.7);
+        act4.setLanguesDisponibles(Arrays.asList("Francais", "Anglais"));
+        act4.setInclus(Arrays.asList("Equipement complet", "Moniteur certifie", "Dejeuner", "Photos sous-marines"));
+        act4.setNonInclus(Arrays.asList("Transfert hotel", "Pourboires"));
+        activiteRepository.save(act4);
+
+        Activite act5 = new Activite();
+        act5.setTitre("Randonnee Atlas marocain");
+        act5.setDescription("Trekking dans le Haut Atlas avec vues spectaculaires sur le mont Toubkal. Nuit chez l'habitant dans un village berbere.");
+        act5.setImageCouverture("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800");
+        act5.setLieu("Haut Atlas, Imlil");
+        act5.setPrix(new BigDecimal("120000"));
+        act5.setDuree("2 jours");
+        act5.setCategorie(CategorieActivite.SPORT);
+        act5.setDifficulte(DifficulteActivite.DIFFICILE);
+        act5.setPlacesMax(10);
+        act5.setNote(4.5);
+        act5.setLanguesDisponibles(Arrays.asList("Francais", "Anglais", "Berbere"));
+        act5.setInclus(Arrays.asList("Guide montagne", "Mule portage", "Nuit chez l'habitant", "Repas"));
+        act5.setNonInclus(Arrays.asList("Equipement personnel", "Transport Marrakech-Imlil"));
+        activiteRepository.save(act5);
+
+        Activite act6 = new Activite();
+        act6.setTitre("Atelier artisanat Abidjan");
+        act6.setDescription("Initiez-vous a la fabrication de tissus traditionnels et de bijoux avec des artisans ivoiriens.");
+        act6.setImageCouverture("https://images.unsplash.com/photo-1590845947698-8924d7409b56?w=800");
+        act6.setLieu("Village artisanal de Cocody");
+        act6.setAdresse("Boulevard de France, Cocody, Abidjan");
+        act6.setVille(cityRepository.findAll().stream().filter(c -> c.getNom().contains("Abidjan")).findFirst().orElse(null));
+        act6.setPrix(new BigDecimal("15000"));
+        act6.setDuree("2 heures");
+        act6.setCategorie(CategorieActivite.ARTISANAT);
+        act6.setDifficulte(DifficulteActivite.FACILE);
+        act6.setPlacesMax(15);
+        act6.setNote(4.4);
+        act6.setTelephone("+225 07 12 34 56");
+        act6.setLanguesDisponibles(Arrays.asList("Francais"));
+        act6.setInclus(Arrays.asList("Materiaux", "Encadrement artisan", "Creation a emporter"));
+        act6.setNonInclus(Arrays.asList("Transport", "Rafraichissements"));
+        activiteRepository.save(act6);
+
+        // ====== VOITURES LOCATION ======
+        Utilisateur demoUser = utilisateurRepository.findByEmail("demo@guideafrica.com").orElse(null);
+
+        VoitureLocation v1 = new VoitureLocation();
+        v1.setMarque("Toyota");
+        v1.setModele("Land Cruiser");
+        v1.setAnnee(2022);
+        v1.setDescription("Toyota Land Cruiser parfait pour les safaris et les longs trajets. Tres bien entretenu, climatisation performante.");
+        v1.setImagePrincipale("https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=800");
+        v1.setPrixParJour(new BigDecimal("75000"));
+        v1.setVille(cityRepository.findAll().stream().filter(c -> c.getNom().contains("Nairobi")).findFirst().orElse(null));
+        v1.setAdresse("Westlands, Nairobi");
+        v1.setCategorie(CategorieVoiture.SUV);
+        v1.setCarburant(TypeCarburant.DIESEL);
+        v1.setTransmission(TypeTransmission.AUTOMATIQUE);
+        v1.setNombrePlaces(7);
+        v1.setNombrePortes(5);
+        v1.setClimatisation(true);
+        v1.setGps(true);
+        v1.setBluetooth(true);
+        v1.setSiegesBebe(false);
+        v1.setProprietaire(demoUser);
+        v1.setTelephone("+254 712 345 678");
+        v1.setWhatsapp("+254712345678");
+        v1.setKilometrageInclus("200 km/jour");
+        v1.setConditions("Permis de conduire international requis. Caution de 200 000 FCFA. Age minimum 25 ans.");
+        v1.setNote(4.7);
+        voitureLocationRepository.save(v1);
+
+        VoitureLocation v2 = new VoitureLocation();
+        v2.setMarque("Mercedes");
+        v2.setModele("Classe C");
+        v2.setAnnee(2023);
+        v2.setDescription("Mercedes Classe C elegante et confortable. Ideale pour vos deplacements professionnels.");
+        v2.setImagePrincipale("https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800");
+        v2.setPrixParJour(new BigDecimal("95000"));
+        v2.setVille(cityRepository.findAll().stream().filter(c -> c.getNom().contains("Casablanca") || c.getNom().contains("Marrakech")).findFirst().orElse(null));
+        v2.setAdresse("Quartier Maarif, Casablanca");
+        v2.setCategorie(CategorieVoiture.BERLINE);
+        v2.setCarburant(TypeCarburant.ESSENCE);
+        v2.setTransmission(TypeTransmission.AUTOMATIQUE);
+        v2.setNombrePlaces(5);
+        v2.setNombrePortes(4);
+        v2.setClimatisation(true);
+        v2.setGps(true);
+        v2.setBluetooth(true);
+        v2.setSiegesBebe(true);
+        v2.setProprietaire(demoUser);
+        v2.setTelephone("+212 661 234 567");
+        v2.setWhatsapp("+212661234567");
+        v2.setKilometrageInclus("Illimite");
+        v2.setConditions("Permis valide requis. Caution de 150 000 FCFA. Assurance tous risques incluse.");
+        v2.setNote(4.9);
+        voitureLocationRepository.save(v2);
+
+        VoitureLocation v3 = new VoitureLocation();
+        v3.setMarque("Peugeot");
+        v3.setModele("208");
+        v3.setAnnee(2021);
+        v3.setDescription("Citadine economique et maniable, parfaite pour les deplacements en ville a Dakar.");
+        v3.setImagePrincipale("https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=800");
+        v3.setPrixParJour(new BigDecimal("25000"));
+        v3.setVille(cityRepository.findAll().stream().filter(c -> c.getNom().contains("Dakar")).findFirst().orElse(null));
+        v3.setAdresse("Plateau, Dakar");
+        v3.setCategorie(CategorieVoiture.CITADINE);
+        v3.setCarburant(TypeCarburant.ESSENCE);
+        v3.setTransmission(TypeTransmission.MANUELLE);
+        v3.setNombrePlaces(5);
+        v3.setNombrePortes(5);
+        v3.setClimatisation(true);
+        v3.setGps(false);
+        v3.setBluetooth(true);
+        v3.setSiegesBebe(false);
+        v3.setProprietaire(demoUser);
+        v3.setTelephone("+221 77 234 56 78");
+        v3.setWhatsapp("+22177234567");
+        v3.setKilometrageInclus("150 km/jour");
+        v3.setConditions("Permis de conduire valide. Caution de 50 000 FCFA.");
+        v3.setNote(4.3);
+        voitureLocationRepository.save(v3);
+
+        VoitureLocation v4 = new VoitureLocation();
+        v4.setMarque("Range Rover");
+        v4.setModele("Sport");
+        v4.setAnnee(2024);
+        v4.setDescription("Range Rover Sport haut de gamme pour une experience de conduite premium a Lagos.");
+        v4.setImagePrincipale("https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800");
+        v4.setPrixParJour(new BigDecimal("150000"));
+        v4.setVille(cityRepository.findAll().stream().filter(c -> c.getNom().contains("Lagos")).findFirst().orElse(null));
+        v4.setAdresse("Victoria Island, Lagos");
+        v4.setCategorie(CategorieVoiture.LUXE);
+        v4.setCarburant(TypeCarburant.DIESEL);
+        v4.setTransmission(TypeTransmission.AUTOMATIQUE);
+        v4.setNombrePlaces(5);
+        v4.setNombrePortes(5);
+        v4.setClimatisation(true);
+        v4.setGps(true);
+        v4.setBluetooth(true);
+        v4.setSiegesBebe(true);
+        v4.setProprietaire(demoUser);
+        v4.setTelephone("+234 801 234 5678");
+        v4.setWhatsapp("+2348012345678");
+        v4.setKilometrageInclus("Illimite");
+        v4.setConditions("Age minimum 30 ans. Permis international. Caution de 500 000 FCFA. Chauffeur disponible en option.");
+        v4.setNote(4.8);
+        voitureLocationRepository.save(v4);
+
+        System.out.println("  - " + activiteRepository.count() + " activites");
+        System.out.println("  - " + voitureLocationRepository.count() + " voitures en location");
         System.out.println("  - " + amenityRepository.count() + " amenities");
         System.out.println("  - " + restaurantRepository.count() + " restaurants");
         System.out.println("  - " + chefRepository.count() + " chefs");

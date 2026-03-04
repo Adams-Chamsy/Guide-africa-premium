@@ -333,4 +333,25 @@ export const analyticsApi = {
   getAnalytics: () => apiClient.get('/admin/analytics'),
 };
 
+// ========== Activites ==========
+export const activiteApi = {
+  getAll: (params) => apiClient.get('/activites', { params }),
+  getById: (id) => apiClient.get(`/activites/${id}`),
+  getTop: () => apiClient.get('/activites/top'),
+  create: (data) => apiClient.post('/activites', data),
+  update: (id, data) => apiClient.put(`/activites/${id}`, data),
+  delete: (id) => apiClient.delete(`/activites/${id}`),
+};
+
+// ========== Location Voitures ==========
+export const voitureApi = {
+  getAll: (params) => apiClient.get('/voitures', { params }),
+  getById: (id) => apiClient.get(`/voitures/${id}`),
+  getMine: () => apiClient.get('/voitures/mes-voitures'),
+  create: (data) => apiClient.post('/voitures', data),
+  update: (id, data) => apiClient.put(`/voitures/${id}`, data),
+  delete: (id) => apiClient.delete(`/voitures/${id}`),
+  toggleDisponibilite: (id) => apiClient.put(`/voitures/${id}/toggle-disponibilite`),
+};
+
 export default apiClient;

@@ -9,7 +9,8 @@ import ThemeToggle from './ThemeToggle';
 import {
   FiHome, FiSearch, FiUser, FiLogIn, FiChevronDown,
   FiHeart, FiEye, FiCalendar, FiFolder, FiShield, FiLogOut,
-  FiMap, FiStar, FiBookOpen, FiGrid, FiUsers, FiLayers
+  FiMap, FiStar, FiBookOpen, FiGrid, FiUsers, FiLayers,
+  FiCompass, FiTruck
 } from 'react-icons/fi';
 
 const Header = () => {
@@ -88,6 +89,8 @@ const Header = () => {
     { to: '/evenements', label: t('nav.events'), icon: FiCalendar },
     { to: '/comparateur', label: t('nav.compare'), icon: FiLayers },
     { to: '/communaute', label: t('nav.community'), icon: FiUsers },
+    { to: '/activites', label: t('nav.activities'), icon: FiCompass },
+    { to: '/voitures', label: t('nav.carRental'), icon: FiTruck },
   ];
 
   return (

@@ -50,6 +50,11 @@ const BlogArticle = React.lazy(() => import('./pages/BlogArticle'));
 const Events = React.lazy(() => import('./pages/Events'));
 const Comparateur = React.lazy(() => import('./pages/Comparateur'));
 const SocialFeed = React.lazy(() => import('./pages/SocialFeed'));
+const ActiviteList = React.lazy(() => import('./pages/ActiviteList'));
+const ActiviteDetail = React.lazy(() => import('./pages/ActiviteDetail'));
+const VoitureList = React.lazy(() => import('./pages/VoitureList'));
+const VoitureDetail = React.lazy(() => import('./pages/VoitureDetail'));
+const VoitureForm = React.lazy(() => import('./pages/VoitureForm'));
 
 const App = () => {
   const [splashDone, setSplashDone] = useState(false);
@@ -108,6 +113,14 @@ const App = () => {
                 <Route path="/evenements" element={<Events />} />
                 <Route path="/comparateur" element={<Comparateur />} />
                 <Route path="/communaute" element={<ProtectedRoute><SocialFeed /></ProtectedRoute>} />
+                {/* Activités */}
+                <Route path="/activites" element={<ActiviteList />} />
+                <Route path="/activites/:id" element={<ActiviteDetail />} />
+                {/* Location de voitures */}
+                <Route path="/voitures" element={<VoitureList />} />
+                <Route path="/voitures/proposer" element={<ProtectedRoute><VoitureForm /></ProtectedRoute>} />
+                <Route path="/voitures/:id/edit" element={<ProtectedRoute><VoitureForm /></ProtectedRoute>} />
+                <Route path="/voitures/:id" element={<VoitureDetail />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
               </React.Suspense>
