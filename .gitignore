@@ -20,9 +20,16 @@ backend/.idea/
 backend/*.ipr
 backend/*.iws
 
+# ===== Uploads =====
+backend/uploads/
+uploads/
+
 # ===== General =====
 .DS_Store
 *.swp
 *.swo
 *~
 .env
+.env.*
+!.env.example
+*.log

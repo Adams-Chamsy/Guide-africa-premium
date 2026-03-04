@@ -1,0 +1,166 @@
+{
+  "nav": {
+    "home": "Home",
+    "restaurants": "Restaurants",
+    "hotels": "Hotels",
+    "destinations": "Destinations",
+    "map": "Map",
+    "atlas": "Culinary Atlas",
+    "rankings": "Rankings",
+    "blog": "Magazine",
+    "events": "Events",
+    "compare": "Compare",
+    "community": "Community",
+    "login": "Login",
+    "search": "Search"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Sign Up",
+    "logout": "Logout",
+    "email": "Email address",
+    "password": "Password",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "loginBtn": "Sign in",
+    "registerBtn": "Sign up",
+    "loginSuccess": "Successfully logged in!",
+    "registerSuccess": "Account created successfully!",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "registerLink": "Sign up",
+    "loginLink": "Sign in",
+    "personalSpace": "Access your personal space",
+    "createAccount": "Create your Guide Africa account",
+    "demoAccount": "Demo account:",
+    "loginError": "Invalid email or password",
+    "forgotPassword": "Forgot password?",
+    "forgotPasswordTitle": "Reset your password",
+    "forgotPasswordDesc": "Enter your email to receive a reset code",
+    "resetCode": "Reset code",
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm new password",
+    "sendCode": "Send code",
+    "resetPassword": "Reset password",
+    "codeSent": "A code has been sent to your email address",
+    "passwordResetSuccess": "Password reset successfully!",
+    "backToLogin": "Back to login",
+    "changePassword": "Change password",
+    "currentPassword": "Current password",
+    "passwordChanged": "Password changed successfully!"
+  },
+  "user": {
+    "profile": "My Profile",
+    "favorites": "My Favorites",
+    "visits": "My Visits",
+    "reservations": "My Reservations",
+    "collections": "My Collections",
+    "admin": "Administration"
+  },
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "noResults": "No results",
+    "seeMore": "See more",
+    "seeAll": "See all",
+    "back": "Back",
+    "confirm": "Confirm",
+    "close": "Close",
+    "yes": "Yes",
+    "no": "No",
+    "error": "Error",
+    "success": "Success"
+  },
+  "home": {
+    "title": "Guide Africa",
+    "subtitle": "Discover African culinary and hospitality excellence",
+    "featuredRestaurants": "Exceptional Restaurants",
+    "featuredHotels": "Prestige Hotels",
+    "exploreCTA": "Explore"
+  },
+  "favorites": {
+    "title": "My Favorites",
+    "empty": "You have no favorites yet.",
+    "emptyDesc": "Browse our restaurants and hotels and add your favorites here.",
+    "addedToast": "Added to favorites",
+    "removedToast": "Removed from favorites",
+    "restaurants": "Restaurants",
+    "hotels": "Hotels"
+  },
+  "visits": {
+    "title": "My Visits",
+    "empty": "No visits recorded.",
+    "emptyDesc": "Your restaurant and hotel visits will appear here."
+  },
+  "profile": {
+    "title": "My Profile",
+    "personalInfo": "Personal Information",
+    "updateSuccess": "Profile updated successfully!",
+    "dangerZone": "Danger Zone",
+    "deleteWarning": "This action is irreversible."
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "subtitle": "The page you're looking for doesn't exist or has been moved.",
+    "backHome": "Back to Home"
+  },
+  "blog": {
+    "title": "Magazine",
+    "subtitle": "Articles, interviews and culinary guides",
+    "readMore": "Read more",
+    "featured": "Featured",
+    "popular": "Most read",
+    "categories": "Categories"
+  },
+  "events": {
+    "title": "Events & Experiences",
+    "subtitle": "Exclusive dinners, masterclasses and tastings",
+    "noEvents": "No upcoming events",
+    "spotsLeft": "spots left",
+    "free": "Free"
+  },
+  "compare": {
+    "title": "Comparator",
+    "subtitle": "Compare up to 3 establishments side by side",
+    "addToCompare": "Add to compare",
+    "search": "Search an establishment"
+  },
+  "social": {
+    "title": "Community",
+    "subtitle": "Share your culinary experiences",
+    "newPost": "Share a culinary experience...",
+    "publish": "Publish",
+    "noPost": "No posts yet"
+  },
+  "badges": {
+    "explorer": "Explorer",
+    "critic": "Gold Critic",
+    "globetrotter": "Globetrotter",
+    "connoisseur": "Connoisseur",
+    "gourmet": "Gourmet",
+    "premium": "Premium Member"
+  },
+  "settings": {
+    "theme": "Theme",
+    "dark": "Dark",
+    "light": "Light",
+    "sounds": "Sound effects",
+    "highContrast": "High contrast",
+    "language": "Language"
+  },
+  "footer": {
+    "description": "Your reference guide for the finest culinary and hospitality destinations across the African continent.",
+    "navigation": "Navigation",
+    "legal": "Legal",
+    "privacy": "Privacy",
+    "terms": "Terms of Use",
+    "contact": "Contact",
+    "followUs": "Follow Us",
+    "rights": "All rights reserved."
+  }
+}

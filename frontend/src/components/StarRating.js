@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const StarRating = ({ rating, maxStars = 5, showValue = true }) => {
   const stars = [];
@@ -38,4 +39,10 @@ export const StarInput = ({ value, onChange }) => {
   );
 };
 
-export default StarRating;
+StarRating.propTypes = {
+  rating: PropTypes.number,
+  maxStars: PropTypes.number,
+  showValue: PropTypes.bool,
+};
+
+export default React.memo(StarRating);
