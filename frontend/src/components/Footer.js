@@ -14,8 +14,8 @@ const Footer = () => {
           {/* Brand column */}
           <div className="footer-col footer-col-brand">
             <div className="footer-brand-logo">
-              <span className="brand-icon" role="img" aria-hidden="true">&#9733;</span>
-              <span className="footer-brand-text">Guide Africa</span>
+              <span className="brand-monogram" role="img" aria-hidden="true">GA</span>
+              <span className="footer-brand-text">GUIDE AFRICA</span>
             </div>
             <p className="footer-description">{t('footer.description')}</p>
             {/* Social links - TODO: replace with real URLs when available */}
@@ -80,7 +80,7 @@ const Footer = () => {
       {/* Bottom bar */}
       <div className="footer-bottom">
         <div className="footer-bottom-inner">
-          <span>&copy; {year} Guide Africa Premium &mdash; {t('footer.rights')}</span>
+          <span>&copy; {year} Guide Africa &mdash; {t('footer.rights')}</span>
         </div>
       </div>
     </footer>

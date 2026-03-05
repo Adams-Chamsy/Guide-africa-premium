@@ -29,15 +29,15 @@ const GoldCursor = () => {
     const handleMouseUp = () => ring.classList.remove('clicking');
 
     const animate = () => {
-      dotX += (mouseX - dotX) * 0.2;
-      dotY += (mouseY - dotY) * 0.2;
-      ringX += (mouseX - ringX) * 0.1;
-      ringY += (mouseY - ringY) * 0.1;
+      dotX += (mouseX - dotX) * 0.15;
+      dotY += (mouseY - dotY) * 0.15;
+      ringX += (mouseX - ringX) * 0.08;
+      ringY += (mouseY - ringY) * 0.08;
 
-      dot.style.left = `${dotX - 4}px`;
-      dot.style.top = `${dotY - 4}px`;
-      ring.style.left = `${ringX - 16}px`;
-      ring.style.top = `${ringY - 16}px`;
+      dot.style.left = `${dotX - 3}px`;
+      dot.style.top = `${dotY - 3}px`;
+      ring.style.left = `${ringX - 12}px`;
+      ring.style.top = `${ringY - 12}px`;
 
       rafRef.current = requestAnimationFrame(animate);
     };

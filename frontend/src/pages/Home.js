@@ -57,14 +57,13 @@ const Home = () => {
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
           <div className="hero">
             <div className="african-pattern"></div>
-            <div className="hero-label">Guide Gastronomique</div>
+            <div className="hero-label">Excellence Africaine</div>
             <h1>
-              D\u00e9couvrez l'Excellence<br />
-              <span className="gold-text">Culinaire Africaine</span>
+              L'Art de Vivre<br />
+              <span className="gold-text">Africain</span>
             </h1>
             <p>
-              Une s\u00e9lection prestigieuse des plus belles tables et des plus beaux
-              \u00e9tablissements du continent africain.
+              Le guide de r\u00e9f\u00e9rence pour d\u00e9couvrir les plus belles tables, les h\u00f4tels d'exception et les exp\u00e9riences uniques du continent.
             </p>
             <div className="hero-actions">
               <Link to="/restaurants" className="btn btn-primary">
@@ -77,7 +76,7 @@ const Home = () => {
           </div>
         </motion.div>
 
-        <div className="section-divider ornamental"><span className="divider-icon">\u25c6</span></div>
+        <div className="section-divider ornamental"><span className="divider-icon">\u00b7</span></div>
 
         {/* Stats */}
         {!loading && (
@@ -111,14 +110,14 @@ const Home = () => {
           </motion.div>
         )}
 
-        <div className="section-divider ornamental"><span className="divider-icon">\u25c6</span></div>
+        <div className="section-divider ornamental"><span className="divider-icon">\u00b7</span></div>
 
         {/* Featured Restaurants */}
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
           <div className="section">
             <div className="section-header">
               <div>
-                <h2 className="section-title">Restaurants en Vedette</h2>
+                <h2 className="section-title">Nos Restaurants</h2>
                 <div className="section-divider"></div>
               </div>
               <Link to="/restaurants" className="btn btn-outline btn-sm">
@@ -170,9 +169,7 @@ const Home = () => {
           </div>
         </motion.div>
 
-        <div className="gold-line"></div>
-
-        <div className="section-divider ornamental"><span className="divider-icon">\u25c6</span></div>
+        <div className="section-divider ornamental"><span className="divider-icon">\u00b7</span></div>
 
         {/* Destinations */}
         {!loading && cities.length > 0 && (
@@ -180,7 +177,7 @@ const Home = () => {
             <div className="section">
               <div className="section-header">
                 <div>
-                  <h2 className="section-title">Destinations Populaires</h2>
+                  <h2 className="section-title">Destinations</h2>
                   <div className="section-divider"></div>
                 </div>
                 <Link to="/destinations" className="btn btn-outline btn-sm">
@@ -205,16 +202,14 @@ const Home = () => {
           </motion.div>
         )}
 
-        <div className="gold-line"></div>
-
-        <div className="section-divider ornamental"><span className="divider-icon">\u25c6</span></div>
+        <div className="section-divider ornamental"><span className="divider-icon">\u00b7</span></div>
 
         {/* Featured Hotels */}
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
           <div className="section">
             <div className="section-header">
               <div>
-                <h2 className="section-title">H\u00f4tels en Vedette</h2>
+                <h2 className="section-title">Nos H\u00f4tels</h2>
                 <div className="section-divider"></div>
               </div>
               <Link to="/hotels" className="btn btn-outline btn-sm">

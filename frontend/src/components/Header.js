@@ -101,8 +101,8 @@ const Header = () => {
       <div className="header-container">
         {/* Brand */}
         <Link to="/" className="header-brand">
-          <span className="brand-icon" role="img" aria-label="Guide Africa">&#9733;</span>
-          <h1>Guide Africa</h1>
+          <span className="brand-monogram" role="img" aria-label="Guide Africa">GA</span>
+          <h1>GUIDE AFRICA</h1>
         </Link>
 
         {/* Hamburger for mobile */}
@@ -138,7 +138,7 @@ const Header = () => {
                 aria-expanded={moreOpen}
                 aria-haspopup="true"
               >
-                Plus <FiChevronDown size={14} className={`more-chevron ${moreOpen ? 'rotated' : ''}`} />
+                Explorer <FiChevronDown size={14} className={`more-chevron ${moreOpen ? 'rotated' : ''}`} />
               </button>
               {moreOpen && (
                 <div className="nav-more-dropdown">
