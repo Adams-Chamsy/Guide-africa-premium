@@ -44,7 +44,7 @@ const Classements = () => {
   if (loading) {
     return (
       <>
-        <SEOHead title="Classements" description="Top restaurants et hotels d'Afrique" />
+        <SEOHead title="Classements" description="Top restaurants et hôtels d'Afrique" />
         <div className="loading-container">
           <div className="spinner"></div>
         </div>
@@ -54,7 +54,7 @@ const Classements = () => {
 
   return (
     <>
-      <SEOHead title="Classements" description="Top restaurants et hotels d'Afrique" />
+      <SEOHead title="Classements" description="Top restaurants et hôtels d'Afrique" />
       <div className="classements-page">
         <Breadcrumbs items={[
           { label: 'Accueil', to: '/' },

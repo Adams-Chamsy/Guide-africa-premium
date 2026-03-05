@@ -19,7 +19,7 @@ const categorieLabels = {
   GASTRONOMIE: 'Gastronomie',
   SPORT: 'Sport',
   AVENTURE: 'Aventure',
-  DETENTE: 'Detente',
+  DETENTE: 'Détente',
   ARTISANAT: 'Artisanat',
 };
 
@@ -41,7 +41,7 @@ const formatPrix = (prix) => {
 };
 
 const ActiviteList = () => {
-  usePageTitle('Activites');
+  usePageTitle('Activités');
   const [activites, setActivites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');

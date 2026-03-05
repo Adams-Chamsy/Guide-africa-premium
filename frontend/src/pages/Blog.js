@@ -55,7 +55,7 @@ const Blog = () => {
 
   return (
     <>
-      <SEOHead title="Blog" description="Articles et actualites gastronomiques" />
+      <SEOHead title="Blog" description="Articles et actualités gastronomiques" />
       <div className="blog-page">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

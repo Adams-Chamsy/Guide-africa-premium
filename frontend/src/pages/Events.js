@@ -41,7 +41,7 @@ const Events = () => {
 
   return (
     <>
-      <SEOHead title="Evenements" description="Evenements gastronomiques en Afrique" />
+      <SEOHead title="Événements" description="Événements gastronomiques en Afrique" />
       <div className="events-page">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
           <div style={{ textAlign: 'center', marginBottom: 48 }}>

@@ -38,25 +38,25 @@ const DashboardAdmin = () => {
   const statCards = stats ? [
     { label: 'Utilisateurs', value: stats.totalUtilisateurs, icon: '\uD83D\uDC65', color: '#1B6B4A' },
     { label: 'Restaurants', value: stats.totalRestaurants, icon: '\uD83C\uDF7D\uFE0F', color: '#C9A84C' },
-    { label: 'Hotels', value: stats.totalHotels, icon: '\uD83C\uDFE8', color: '#2D8B5C' },
+    { label: 'Hôtels', value: stats.totalHotels, icon: '\uD83C\uDFE8', color: '#2D8B5C' },
     { label: 'Avis', value: stats.totalAvis, icon: '\u2B50', color: '#D4AF37' },
-    { label: 'Reservations', value: stats.totalReservations, icon: '\uD83D\uDCC5', color: '#8B7355' },
+    { label: 'Réservations', value: stats.totalReservations, icon: '\uD83D\uDCC5', color: '#8B7355' },
     { label: 'En attente', value: stats.reservationsEnAttente, icon: '\u23F3', color: '#C9A84C' },
-    { label: 'Confirmees', value: stats.reservationsConfirmees, icon: '\u2705', color: '#1B6B4A' },
+    { label: 'Confirmées', value: stats.reservationsConfirmees, icon: '\u2705', color: '#1B6B4A' },
     { label: 'Actifs', value: stats.utilisateursActifs, icon: '\uD83D\uDFE2', color: '#2D8B5C' },
   ] : [];
 
   const barData = stats ? [
     { name: 'Utilisateurs', value: stats.totalUtilisateurs || 0 },
     { name: 'Restaurants', value: stats.totalRestaurants || 0 },
-    { name: 'Hotels', value: stats.totalHotels || 0 },
+    { name: 'Hôtels', value: stats.totalHotels || 0 },
     { name: 'Avis', value: stats.totalAvis || 0 },
-    { name: 'Reservations', value: stats.totalReservations || 0 },
+    { name: 'Réservations', value: stats.totalReservations || 0 },
   ] : [];
 
   const pieData = stats ? [
     { name: 'En attente', value: stats.reservationsEnAttente || 0 },
-    { name: 'Confirmees', value: stats.reservationsConfirmees || 0 },
+    { name: 'Confirmées', value: stats.reservationsConfirmees || 0 },
     { name: 'Autres', value: Math.max(0, (stats.totalReservations || 0) - (stats.reservationsEnAttente || 0) - (stats.reservationsConfirmees || 0)) },
   ].filter(d => d.value > 0) : [];
 
@@ -119,7 +119,7 @@ const DashboardAdmin = () => {
             {pieData.length > 0 && (
               <ScrollReveal delay={0.3}>
                 <div className="card" style={{ padding: 24 }}>
-                  <h3 style={{ marginBottom: 16, color: 'var(--ivory)' }}>Repartition des reservations</h3>
+                  <h3 style={{ marginBottom: 16, color: 'var(--ivory)' }}>Répartition des réservations</h3>
                   <ResponsiveContainer width="100%" height={300}>
                     <PieChart>
                       <Pie
@@ -153,13 +153,13 @@ const DashboardAdmin = () => {
           <ScrollReveal delay={0.4}>
             <div className="admin-actions">
               <Link to="/admin/utilisateurs" className="btn btn-primary">
-                Gerer utilisateurs
+                Gérer utilisateurs
               </Link>
               <Link to="/admin/avis" className="btn btn-primary">
-                Moderer avis
+                Modérer avis
               </Link>
               <Link to="/admin/reservations" className="btn btn-primary">
-                Gerer reservations
+                Gérer réservations
               </Link>
             </div>
           </ScrollReveal>

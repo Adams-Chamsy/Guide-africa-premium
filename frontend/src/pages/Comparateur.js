@@ -71,7 +71,7 @@ const Comparateur = () => {
 
   return (
     <>
-      <SEOHead title="Comparateur" description="Comparez restaurants et hotels" />
+      <SEOHead title="Comparateur" description="Comparez restaurants et hôtels" />
       <div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
           <div style={{ textAlign: 'center', marginBottom: 40 }}>

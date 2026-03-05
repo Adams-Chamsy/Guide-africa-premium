@@ -77,7 +77,7 @@ const AddToCollectionModal = ({ show, onClose, type, targetId, targetName }) => 
   if (!show) return null;
 
   return (
-    <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label="Ajouter a une collection">
+    <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label="Ajouter à une collection">
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h3>Ajouter à une collection</h3>

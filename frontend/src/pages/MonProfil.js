@@ -157,7 +157,7 @@ const MonProfil = () => {
             </div>
             <div className="stat-card card">
               <AnimatedCounter end={stats.reservations} />
-              <span className="stat-label">Reservations</span>
+              <span className="stat-label">Réservations</span>
             </div>
             <div className="stat-card card">
               <AnimatedCounter end={stats.collections} />
@@ -211,7 +211,7 @@ const MonProfil = () => {
                 <div className="profile-form">
                   <div className="form-row">
                     <div className="form-group">
-                      <label>Prenom</label>
+                      <label>Prénom</label>
                       <input type="text" value={form.prenom} onChange={(e) => setForm({...form, prenom: e.target.value})} />
                     </div>
                     <div className="form-group">
@@ -220,7 +220,7 @@ const MonProfil = () => {
                     </div>
                   </div>
                   <div className="form-group">
-                    <label>Telephone</label>
+                    <label>Téléphone</label>
                     <input type="tel" value={form.telephone} onChange={(e) => setForm({...form, telephone: e.target.value})} placeholder="+33 6 12 34 56 78" />
                   </div>
                   <div className="form-actions">
@@ -233,7 +233,7 @@ const MonProfil = () => {
               ) : (
                 <div className="profile-details">
                   <div className="detail-row">
-                    <span className="detail-label">Prenom</span>
+                    <span className="detail-label">Prénom</span>
                     <span className="detail-value">{user.prenom}</span>
                   </div>
                   <div className="detail-row">
@@ -256,7 +256,7 @@ const MonProfil = () => {
           <ScrollReveal delay={0.2}>
             <div className="profile-edit-card card">
               <h3>Photo de profil</h3>
-              <p style={{ color: 'var(--ivory-subtle)', marginBottom: 16 }}>Telechargez une nouvelle photo de profil</p>
+              <p style={{ color: 'var(--ivory-subtle)', marginBottom: 16 }}>Téléchargez une nouvelle photo de profil</p>
               <ImageUpload
                 value={user.avatar}
                 onChange={handleAvatarUpload}
@@ -284,7 +284,7 @@ const MonProfil = () => {
                     type="password"
                     value={passwordForm.newPassword}
                     onChange={(e) => setPasswordForm({...passwordForm, newPassword: e.target.value})}
-                    placeholder="Minimum 8 caracteres"
+                    placeholder="Minimum 8 caractères"
                   />
                 </div>
                 <div className="form-group">
@@ -311,8 +311,8 @@ const MonProfil = () => {
 
         <div className="profile-danger card">
           <h3>Session</h3>
-          <p>Se deconnecter de votre compte Guide Africa.</p>
-          <button className="btn btn-danger" onClick={logout}>Deconnexion</button>
+          <p>Se déconnecter de votre compte Guide Africa.</p>
+          <button className="btn btn-danger" onClick={logout}>Déconnexion</button>
         </div>
       </div>
     </div>

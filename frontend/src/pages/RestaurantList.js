@@ -80,7 +80,7 @@ const RestaurantList = () => {
 
   return (
     <>
-      <SEOHead title="Restaurants" description="Decouvrez les meilleurs restaurants d'Afrique" />
+      <SEOHead title="Restaurants" description="Découvrez les meilleurs restaurants d'Afrique" />
       <div>
         <Breadcrumbs items={[{ label: 'Accueil', to: '/' }, { label: 'Restaurants' }]} />
 

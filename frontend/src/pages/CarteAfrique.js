@@ -67,7 +67,7 @@ const CarteAfrique = () => {
 
   return (
     <>
-      <SEOHead title="Carte" description="Carte interactive des etablissements" />
+      <SEOHead title="Carte" description="Carte interactive des établissements" />
       <div>
         <Breadcrumbs items={[
           { label: 'Accueil', to: '/' },

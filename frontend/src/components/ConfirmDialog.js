@@ -57,7 +57,7 @@ const ConfirmDialog = ({ title, message, onConfirm, onCancel }) => {
     >
       <div className="dialog" onClick={(e) => e.stopPropagation()}>
         <h3 id="confirm-dialog-title">{title || 'Confirmer'}</h3>
-        <p id="confirm-dialog-message">{message || 'Etes-vous sur de vouloir effectuer cette action ?'}</p>
+        <p id="confirm-dialog-message">{message || 'Êtes-vous sûr de vouloir effectuer cette action ?'}</p>
         <div className="dialog-actions">
           <button ref={cancelBtnRef} className="btn btn-outline" onClick={onCancel}>
             Annuler

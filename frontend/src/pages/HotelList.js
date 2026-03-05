@@ -76,7 +76,7 @@ const HotelList = () => {
 
   return (
     <>
-      <SEOHead title="Hotels" description="Les plus beaux hotels d'Afrique" />
+      <SEOHead title="Hôtels" description="Les plus beaux hôtels d'Afrique" />
       <div>
         <Breadcrumbs items={[{ label: 'Accueil', to: '/' }, { label: 'H\u00f4tels' }]} />
 
