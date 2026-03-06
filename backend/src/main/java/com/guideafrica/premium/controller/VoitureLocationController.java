@@ -1,5 +1,6 @@
 package com.guideafrica.premium.controller;
 
+import com.guideafrica.premium.exception.ResourceNotFoundException;
 import com.guideafrica.premium.model.Utilisateur;
 import com.guideafrica.premium.model.VoitureLocation;
 import com.guideafrica.premium.model.enums.CategorieVoiture;
@@ -50,7 +51,7 @@ public class VoitureLocationController {
     @GetMapping("/mes-voitures")
     public ResponseEntity<List<VoitureLocation>> getMesVoitures(Authentication authentication) {
         Utilisateur user = utilisateurRepository.findByEmail(authentication.getName())
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouve"));
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé"));
         return ResponseEntity.ok(voitureService.findByProprietaire(user.getId()));
     }
 
@@ -58,7 +59,7 @@ public class VoitureLocationController {
     public ResponseEntity<VoitureLocation> create(@Valid @RequestBody VoitureLocation voiture,
                                                     Authentication authentication) {
         Utilisateur user = utilisateurRepository.findByEmail(authentication.getName())
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouve"));
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé"));
         return ResponseEntity.ok(voitureService.create(voiture, user));
     }
 
@@ -67,14 +68,14 @@ public class VoitureLocationController {
                                                     @Valid @RequestBody VoitureLocation voiture,
                                                     Authentication authentication) {
         Utilisateur user = utilisateurRepository.findByEmail(authentication.getName())
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouve"));
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé"));
         return ResponseEntity.ok(voitureService.update(id, voiture, user.getId()));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id, Authentication authentication) {
         Utilisateur user = utilisateurRepository.findByEmail(authentication.getName())
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouve"));
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé"));
         voitureService.delete(id, user.getId());
         return ResponseEntity.noContent().build();
     }
@@ -83,7 +84,7 @@ public class VoitureLocationController {
     public ResponseEntity<VoitureLocation> toggleDisponibilite(@PathVariable Long id,
                                                                  Authentication authentication) {
         Utilisateur user = utilisateurRepository.findByEmail(authentication.getName())
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouve"));
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé"));
         return ResponseEntity.ok(voitureService.toggleDisponibilite(id, user.getId()));
     }
 }

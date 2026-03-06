@@ -4,12 +4,14 @@ import com.guideafrica.premium.model.Restaurant;
 import com.guideafrica.premium.model.enums.StatutEtablissement;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
@@ -27,8 +29,14 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     List<Restaurant> findByVegetarienFriendlyTrue();
     List<Restaurant> findByOptionsVeganTrue();
 
-    // Pagination
+    // EntityGraph pour charger les relations LAZY en une seule requete
+    @Override
+    @EntityGraph(attributePaths = {"ville", "amenities", "categories"})
+    Optional<Restaurant> findById(Long id);
+
+    // Pagination (pas d'EntityGraph ici — open-in-view gère le lazy loading, et EntityGraph + pagination + collections cause HHH90003004)
     Page<Restaurant> findAll(Pageable pageable);
+
     Page<Restaurant> findByNomContainingIgnoreCase(String nom, Pageable pageable);
     Page<Restaurant> findByCuisineContainingIgnoreCase(String cuisine, Pageable pageable);
     Page<Restaurant> findByVilleId(Long villeId, Pageable pageable);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { restaurantApi } from '../api/apiClient';
+import { useAuth } from '../context/AuthContext';
 import StarRating from '../components/StarRating';
 import ReviewCard from '../components/ReviewCard';
 import ReviewForm from '../components/ReviewForm';
@@ -25,6 +26,7 @@ import { restaurantJsonLd } from '../components/SEOHead';
 const RestaurantDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [restaurant, setRestaurant] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -119,8 +121,8 @@ const RestaurantDetail = () => {
 
         {restaurant.distinctions && restaurant.distinctions.length > 0 && (
           <div className="detail-distinctions">
-            {restaurant.distinctions.map((d, i) => (
-              <DistinctionBadge key={i} type={d.type} />
+            {restaurant.distinctions.map((d) => (
+              <DistinctionBadge key={d.type} type={d.type} />
             ))}
           </div>
         )}
@@ -304,10 +306,12 @@ const RestaurantDetail = () => {
           </div>
         )}
 
-        <div className="detail-actions">
-          <Link to={`/restaurants/${id}/edit`} className="btn btn-primary">Modifier</Link>
-          <button className="btn btn-danger" onClick={() => setShowDelete(true)}>Supprimer</button>
-        </div>
+        {user?.role === 'ADMIN' && (
+          <div className="detail-actions">
+            <Link to={`/restaurants/${id}/edit`} className="btn btn-primary">Modifier</Link>
+            <button className="btn btn-danger" onClick={() => setShowDelete(true)}>Supprimer</button>
+          </div>
+        )}
       </div>
 
       {showDelete && (

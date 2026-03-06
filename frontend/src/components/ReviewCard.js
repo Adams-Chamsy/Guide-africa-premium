@@ -105,7 +105,7 @@ const ReviewCard = ({ review, onUpdate }) => {
       {review.photos && review.photos.length > 0 && (
         <div className="review-photos">
           {review.photos.map((url, i) => (
-            <img key={i} src={url} alt={`Photo avis ${i + 1}`} className="review-photo"
+            <img key={url} src={url} alt={`Photo avis ${i + 1}`} className="review-photo"
               onError={(e) => { e.target.style.display = 'none'; }} />
           ))}
         </div>

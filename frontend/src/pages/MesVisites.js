@@ -4,6 +4,7 @@ import { userApi } from '../api/apiClient';
 import Breadcrumbs from '../components/Breadcrumbs';
 import { SkeletonGrid } from '../components/Skeleton';
 import usePageTitle from '../hooks/usePageTitle';
+import SEOHead from '../components/SEOHead';
 
 const MesVisites = () => {
   usePageTitle('Mes Visites');
@@ -59,6 +60,7 @@ const MesVisites = () => {
 
   return (
     <div className="page-container">
+      <SEOHead title="Mes Visites — Guide Africa Premium" />
       <Breadcrumbs items={[
         { label: 'Accueil', to: '/' },
         { label: 'Mes Visites' },

@@ -12,9 +12,11 @@ import CountUp from 'react-countup';
 import { useInView } from 'react-intersection-observer';
 import { FiArrowRight } from 'react-icons/fi';
 import SEOHead from '../components/SEOHead';
+import { useTranslation } from 'react-i18next';
 
 const Home = () => {
-  usePageTitle('Accueil');
+  const { t } = useTranslation();
+  usePageTitle(t('nav.home'));
   const [restaurants, setRestaurants] = useState([]);
   const [hotels, setHotels] = useState([]);
   const [cities, setCities] = useState([]);
@@ -51,26 +53,26 @@ const Home = () => {
 
   return (
     <>
-      <SEOHead title="Accueil" description="Guide Africa Premium - Les meilleurs restaurants et hôtels d'Afrique" />
+      <SEOHead title={t('nav.home')} description={t('home.subtitle')} />
       <div>
         {/* Hero */}
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
           <div className="hero">
             <div className="african-pattern"></div>
-            <div className="hero-label">Excellence Africaine</div>
+            <div className="hero-label">{t('home.heroLabel')}</div>
             <h1>
-              L'Art de Vivre<br />
-              <span className="gold-text">Africain</span>
+              {t('home.heroTitle')}<br />
+              <span className="gold-text">{t('home.heroTitleHighlight')}</span>
             </h1>
             <p>
-              Le guide de r\u00e9f\u00e9rence pour d\u00e9couvrir les plus belles tables, les h\u00f4tels d'exception et les exp\u00e9riences uniques du continent.
+              {t('home.heroDescription')}
             </p>
             <div className="hero-actions">
               <Link to="/restaurants" className="btn btn-primary">
-                Explorer les Restaurants <FiArrowRight style={{ marginLeft: 6, verticalAlign: 'middle' }} />
+                {t('home.exploreRestaurants')} <FiArrowRight style={{ marginLeft: 6, verticalAlign: 'middle' }} />
               </Link>
               <Link to="/hotels" className="btn btn-secondary">
-                D\u00e9couvrir les H\u00f4tels <FiArrowRight style={{ marginLeft: 6, verticalAlign: 'middle' }} />
+                {t('home.discoverHotels')} <FiArrowRight style={{ marginLeft: 6, verticalAlign: 'middle' }} />
               </Link>
             </div>
           </div>
@@ -86,25 +88,25 @@ const Home = () => {
                 <div className="stat-number">
                   {statsInView ? <CountUp end={totalRestaurants} duration={2.5} separator=" " /> : 0}
                 </div>
-                <div className="stat-label">Restaurants</div>
+                <div className="stat-label">{t('home.statRestaurants')}</div>
               </div>
               <div className="stat-card">
                 <div className="stat-number">
                   {statsInView ? <CountUp end={totalHotels} duration={2.5} separator=" " /> : 0}
                 </div>
-                <div className="stat-label">H\u00f4tels</div>
+                <div className="stat-label">{t('home.statHotels')}</div>
               </div>
               <div className="stat-card">
                 <div className="stat-number">
                   {statsInView ? <><CountUp end={cities.length} duration={2.5} separator=" " />+</> : '0+'}
                 </div>
-                <div className="stat-label">Destinations</div>
+                <div className="stat-label">{t('home.statDestinations')}</div>
               </div>
               <div className="stat-card">
                 <div className="stat-number">
                   {statsInView ? <CountUp end={54} duration={2.5} separator=" " /> : 0}
                 </div>
-                <div className="stat-label">Pays Africains</div>
+                <div className="stat-label">{t('home.statCountries')}</div>
               </div>
             </div>
           </motion.div>
@@ -117,11 +119,11 @@ const Home = () => {
           <div className="section">
             <div className="section-header">
               <div>
-                <h2 className="section-title">Nos Restaurants</h2>
+                <h2 className="section-title">{t('home.ourRestaurants')}</h2>
                 <div className="section-divider"></div>
               </div>
               <Link to="/restaurants" className="btn btn-outline btn-sm">
-                Voir tout <FiArrowRight style={{ marginLeft: 4, verticalAlign: 'middle' }} />
+                {t('common.seeAll')} <FiArrowRight style={{ marginLeft: 4, verticalAlign: 'middle' }} />
               </Link>
             </div>
             {loading ? (
@@ -140,8 +142,8 @@ const Home = () => {
                       )}
                       {r.distinctions && r.distinctions.length > 0 && (
                         <div className="card-distinctions">
-                          {r.distinctions.slice(0, 1).map((d, i) => (
-                            <DistinctionBadge key={i} type={d.type} size="small" />
+                          {r.distinctions.slice(0, 1).map((d) => (
+                            <DistinctionBadge key={d.type} type={d.type} size="small" />
                           ))}
                         </div>
                       )}
@@ -177,11 +179,11 @@ const Home = () => {
             <div className="section">
               <div className="section-header">
                 <div>
-                  <h2 className="section-title">Destinations</h2>
+                  <h2 className="section-title">{t('home.destinations')}</h2>
                   <div className="section-divider"></div>
                 </div>
                 <Link to="/destinations" className="btn btn-outline btn-sm">
-                  Toutes les destinations <FiArrowRight style={{ marginLeft: 4, verticalAlign: 'middle' }} />
+                  {t('home.allDestinations')} <FiArrowRight style={{ marginLeft: 4, verticalAlign: 'middle' }} />
                 </Link>
               </div>
               <div className="destinations-grid">
@@ -209,11 +211,11 @@ const Home = () => {
           <div className="section">
             <div className="section-header">
               <div>
-                <h2 className="section-title">Nos H\u00f4tels</h2>
+                <h2 className="section-title">{t('home.ourHotels')}</h2>
                 <div className="section-divider"></div>
               </div>
               <Link to="/hotels" className="btn btn-outline btn-sm">
-                Voir tout <FiArrowRight style={{ marginLeft: 4, verticalAlign: 'middle' }} />
+                {t('common.seeAll')} <FiArrowRight style={{ marginLeft: 4, verticalAlign: 'middle' }} />
               </Link>
             </div>
             {loading ? (
@@ -236,11 +238,11 @@ const Home = () => {
                       </p>
                       <p className="card-description">{h.description}</p>
                       <div className="card-footer">
-                        <span className="price">{h.prixParNuit}\u20ac / nuit</span>
+                        <span className="price">{h.prixParNuit}\u20ac {t('home.perNight')}</span>
                         <div className="badges">
                           {h.wifi && <span className="badge badge-amenity">Wi-Fi</span>}
-                          {h.piscine && <span className="badge badge-amenity">Piscine</span>}
-                          {h.spa && <span className="badge badge-amenity">Spa</span>}
+                          {h.piscine && <span className="badge badge-amenity">{t('home.pool')}</span>}
+                          {h.spa && <span className="badge badge-amenity">{t('home.spa')}</span>}
                         </div>
                       </div>
                     </div>

@@ -1,5 +1,6 @@
 package com.guideafrica.premium.controller;
 
+import com.guideafrica.premium.exception.ResourceNotFoundException;
 import com.guideafrica.premium.model.UserBadge;
 import com.guideafrica.premium.model.Utilisateur;
 import com.guideafrica.premium.repository.UtilisateurRepository;
@@ -23,14 +24,14 @@ public class BadgeController {
     @GetMapping("/my")
     public ResponseEntity<List<UserBadge>> getMyBadges(Authentication authentication) {
         Utilisateur user = utilisateurRepository.findByEmail(authentication.getName())
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouve"));
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé"));
         return ResponseEntity.ok(badgeService.getUserBadges(user.getId()));
     }
 
     @PostMapping("/check")
     public ResponseEntity<List<String>> checkBadges(Authentication authentication) {
         Utilisateur user = utilisateurRepository.findByEmail(authentication.getName())
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouve"));
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé"));
         return ResponseEntity.ok(badgeService.checkAndAwardBadges(user.getId()));
     }
 }

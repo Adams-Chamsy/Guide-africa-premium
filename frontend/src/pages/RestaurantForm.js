@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { restaurantApi, categoryApi, cityApi } from '../api/apiClient';
 import Breadcrumbs from '../components/Breadcrumbs';
 import ImageUpload from '../components/ImageUpload';
+import SEOHead from '../components/SEOHead';
 
 const RestaurantForm = () => {
   const { id } = useParams();
@@ -129,6 +130,7 @@ const RestaurantForm = () => {
 
   return (
     <div className="form-container">
+      <SEOHead title={`${isEdit ? 'Modifier' : 'Ajouter'} un Restaurant — Guide Africa Premium`} />
       <Breadcrumbs items={[
         { label: 'Accueil', to: '/' },
         { label: 'Restaurants', to: '/restaurants' },

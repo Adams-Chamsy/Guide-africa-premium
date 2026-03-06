@@ -1,3 +1,6 @@
+# ===== MCP (contient des clés API) =====
+.mcp.json
+
 # ===== Frontend (React) =====
 frontend/node_modules/
 frontend/.pnp
@@ -24,10 +27,15 @@ backend/*.iws
 backend/uploads/
 uploads/
 
+# ===== IDE =====
+.vscode/
+.idea/
+
 # ===== General =====
 .DS_Store
 *.swp
 *.swo
+*.orig
 *~
 .env
 .env.*

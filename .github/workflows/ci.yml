@@ -39,3 +39,6 @@ jobs:
           npm ci
           npm run build
           npm test -- --watchAll=false
+      - name: Security Audit
+        working-directory: ./frontend
+        run: npm audit --audit-level=high || true

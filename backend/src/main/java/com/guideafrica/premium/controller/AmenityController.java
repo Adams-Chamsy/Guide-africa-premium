@@ -4,6 +4,7 @@ import com.guideafrica.premium.model.Amenity;
 import com.guideafrica.premium.service.AmenityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -45,16 +46,19 @@ public class AmenityController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Amenity> create(@Valid @RequestBody Amenity amenity) {
         return ResponseEntity.status(HttpStatus.CREATED).body(amenityService.create(amenity));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Amenity> update(@PathVariable Long id, @Valid @RequestBody Amenity amenity) {
         return ResponseEntity.ok(amenityService.update(id, amenity));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         amenityService.delete(id);
         return ResponseEntity.noContent().build();

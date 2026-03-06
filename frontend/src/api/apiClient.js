@@ -1,9 +1,9 @@
 import axios from 'axios';
-
-const API_BASE_URL = process.env.REACT_APP_API_URL || '/api/v1';
+import { TOKEN_KEY, API_BASE_URL } from '../constants';
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
+  timeout: 15000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -12,7 +12,7 @@ const apiClient = axios.create({
 // JWT Interceptor - automatically attach token
 apiClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('guideafrica_token');
+    const token = localStorage.getItem(TOKEN_KEY);
     if (token) {
       config.headers.Authorization = 'Bearer ' + token;
     }
@@ -21,70 +21,16 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Token refresh state
-let isRefreshing = false;
-let failedQueue = [];
-
-const processQueue = (error, token = null) => {
-  failedQueue.forEach((prom) => {
-    if (error) {
-      prom.reject(error);
-    } else {
-      prom.resolve(token);
-    }
-  });
-  failedQueue = [];
-};
-
-// Response interceptor - handle 401 with token refresh attempt
+// Response interceptor - handle 401 by logging out
 apiClient.interceptors.response.use(
   (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
-
-    if (error.response && error.response.status === 401 && !originalRequest._retry) {
-      const url = originalRequest?.url || '';
-      // Don't retry for login/register failures
-      if (url.includes('/auth/login') || url.includes('/auth/register')) {
-        return Promise.reject(error);
-      }
-
-      if (isRefreshing) {
-        return new Promise((resolve, reject) => {
-          failedQueue.push({ resolve, reject });
-        })
-          .then((token) => {
-            originalRequest.headers.Authorization = 'Bearer ' + token;
-            return apiClient(originalRequest);
-          })
-          .catch((err) => Promise.reject(err));
-      }
-
-      originalRequest._retry = true;
-      isRefreshing = true;
-
-      try {
-        // Attempt to re-validate current token via /auth/me
-        const token = localStorage.getItem('guideafrica_token');
-        if (!token) {
-          throw new Error('No token');
-        }
-        const response = await axios.get(API_BASE_URL + '/auth/me', {
-          headers: { Authorization: 'Bearer ' + token },
-        });
-        if (response.data) {
-          processQueue(null, token);
-          return apiClient(originalRequest);
-        }
-        throw new Error('Invalid token');
-      } catch (refreshError) {
-        processQueue(refreshError, null);
-        localStorage.removeItem('guideafrica_token');
-        localStorage.removeItem('guideafrica_user');
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      const url = error.config?.url || '';
+      // Don't logout for login/register failures
+      if (!url.includes('/auth/login') && !url.includes('/auth/register')) {
+        localStorage.removeItem(TOKEN_KEY);
         window.dispatchEvent(new CustomEvent('auth:logout'));
-        return Promise.reject(refreshError);
-      } finally {
-        isRefreshing = false;
       }
     }
     return Promise.reject(error);
@@ -211,6 +157,8 @@ export const userApi = {
   addVisit: (data) => apiClient.post('/user/visits', data),
   updateProfile: (data) => apiClient.put('/user/profile', data),
   changePassword: (data) => apiClient.put('/user/password', data),
+  getReservations: () => apiClient.get('/reservations/my'),
+  getCollections: () => apiClient.get('/collections/my'),
 };
 
 // ========== Reservations ==========

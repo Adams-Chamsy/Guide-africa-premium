@@ -3,6 +3,8 @@ package com.guideafrica.premium.service;
 import com.guideafrica.premium.exception.ResourceNotFoundException;
 import com.guideafrica.premium.model.Category;
 import com.guideafrica.premium.repository.CategoryRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -17,16 +19,16 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
+    @Cacheable("categories")
     public List<Category> findAll() {
         return categoryRepository.findAll();
     }
 
+    @Cacheable(value = "categories", key = "#type")
     public List<Category> findByType(String type) {
         if (type == null || type.isBlank()) {
             return categoryRepository.findAll();
         }
-        // "RESTAURANT" returns categories with type RESTAURANT or BOTH
-        // "HOTEL" returns categories with type HOTEL or BOTH
         return categoryRepository.findByTypeIn(Arrays.asList(type.toUpperCase(), "BOTH"));
     }
 
@@ -35,11 +37,13 @@ public class CategoryService {
                 .orElseThrow(() -> new ResourceNotFoundException("Catégorie", id));
     }
 
+    @CacheEvict(value = "categories", allEntries = true)
     public Category create(Category category) {
         category.setType(category.getType().toUpperCase());
         return categoryRepository.save(category);
     }
 
+    @CacheEvict(value = "categories", allEntries = true)
     public Category update(Long id, Category categoryDetails) {
         Category category = findById(id);
         category.setNom(categoryDetails.getNom());
@@ -48,6 +52,7 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
+    @CacheEvict(value = "categories", allEntries = true)
     public void delete(Long id) {
         Category category = findById(id);
         categoryRepository.delete(category);

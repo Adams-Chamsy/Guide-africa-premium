@@ -5,6 +5,7 @@ import { useToast } from '../context/ToastContext';
 import Breadcrumbs from '../components/Breadcrumbs';
 import { SkeletonGrid } from '../components/Skeleton';
 import usePageTitle from '../hooks/usePageTitle';
+import SEOHead from '../components/SEOHead';
 
 const MesCollections = () => {
   usePageTitle('Mes Collections');
@@ -69,6 +70,7 @@ const MesCollections = () => {
 
   return (
     <div className="page-container">
+      <SEOHead title="Mes Collections — Guide Africa Premium" />
       <Breadcrumbs items={[
         { label: 'Accueil', to: '/' },
         { label: 'Mes Collections' },

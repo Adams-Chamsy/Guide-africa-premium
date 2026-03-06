@@ -5,6 +5,7 @@ import Breadcrumbs from '../components/Breadcrumbs';
 import BackToTop from '../components/BackToTop';
 import { SkeletonGrid } from '../components/Skeleton';
 import usePageTitle from '../hooks/usePageTitle';
+import SEOHead from '../components/SEOHead';
 
 const Destinations = () => {
   usePageTitle('Destinations');
@@ -20,6 +21,7 @@ const Destinations = () => {
 
   return (
     <div>
+      <SEOHead title="Destinations — Guide Africa Premium" />
       <Breadcrumbs items={[{ label: 'Accueil', to: '/' }, { label: 'Destinations' }]} />
 
       <div className="page-header">

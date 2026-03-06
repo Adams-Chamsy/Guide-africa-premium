@@ -4,6 +4,7 @@ import com.guideafrica.premium.model.City;
 import com.guideafrica.premium.service.CityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -46,16 +47,19 @@ public class CityController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<City> create(@Valid @RequestBody City city) {
         return ResponseEntity.status(HttpStatus.CREATED).body(cityService.create(city));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<City> update(@PathVariable Long id, @Valid @RequestBody City city) {
         return ResponseEntity.ok(cityService.update(id, city));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         cityService.delete(id);
         return ResponseEntity.noContent().build();

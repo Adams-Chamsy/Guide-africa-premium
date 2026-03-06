@@ -5,6 +5,7 @@ import Breadcrumbs from '../../components/Breadcrumbs';
 import Pagination from '../../components/Pagination';
 import { SkeletonDetail } from '../../components/Skeleton';
 import usePageTitle from '../../hooks/usePageTitle';
+import SEOHead from '../../components/SEOHead';
 
 const GestionAvis = () => {
   usePageTitle('Gestion Avis');
@@ -65,6 +66,7 @@ const GestionAvis = () => {
 
   return (
     <div className="page-container admin-page">
+      <SEOHead title="Gestion des Avis — Guide Africa Premium" />
       <Breadcrumbs items={[
         { label: 'Accueil', to: '/' },
         { label: 'Administration', to: '/admin' },

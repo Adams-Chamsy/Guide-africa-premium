@@ -31,8 +31,14 @@ public class RateLimitFilter extends OncePerRequestFilter {
         long currentTime = System.currentTimeMillis();
         requestCounts.entrySet().removeIf(entry -> currentTime - entry.getValue().windowStart > WINDOW_MS);
 
-        // Only rate limit auth endpoints and reset-password
-        if (path.contains("/api/v1/auth/login") || path.contains("/api/v1/auth/register") || path.contains("/api/v1/auth/forgot-password") || path.contains("/auth/reset-password")) {
+        // Rate limit auth endpoints, search, and newsletter
+        boolean isRateLimited = path.contains("/api/v1/auth/login")
+                || path.contains("/api/v1/auth/register")
+                || path.contains("/api/v1/auth/forgot-password")
+                || path.contains("/auth/reset-password")
+                || path.contains("/api/v1/search")
+                || path.contains("/api/v1/newsletter");
+        if (isRateLimited) {
             String clientIp = getClientIp(request);
             String key = clientIp + ":" + path;
 

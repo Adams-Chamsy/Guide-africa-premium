@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
@@ -59,38 +59,35 @@ const Confidentialite = React.lazy(() => import('./pages/Confidentialite'));
 const Conditions = React.lazy(() => import('./pages/Conditions'));
 const Contact = React.lazy(() => import('./pages/Contact'));
 
-const App = () => {
+const AppLayout = () => {
+  const location = useLocation();
+  const isAdminPage = location.pathname.startsWith('/admin');
+
   return (
-    <ErrorBoundary>
-    <HelmetProvider>
-    <ThemeProvider>
-    <AuthProvider>
-      <ToastProvider>
-        <SplashScreen onComplete={() => {}} />
-        <GoldCursor />
-        <Router>
-          <ScrollToTop />
-          <div className="app">
-            <Header />
-            <main className="main-content" id="main-content">
-              <React.Suspense fallback={
-                <div className="page-loading">
-                  <div className="page-loading-content">
-                    <span className="page-loading-star">&#9733;</span>
-                    <div className="loading-spinner"></div>
-                  </div>
-                </div>
-              }>
-              <Routes>
+    <>
+      <ScrollToTop />
+      <div className="app">
+        <a href="#main-content" className="skip-link">Aller au contenu principal</a>
+        <Header />
+        <main className="main-content" id="main-content">
+          <React.Suspense fallback={
+            <div className="page-loading">
+              <div className="page-loading-content">
+                <span className="page-loading-star">&#9733;</span>
+                <div className="loading-spinner"></div>
+              </div>
+            </div>
+          }>
+          <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/restaurants" element={<RestaurantList />} />
-                <Route path="/restaurants/new" element={<RestaurantForm />} />
+                <Route path="/restaurants/new" element={<AdminRoute><RestaurantForm /></AdminRoute>} />
                 <Route path="/restaurants/:id" element={<RestaurantDetail />} />
-                <Route path="/restaurants/:id/edit" element={<RestaurantForm />} />
+                <Route path="/restaurants/:id/edit" element={<AdminRoute><RestaurantForm /></AdminRoute>} />
                 <Route path="/hotels" element={<HotelList />} />
-                <Route path="/hotels/new" element={<HotelForm />} />
+                <Route path="/hotels/new" element={<AdminRoute><HotelForm /></AdminRoute>} />
                 <Route path="/hotels/:id" element={<HotelDetail />} />
-                <Route path="/hotels/:id/edit" element={<HotelForm />} />
+                <Route path="/hotels/:id/edit" element={<AdminRoute><HotelForm /></AdminRoute>} />
                 <Route path="/destinations" element={<Destinations />} />
                 <Route path="/carte" element={<CarteAfrique />} />
                 <Route path="/atlas" element={<AtlasCulinaire />} />
@@ -131,10 +128,33 @@ const App = () => {
               </React.Suspense>
             </main>
             <Footer />
-            <BottomNav />
-            <ChatWidget />
-            <NewsletterModal />
+            {!isAdminPage && <BottomNav />}
+            {!isAdminPage && <ChatWidget />}
+            {!isAdminPage && <NewsletterModal />}
           </div>
+    </>
+  );
+};
+
+const App = () => {
+  const [splashDone, setSplashDone] = React.useState(
+    () => sessionStorage.getItem('guideafrica_splash_shown') === 'true'
+  );
+
+  const handleSplashComplete = React.useCallback(() => {
+    setSplashDone(true);
+  }, []);
+
+  return (
+    <ErrorBoundary>
+    <HelmetProvider>
+    <ThemeProvider>
+    <AuthProvider>
+      <ToastProvider>
+        {!splashDone && <SplashScreen onComplete={handleSplashComplete} />}
+        <GoldCursor />
+        <Router>
+          <AppLayout />
         </Router>
       </ToastProvider>
     </AuthProvider>

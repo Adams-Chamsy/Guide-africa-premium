@@ -5,6 +5,7 @@ import { useToast } from '../../context/ToastContext';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import { SkeletonDetail } from '../../components/Skeleton';
 import usePageTitle from '../../hooks/usePageTitle';
+import SEOHead from '../../components/SEOHead';
 import ScrollReveal from '../../components/ScrollReveal';
 import AnimatedCounter from '../../components/AnimatedCounter';
 import {
@@ -62,6 +63,7 @@ const DashboardAdmin = () => {
 
   return (
     <div className="page-container admin-page">
+      <SEOHead title="Dashboard Admin — Guide Africa Premium" />
       <Breadcrumbs items={[
         { label: 'Accueil', to: '/' },
         { label: 'Administration' },
@@ -80,8 +82,8 @@ const DashboardAdmin = () => {
         <>
           <ScrollReveal delay={0.1}>
             <div className="admin-stat-grid">
-              {statCards.map((card, index) => (
-                <div key={index} className="admin-stat-card" style={{ borderTop: `3px solid ${card.color}` }}>
+              {statCards.map((card) => (
+                <div key={card.label} className="admin-stat-card" style={{ borderTop: `3px solid ${card.color}` }}>
                   <span className="admin-stat-icon">{card.icon}</span>
                   <span className="admin-stat-number">
                     <AnimatedCounter end={card.value ?? 0} />
@@ -130,8 +132,8 @@ const DashboardAdmin = () => {
                         dataKey="value"
                         label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                       >
-                        {pieData.map((entry, index) => (
-                          <Cell key={index} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                        {pieData.map((entry) => (
+                          <Cell key={entry.name} fill={CHART_COLORS[pieData.indexOf(entry) % CHART_COLORS.length]} />
                         ))}
                       </Pie>
                       <Tooltip

@@ -4,9 +4,11 @@ import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import SEOHead from '../components/SEOHead';
 import usePageTitle from '../hooks/usePageTitle';
+import { useTranslation } from 'react-i18next';
 
 const Connexion = () => {
-  usePageTitle('Connexion');
+  const { t } = useTranslation();
+  usePageTitle(t('auth.login'));
   const [email, setEmail] = useState('');
   const [motDePasse, setMotDePasse] = useState('');
   const [error, setError] = useState('');
@@ -33,10 +35,10 @@ const Connexion = () => {
     setLoading(true);
     try {
       await login(email, motDePasse);
-      showToast('Connexion réussie !', 'success');
+      showToast(t('auth.loginSuccess'), 'success');
       navigate(from, { replace: true });
     } catch (err) {
-      const msg = err.response?.data?.message || 'Email ou mot de passe incorrect';
+      const msg = err.response?.data?.message || t('auth.loginError');
       setError(msg);
     } finally {
       setLoading(false);
@@ -45,17 +47,17 @@ const Connexion = () => {
 
   return (
     <div className="auth-page">
-      <SEOHead title="Connexion — Guide Africa Premium" />
+      <SEOHead title={`${t('auth.login')} — Guide Africa Premium`} />
       <div className="auth-container">
         <div className="auth-header">
           <span className="brand-icon">&#9733;</span>
-          <h2>Connexion</h2>
-          <p>Accédez à votre espace personnel</p>
+          <h2>{t('auth.login')}</h2>
+          <p>{t('auth.personalSpace')}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label htmlFor="email">Adresse e-mail</label>
+            <label htmlFor="email">{t('auth.email')}</label>
             <input
               type="email"
               id="email"
@@ -69,7 +71,7 @@ const Connexion = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Mot de passe</label>
+            <label htmlFor="password">{t('auth.password')}</label>
             <input
               type="password"
               id="password"
@@ -79,23 +81,18 @@ const Connexion = () => {
               required
               autoComplete="current-password"
             />
-            <Link to="/mot-de-passe-oublie" style={{ color: 'var(--gold)', fontSize: '0.85rem', display: 'block', textAlign: 'right', marginTop: 4 }}>Mot de passe oublié ?</Link>
+            <Link to="/mot-de-passe-oublie" style={{ color: 'var(--gold)', fontSize: '0.85rem', display: 'block', textAlign: 'right', marginTop: 4 }}>{t('auth.forgotPassword')}</Link>
           </div>
 
           {error && <div className="form-error" role="alert">{error}</div>}
 
           <button type="submit" className="btn btn-primary auth-btn" disabled={loading}>
-            {loading ? 'Connexion...' : 'Se connecter'}
+            {loading ? t('auth.loggingIn') : t('auth.loginBtn')}
           </button>
         </form>
 
         <div className="auth-footer">
-          <p>Pas encore de compte ? <Link to="/inscription">Inscrivez-vous</Link></p>
-        </div>
-
-        <div className="auth-demo">
-          <p>Compte démo :</p>
-          <code>aminata@example.com / password123</code>
+          <p>{t('auth.noAccount')} <Link to="/inscription">{t('auth.registerLink')}</Link></p>
         </div>
       </div>
     </div>

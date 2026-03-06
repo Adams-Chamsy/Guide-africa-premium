@@ -5,6 +5,7 @@ import Breadcrumbs from '../../components/Breadcrumbs';
 import Pagination from '../../components/Pagination';
 import { SkeletonDetail } from '../../components/Skeleton';
 import usePageTitle from '../../hooks/usePageTitle';
+import SEOHead from '../../components/SEOHead';
 
 const GestionUtilisateurs = () => {
   usePageTitle('Gestion Utilisateurs');
@@ -50,6 +51,7 @@ const GestionUtilisateurs = () => {
 
   return (
     <div className="page-container admin-page">
+      <SEOHead title="Gestion des Utilisateurs — Guide Africa Premium" />
       <Breadcrumbs items={[
         { label: 'Accueil', to: '/' },
         { label: 'Administration', to: '/admin' },

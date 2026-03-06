@@ -3,6 +3,8 @@ package com.guideafrica.premium.service;
 import com.guideafrica.premium.exception.ResourceNotFoundException;
 import com.guideafrica.premium.model.City;
 import com.guideafrica.premium.repository.CityRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +18,7 @@ public class CityService {
         this.cityRepository = cityRepository;
     }
 
+    @Cacheable("cities")
     public List<City> findAll() {
         return cityRepository.findAll();
     }
@@ -29,6 +32,7 @@ public class CityService {
         return cityRepository.findByNomContainingIgnoreCase(nom);
     }
 
+    @Cacheable(value = "cities", key = "#pays")
     public List<City> findByPays(String pays) {
         return cityRepository.findByPaysIgnoreCase(pays);
     }
@@ -37,10 +41,12 @@ public class CityService {
         return cityRepository.findByRegionIgnoreCase(region);
     }
 
+    @CacheEvict(value = "cities", allEntries = true)
     public City create(City city) {
         return cityRepository.save(city);
     }
 
+    @CacheEvict(value = "cities", allEntries = true)
     public City update(Long id, City details) {
         City city = findById(id);
         city.setNom(details.getNom());
@@ -53,6 +59,7 @@ public class CityService {
         return cityRepository.save(city);
     }
 
+    @CacheEvict(value = "cities", allEntries = true)
     public void delete(Long id) {
         City city = findById(id);
         cityRepository.delete(city);

@@ -19,14 +19,17 @@ public class RestaurantService {
         this.restaurantRepository = restaurantRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<Restaurant> findAll() {
         return restaurantRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Page<Restaurant> findAll(Pageable pageable) {
         return restaurantRepository.findAll(pageable);
     }
 
+    @Transactional(readOnly = true)
     public Restaurant findById(Long id) {
         return restaurantRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Restaurant", id));

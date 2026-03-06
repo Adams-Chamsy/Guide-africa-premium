@@ -5,6 +5,7 @@ import com.guideafrica.premium.model.enums.CategorieMenu;
 import com.guideafrica.premium.service.MenuItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -40,6 +41,7 @@ public class MenuItemController {
     }
 
     @PostMapping("/restaurants/{restaurantId}/menu")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<MenuItem> addMenuItem(
             @PathVariable Long restaurantId,
             @Valid @RequestBody MenuItem menuItem) {
@@ -48,11 +50,13 @@ public class MenuItemController {
     }
 
     @PutMapping("/menu-items/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<MenuItem> update(@PathVariable Long id, @Valid @RequestBody MenuItem menuItem) {
         return ResponseEntity.ok(menuItemService.update(id, menuItem));
     }
 
     @DeleteMapping("/menu-items/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         menuItemService.delete(id);
         return ResponseEntity.noContent().build();

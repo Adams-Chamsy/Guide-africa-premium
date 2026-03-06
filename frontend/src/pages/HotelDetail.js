@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { hotelApi } from '../api/apiClient';
+import { useAuth } from '../context/AuthContext';
 import ReviewCard from '../components/ReviewCard';
 import ReviewForm from '../components/ReviewForm';
 import ConfirmDialog from '../components/ConfirmDialog';
@@ -22,6 +23,7 @@ import { hotelJsonLd } from '../components/SEOHead';
 const HotelDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [hotel, setHotel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -204,8 +206,8 @@ const HotelDetail = () => {
         {activeTab === 'equipements' && (
           <div className="tab-content">
             <div className="amenity-grid">
-              {facilites.map((f, i) => (
-                <span key={i} className="amenity-item">&#10003; {f}</span>
+              {facilites.map((f) => (
+                <span key={f} className="amenity-item">&#10003; {f}</span>
               ))}
             </div>
             {hotel.amenities && hotel.amenities.length > 0 && (
@@ -251,10 +253,12 @@ const HotelDetail = () => {
           </div>
         )}
 
-        <div className="detail-actions">
-          <Link to={`/hotels/${id}/edit`} className="btn btn-primary">Modifier</Link>
-          <button className="btn btn-danger" onClick={() => setShowDelete(true)}>Supprimer</button>
-        </div>
+        {user?.role === 'ADMIN' && (
+          <div className="detail-actions">
+            <Link to={`/hotels/${id}/edit`} className="btn btn-primary">Modifier</Link>
+            <button className="btn btn-danger" onClick={() => setShowDelete(true)}>Supprimer</button>
+          </div>
+        )}
       </div>
 
       {showDelete && (

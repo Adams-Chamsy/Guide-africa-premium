@@ -1,7 +1,10 @@
 package com.guideafrica.premium.controller;
 
+import com.guideafrica.premium.dto.ReviewRequest;
 import com.guideafrica.premium.model.Review;
+import com.guideafrica.premium.model.enums.TypeVoyageur;
 import com.guideafrica.premium.service.ReviewService;
+import com.guideafrica.premium.util.HtmlSanitizer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -50,7 +53,9 @@ public class ReviewController {
     @PostMapping("/restaurants/{restaurantId}/reviews")
     public ResponseEntity<Review> addRestaurantReview(
             @PathVariable Long restaurantId,
-            @Valid @RequestBody Review review) {
+            @RequestBody @Valid ReviewRequest request,
+            Authentication authentication) {
+        Review review = mapToReview(request, authentication);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(reviewService.addReviewToRestaurant(restaurantId, review));
     }
@@ -79,7 +84,9 @@ public class ReviewController {
     @PostMapping("/hotels/{hotelId}/reviews")
     public ResponseEntity<Review> addHotelReview(
             @PathVariable Long hotelId,
-            @Valid @RequestBody Review review) {
+            @RequestBody @Valid ReviewRequest request,
+            Authentication authentication) {
+        Review review = mapToReview(request, authentication);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(reviewService.addReviewToHotel(hotelId, review));
     }
@@ -87,12 +94,13 @@ public class ReviewController {
     // ===== Review CRUD =====
 
     @PutMapping("/reviews/{id}")
-    public ResponseEntity<Review> update(@PathVariable Long id, @Valid @RequestBody Review review,
+    public ResponseEntity<Review> update(@PathVariable Long id, @RequestBody @Valid ReviewRequest request,
                                           Authentication authentication) {
         Review existing = reviewService.findById(id);
         if (!existing.getAuteur().equals(authentication.getName())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
+        Review review = mapToReview(request, authentication);
         return ResponseEntity.ok(reviewService.update(id, review));
     }
 
@@ -120,5 +128,38 @@ public class ReviewController {
             @RequestBody Map<String, String> body) {
         String response = body.get("reponse");
         return ResponseEntity.ok(reviewService.addOwnerResponse(id, response));
+    }
+
+    // ===== Private helpers =====
+
+    /**
+     * Maps a ReviewRequest DTO to a Review entity.
+     * Applies HTML sanitization on text fields.
+     * Overrides auteur from Authentication if the user is authenticated.
+     */
+    private Review mapToReview(ReviewRequest request, Authentication authentication) {
+        Review review = new Review();
+
+        // Override auteur from authentication if available
+        if (authentication != null && authentication.getName() != null) {
+            review.setAuteur(HtmlSanitizer.sanitize(authentication.getName()));
+        } else {
+            review.setAuteur(HtmlSanitizer.sanitize(request.getAuteur()));
+        }
+
+        review.setNote(request.getNote());
+        review.setCommentaire(HtmlSanitizer.sanitize(request.getCommentaire()));
+        review.setTitre(HtmlSanitizer.sanitize(request.getTitre()));
+        review.setNoteCuisine(request.getNoteCuisine());
+        review.setNoteService(request.getNoteService());
+        review.setNoteAmbiance(request.getNoteAmbiance());
+        review.setNoteRapportQualitePrix(request.getNoteRapportQualitePrix());
+        review.setPhotos(request.getPhotos());
+
+        if (request.getTypeVoyageur() != null && !request.getTypeVoyageur().isEmpty()) {
+            review.setTypeVoyageur(TypeVoyageur.valueOf(request.getTypeVoyageur()));
+        }
+
+        return review;
     }
 }

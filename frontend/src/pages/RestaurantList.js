@@ -10,9 +10,11 @@ import BackToTop from '../components/BackToTop';
 import { SkeletonGrid } from '../components/Skeleton';
 import usePageTitle from '../hooks/usePageTitle';
 import SEOHead from '../components/SEOHead';
+import { useTranslation } from 'react-i18next';
 
 const RestaurantList = () => {
-  usePageTitle('Restaurants');
+  const { t } = useTranslation();
+  usePageTitle(t('restaurant.title'));
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -51,7 +53,7 @@ const RestaurantList = () => {
         setTotalElements(res.data.length);
       }
     } catch (err) {
-      setError('Erreur lors du chargement des restaurants.');
+      setError(t('restaurant.loadError'));
     } finally {
       setLoading(false);
     }
@@ -80,27 +82,27 @@ const RestaurantList = () => {
 
   return (
     <>
-      <SEOHead title="Restaurants" description="Découvrez les meilleurs restaurants d'Afrique" />
+      <SEOHead title={t('restaurant.title')} description={t('home.subtitle')} />
       <div>
-        <Breadcrumbs items={[{ label: 'Accueil', to: '/' }, { label: 'Restaurants' }]} />
+        <Breadcrumbs items={[{ label: t('nav.home'), to: '/' }, { label: t('restaurant.title') }]} />
 
         <div className="page-header">
-          <div className="page-label">Notre S\u00e9lection</div>
-          <h2>Restaurants</h2>
-          <p className="page-subtitle">{totalElements} \u00e9tablissements \u00e0 d\u00e9couvrir</p>
+          <div className="page-label">{t('restaurant.pageLabel')}</div>
+          <h2>{t('restaurant.title')}</h2>
+          <p className="page-subtitle">{totalElements} {t('common.establishments')} {t('common.toDiscover')}</p>
           <div className="gold-line" style={{ marginTop: 16 }}></div>
         </div>
 
         <div className="section-header" style={{ marginBottom: 0 }}>
           <div></div>
-          <Link to="/restaurants/new" className="btn btn-primary">+ Ajouter</Link>
+          <Link to="/restaurants/new" className="btn btn-primary">+ {t('common.add')}</Link>
         </div>
 
         <form className="search-bar" onSubmit={handleSearch}>
-          <input type="text" className="search-input" placeholder="Rechercher par nom..."
+          <input type="text" className="search-input" placeholder={t('common.searchByName')}
             value={searchNom} onChange={(e) => setSearchNom(e.target.value)} />
           <select className="search-select" value={filterCuisine} onChange={(e) => { setFilterCuisine(e.target.value); setPage(0); }}>
-            <option value="">Toutes les cuisines</option>
+            <option value="">{t('restaurant.allCuisines')}</option>
             <option value="S\u00e9n\u00e9galaise">S\u00e9n\u00e9galaise</option>
             <option value="Marocaine">Marocaine</option>
             <option value="Ivoirienne">Ivoirienne</option>
@@ -109,36 +111,36 @@ const RestaurantList = () => {
             <option value="Nig\u00e9riane">Nig\u00e9riane</option>
           </select>
           <select className="search-select" value={filterVille} onChange={(e) => { setFilterVille(e.target.value); setPage(0); }}>
-            <option value="">Toutes les villes</option>
+            <option value="">{t('common.allCities')}</option>
             {cities.map(c => <option key={c.id} value={c.id}>{c.nom}</option>)}
           </select>
           <select className="search-select" value={filterPrix} onChange={(e) => { setFilterPrix(e.target.value); setPage(0); }}>
-            <option value="">Tous les prix</option>
-            <option value="1">\u20ac - \u00c9conomique</option>
-            <option value="2">\u20ac\u20ac - Mod\u00e9r\u00e9</option>
-            <option value="3">\u20ac\u20ac\u20ac - Haut de gamme</option>
-            <option value="4">\u20ac\u20ac\u20ac\u20ac - Prestige</option>
+            <option value="">{t('common.allPrices')}</option>
+            <option value="1">{'\u20ac'} - {t('restaurant.economical')}</option>
+            <option value="2">{'\u20ac\u20ac'} - {t('restaurant.moderate')}</option>
+            <option value="3">{'\u20ac\u20ac\u20ac'} - {t('restaurant.highEnd')}</option>
+            <option value="4">{'\u20ac\u20ac\u20ac\u20ac'} - {t('restaurant.prestige')}</option>
           </select>
-          <button type="submit" className="btn btn-primary btn-sm">Rechercher</button>
+          <button type="submit" className="btn btn-primary btn-sm">{t('common.search')}</button>
           {(searchNom || filterCuisine || filterVille || filterPrix) && (
-            <button type="button" className="btn btn-outline btn-sm" onClick={clearFilters}>Effacer</button>
+            <button type="button" className="btn btn-outline btn-sm" onClick={clearFilters}>{t('common.clear')}</button>
           )}
         </form>
 
         <div className="sort-controls">
-          <span className="sort-label">Trier par :</span>
+          <span className="sort-label">{t('common.sortBy')}</span>
           <select className="sort-select" value={`${sortBy}-${direction}`} onChange={(e) => {
             const [s, d] = e.target.value.split('-');
             setSortBy(s);
             setDirection(d);
             setPage(0);
           }}>
-            <option value="nom-asc">Nom (A-Z)</option>
-            <option value="nom-desc">Nom (Z-A)</option>
-            <option value="note-desc">Meilleure note</option>
-            <option value="fourchettePrix-asc">Prix croissant</option>
-            <option value="fourchettePrix-desc">Prix d\u00e9croissant</option>
-            <option value="createdAt-desc">Plus r\u00e9cents</option>
+            <option value="nom-asc">{t('common.nameAZ')}</option>
+            <option value="nom-desc">{t('common.nameZA')}</option>
+            <option value="note-desc">{t('common.bestRating')}</option>
+            <option value="fourchettePrix-asc">{t('common.priceAsc')}</option>
+            <option value="fourchettePrix-desc">{t('common.priceDesc')}</option>
+            <option value="createdAt-desc">{t('common.mostRecent')}</option>
           </select>
         </div>
 
@@ -149,8 +151,8 @@ const RestaurantList = () => {
         ) : restaurants.length === 0 ? (
           <div className="empty-state">
             <div className="empty-icon">&#127869;</div>
-            <h3>Aucun restaurant trouv\u00e9</h3>
-            <p>Essayez de modifier vos crit\u00e8res de recherche.</p>
+            <h3>{t('restaurant.noRestaurants')}</h3>
+            <p>{t('common.tryModifySearch')}</p>
           </div>
         ) : (
           <>
@@ -167,8 +169,8 @@ const RestaurantList = () => {
                     )}
                     {r.distinctions && r.distinctions.length > 0 && (
                       <div className="card-distinctions">
-                        {r.distinctions.slice(0, 1).map((d, i) => (
-                          <DistinctionBadge key={i} type={d.type} size="small" />
+                        {r.distinctions.slice(0, 1).map((d) => (
+                          <DistinctionBadge key={d.type} type={d.type} size="small" />
                         ))}
                       </div>
                     )}

@@ -1,5 +1,7 @@
 package com.guideafrica.premium.service;
 
+import com.guideafrica.premium.dto.UserDTO;
+import com.guideafrica.premium.exception.ResourceNotFoundException;
 import com.guideafrica.premium.model.Reservation;
 import com.guideafrica.premium.model.Review;
 import com.guideafrica.premium.model.Utilisateur;
@@ -42,7 +44,7 @@ public class AdminService {
     }
 
     public Map<String, Object> getStatistiques() {
-        log.info("R\u00e9cup\u00e9ration des statistiques admin");
+        log.info("Récupération des statistiques admin");
         Map<String, Object> stats = new HashMap<>();
         stats.put("totalUtilisateurs", utilisateurRepository.count());
         stats.put("totalRestaurants", restaurantRepository.count());
@@ -55,21 +57,21 @@ public class AdminService {
         return stats;
     }
 
-    public Page<Utilisateur> getUtilisateurs(Pageable pageable) {
-        log.info("R\u00e9cup\u00e9ration de la liste des utilisateurs (page {})", pageable.getPageNumber());
-        return utilisateurRepository.findAll(pageable);
+    public Page<UserDTO> getUtilisateurs(Pageable pageable) {
+        log.info("Récupération de la liste des utilisateurs (page {})", pageable.getPageNumber());
+        return utilisateurRepository.findAll(pageable).map(UserDTO::from);
     }
 
-    public Utilisateur toggleUserActive(Long userId) {
+    public UserDTO toggleUserActive(Long userId) {
         Utilisateur utilisateur = utilisateurRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable avec l'id: " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException("Utilisateur", userId));
         utilisateur.setActif(!utilisateur.isActif());
-        log.info("Utilisateur {} ({}) - actif bascul\u00e9 \u00e0 {}", utilisateur.getEmail(), userId, utilisateur.isActif());
-        return utilisateurRepository.save(utilisateur);
+        log.info("Utilisateur {} ({}) - actif basculé à {}", utilisateur.getEmail(), userId, utilisateur.isActif());
+        return UserDTO.from(utilisateurRepository.save(utilisateur));
     }
 
     public Page<Review> getAllReviews(Pageable pageable) {
-        log.info("R\u00e9cup\u00e9ration de tous les avis (page {})", pageable.getPageNumber());
+        log.info("Récupération de tous les avis (page {})", pageable.getPageNumber());
         return reviewRepository.findAll(pageable);
     }
 
@@ -85,9 +87,9 @@ public class AdminService {
 
     public Reservation updateReservationStatut(Long reservationId, StatutReservation statut) {
         Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new RuntimeException("R\u00e9servation introuvable avec l'id: " + reservationId));
+                .orElseThrow(() -> new ResourceNotFoundException("Réservation", reservationId));
         reservation.setStatut(statut);
-        log.info("R\u00e9servation {} - statut mis \u00e0 jour: {}", reservationId, statut);
+        log.info("Réservation {} - statut mis à jour: {}", reservationId, statut);
         return reservationRepository.save(reservation);
     }
 }

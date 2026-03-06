@@ -6,7 +6,7 @@ export default function Breadcrumbs({ items }) {
   return (
     <nav className="breadcrumbs" aria-label="Fil d'Ariane">
       {items.map((item, index) => (
-        <React.Fragment key={index}>
+        <React.Fragment key={item.label}>
           {index > 0 && <span className="breadcrumb-separator">/</span>}
           {item.to ? (
             <Link to={item.to} className="breadcrumb-link">{item.label}</Link>

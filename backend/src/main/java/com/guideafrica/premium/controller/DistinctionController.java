@@ -5,6 +5,7 @@ import com.guideafrica.premium.model.enums.TypeDistinction;
 import com.guideafrica.premium.service.DistinctionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -36,6 +37,7 @@ public class DistinctionController {
     }
 
     @PostMapping("/restaurants/{restaurantId}/distinctions")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Distinction> add(
             @PathVariable Long restaurantId,
             @Valid @RequestBody Distinction distinction) {
@@ -44,6 +46,7 @@ public class DistinctionController {
     }
 
     @DeleteMapping("/distinctions/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         distinctionService.delete(id);
         return ResponseEntity.noContent().build();

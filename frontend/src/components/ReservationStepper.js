@@ -6,7 +6,7 @@ const ReservationStepper = ({ steps, currentStep }) => {
     <div className="reservation-stepper">
       {steps.map((step, index) => (
         <div
-          key={index}
+          key={step}
           className={`stepper-step ${index < currentStep ? 'completed' : ''} ${index === currentStep ? 'active' : ''}`}
         >
           <div className="stepper-circle">

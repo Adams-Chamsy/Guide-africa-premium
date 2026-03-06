@@ -5,6 +5,7 @@ import { socialApi } from '../api/apiClient';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import usePageTitle from '../hooks/usePageTitle';
+import SEOHead from '../components/SEOHead';
 
 const SocialFeed = () => {
   usePageTitle('Communauté');
@@ -74,6 +75,7 @@ const SocialFeed = () => {
 
   return (
     <div style={{ maxWidth: 640, margin: '0 auto' }}>
+      <SEOHead title="Communauté — Guide Africa Premium" />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
         <div style={{ textAlign: 'center', marginBottom: 40 }}>
           <span className="luxury-subtitle">Communauté</span>

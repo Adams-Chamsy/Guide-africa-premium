@@ -8,7 +8,7 @@ const FabButton = ({ actions = [], icon = '+' }) => {
     <div className={`fab-container ${open ? 'fab-open' : ''}`}>
       {open && actions.map((action, index) => (
         <button
-          key={index}
+          key={action.label}
           className="fab-action"
           onClick={() => { action.onClick(); setOpen(false); }}
           title={action.label}

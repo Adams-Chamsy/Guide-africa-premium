@@ -27,3 +27,13 @@ export const LANGUAGE_KEY = 'guideafrica_language';
 // ===== UI =====
 export const TOAST_DURATION_MS = 3000;
 export const SEARCH_MIN_CHARS = 2;
+
+// ===== Placeholder Images =====
+export const PLACEHOLDER_IMAGES = {
+  restaurant: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop',
+  hotel: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=300&fit=crop',
+  activite: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=400&h=300&fit=crop',
+  voiture: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0afa?w=400&h=300&fit=crop',
+  event: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=300&fit=crop',
+  default: 'https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?w=400&h=300&fit=crop',
+};

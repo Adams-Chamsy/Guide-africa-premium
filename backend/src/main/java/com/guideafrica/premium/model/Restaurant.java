@@ -87,7 +87,7 @@ public class Restaurant {
 
     private boolean actif = true;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id")
     private City ville;
 
@@ -103,7 +103,7 @@ public class Restaurant {
     @JsonManagedReference("restaurant-distinctions")
     private List<Distinction> distinctions = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "restaurant_amenities",
             joinColumns = @JoinColumn(name = "restaurant_id"),
@@ -118,7 +118,7 @@ public class Restaurant {
     @Column(name = "photo_url")
     private List<String> galeriePhotos = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "restaurant_categories",
             joinColumns = @JoinColumn(name = "restaurant_id"),

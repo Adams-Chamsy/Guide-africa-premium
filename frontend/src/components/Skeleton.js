@@ -30,7 +30,7 @@ export function SkeletonGrid({ count = 6 }) {
     <div className="card-grid" role="status" aria-busy="true">
       <span style={srOnlyStyle}>Chargement en cours...</span>
       {Array.from({ length: count }).map((_, i) => (
-        <SkeletonCard key={i} />
+        <SkeletonCard key={`skeleton-${i}`} />
       ))}
     </div>
   );

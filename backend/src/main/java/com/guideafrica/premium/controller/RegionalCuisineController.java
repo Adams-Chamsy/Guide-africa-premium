@@ -4,6 +4,7 @@ import com.guideafrica.premium.model.RegionalCuisine;
 import com.guideafrica.premium.service.RegionalCuisineService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -46,16 +47,19 @@ public class RegionalCuisineController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<RegionalCuisine> create(@Valid @RequestBody RegionalCuisine cuisine) {
         return ResponseEntity.status(HttpStatus.CREATED).body(regionalCuisineService.create(cuisine));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<RegionalCuisine> update(@PathVariable Long id, @Valid @RequestBody RegionalCuisine cuisine) {
         return ResponseEntity.ok(regionalCuisineService.update(id, cuisine));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         regionalCuisineService.delete(id);
         return ResponseEntity.noContent().build();

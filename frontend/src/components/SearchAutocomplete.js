@@ -220,7 +220,7 @@ const SearchAutocomplete = ({ onClose }) => {
               const itemIndex = i;
               return (
                 <div
-                  key={i}
+                  key={h}
                   id={`search-option-${itemIndex}`}
                   role="option"
                   aria-selected={activeIndex === itemIndex}

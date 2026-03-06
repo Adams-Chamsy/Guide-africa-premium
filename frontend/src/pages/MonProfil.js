@@ -4,12 +4,15 @@ import { useToast } from '../context/ToastContext';
 import { userApi, badgeApi } from '../api/apiClient';
 import Breadcrumbs from '../components/Breadcrumbs';
 import usePageTitle from '../hooks/usePageTitle';
+import SEOHead from '../components/SEOHead';
 import ScrollReveal from '../components/ScrollReveal';
 import AnimatedCounter from '../components/AnimatedCounter';
 import ImageUpload from '../components/ImageUpload';
+import { useTranslation } from 'react-i18next';
 
 const MonProfil = () => {
-  usePageTitle('Mon Profil');
+  const { t } = useTranslation();
+  usePageTitle(t('profile.title'));
   const { user, logout } = useAuth();
   const { showToast } = useToast();
   const [editing, setEditing] = useState(false);
@@ -52,12 +55,12 @@ const MonProfil = () => {
         prenom: form.prenom,
         telephone: form.telephone,
       });
-      setMessage('Profil mis à jour avec succès !');
-      showToast('Profil mis à jour avec succès !', 'success');
+      setMessage(t('profile.updateSuccess'));
+      showToast(t('profile.updateSuccess'), 'success');
       setEditing(false);
     } catch (err) {
-      setMessage('Erreur lors de la mise à jour.');
-      showToast('Erreur lors de la mise à jour', 'error');
+      setMessage(t('profile.updateError'));
+      showToast(t('profile.updateError'), 'error');
     } finally {
       setSaving(false);
     }
@@ -65,11 +68,11 @@ const MonProfil = () => {
 
   const handleChangePassword = async () => {
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-      showToast('Les mots de passe ne correspondent pas', 'error');
+      showToast(t('profile.passwordMismatch'), 'error');
       return;
     }
     if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(passwordForm.newPassword)) {
-      showToast('Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre', 'error');
+      showToast(t('profile.passwordRequirements'), 'error');
       return;
     }
     setChangingPassword(true);
@@ -78,11 +81,11 @@ const MonProfil = () => {
         oldPassword: passwordForm.oldPassword,
         newPassword: passwordForm.newPassword,
       });
-      showToast('Mot de passe modifié avec succès', 'success');
+      showToast(t('profile.passwordSuccess'), 'success');
       setPasswordForm({ oldPassword: '', newPassword: '', confirmPassword: '' });
       setActiveSection('info');
     } catch (err) {
-      showToast('Erreur: vérifiez votre ancien mot de passe', 'error');
+      showToast(t('profile.passwordError'), 'error');
     } finally {
       setChangingPassword(false);
     }
@@ -91,23 +94,24 @@ const MonProfil = () => {
   const handleAvatarUpload = async (url) => {
     try {
       await userApi.updateProfile({ avatar: url });
-      showToast('Photo de profil mise à jour', 'success');
+      showToast(t('profile.avatarSuccess'), 'success');
     } catch (err) {
-      showToast('Erreur lors de la mise à jour de l\'avatar', 'error');
+      showToast(t('profile.avatarError'), 'error');
     }
   };
 
   if (!user) return null;
 
   const memberSince = new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
-  const level = stats.visites >= 20 ? 'Ambassadeur' : stats.visites >= 10 ? 'Explorateur' : stats.visites >= 3 ? 'Voyageur' : 'Découvreur';
+  const level = stats.visites >= 20 ? t('profile.levels.ambassador') : stats.visites >= 10 ? t('profile.levels.explorer') : stats.visites >= 3 ? t('profile.levels.traveler') : t('profile.levels.discoverer');
   const levelEmoji = stats.visites >= 20 ? '\uD83D\uDC51' : stats.visites >= 10 ? '\uD83C\uDF0D' : stats.visites >= 3 ? '\u2708\uFE0F' : '\uD83C\uDF31';
 
   return (
     <div className="page-container">
+      <SEOHead title="Mon Profil — Guide Africa Premium" />
       <Breadcrumbs items={[
-        { label: 'Accueil', to: '/' },
-        { label: 'Mon Profil' },
+        { label: t('nav.home'), to: '/' },
+        { label: t('profile.title') },
       ]} />
 
       <div className="profile-page">
@@ -116,7 +120,7 @@ const MonProfil = () => {
           <div className="profile-passport card">
             <div className="passport-header">
               <span className="passport-title">&#9733; GUIDE AFRICA PREMIUM</span>
-              <span className="passport-subtitle">Passeport Gastronomique</span>
+              <span className="passport-subtitle">{t('profile.passportTitle')}</span>
             </div>
             <div className="profile-avatar-section">
               <div className="passport-avatar-wrapper">
@@ -130,9 +134,9 @@ const MonProfil = () => {
               <div className="profile-info">
                 <h2 className="passport-name">{user.prenom} {user.nom}</h2>
                 <p className="profile-email">{user.email}</p>
-                <p className="profile-member">Membre depuis {memberSince}</p>
+                <p className="profile-member">{t('profile.memberSince')} {memberSince}</p>
                 <div style={{ display: 'flex', gap: 8, marginTop: 8, flexWrap: 'wrap' }}>
-                  <span className="profile-role-badge">{user.role === 'ADMIN' ? 'Administrateur' : 'Membre Premium'}</span>
+                  <span className="profile-role-badge">{user.role === 'ADMIN' ? t('profile.administrator') : t('profile.premiumMember')}</span>
                   {user.pointsFidelite > 0 && (
                     <span className="profile-role-badge" style={{ background: 'var(--gold)', color: 'var(--bg-dark)' }}>
                       {user.pointsFidelite} pts
@@ -149,19 +153,19 @@ const MonProfil = () => {
           <div className="profile-stats">
             <div className="stat-card card">
               <AnimatedCounter end={stats.favoris} />
-              <span className="stat-label">Favoris</span>
+              <span className="stat-label">{t('profile.stats.favorites')}</span>
             </div>
             <div className="stat-card card">
               <AnimatedCounter end={stats.visites} />
-              <span className="stat-label">Visites</span>
+              <span className="stat-label">{t('profile.stats.visits')}</span>
             </div>
             <div className="stat-card card">
               <AnimatedCounter end={stats.reservations} />
-              <span className="stat-label">Réservations</span>
+              <span className="stat-label">{t('profile.stats.reservations')}</span>
             </div>
             <div className="stat-card card">
               <AnimatedCounter end={stats.collections} />
-              <span className="stat-label">Collections</span>
+              <span className="stat-label">{t('profile.stats.collections')}</span>
             </div>
           </div>
         </ScrollReveal>
@@ -170,7 +174,7 @@ const MonProfil = () => {
         {badges.length > 0 && (
           <ScrollReveal delay={0.15}>
             <div className="profile-badges card">
-              <h3>Mes Badges</h3>
+              <h3>{t('profile.myBadges')}</h3>
               <div className="badge-grid">
                 {badges.map(badge => (
                   <div key={badge.id} className="user-badge">
@@ -187,13 +191,13 @@ const MonProfil = () => {
         {/* Section tabs */}
         <div className="detail-tabs" style={{ marginTop: 24 }}>
           <button className={`tab-btn ${activeSection === 'info' ? 'active' : ''}`} onClick={() => setActiveSection('info')}>
-            Informations
+            {t('profile.information')}
           </button>
           <button className={`tab-btn ${activeSection === 'avatar' ? 'active' : ''}`} onClick={() => setActiveSection('avatar')}>
-            Photo
+            {t('profile.photo')}
           </button>
           <button className={`tab-btn ${activeSection === 'password' ? 'active' : ''}`} onClick={() => setActiveSection('password')}>
-            Mot de passe
+            {t('auth.password')}
           </button>
         </div>
 
@@ -201,9 +205,9 @@ const MonProfil = () => {
           <ScrollReveal delay={0.2}>
             <div className="profile-edit-card card">
               <div className="card-header-row">
-                <h3>Informations personnelles</h3>
+                <h3>{t('profile.personalInfo')}</h3>
                 {!editing && (
-                  <button className="btn btn-outline btn-sm" onClick={() => setEditing(true)}>Modifier</button>
+                  <button className="btn btn-outline btn-sm" onClick={() => setEditing(true)}>{t('common.edit')}</button>
                 )}
               </div>
 
@@ -211,37 +215,37 @@ const MonProfil = () => {
                 <div className="profile-form">
                   <div className="form-row">
                     <div className="form-group">
-                      <label>Prénom</label>
+                      <label>{t('auth.firstName')}</label>
                       <input type="text" value={form.prenom} onChange={(e) => setForm({...form, prenom: e.target.value})} />
                     </div>
                     <div className="form-group">
-                      <label>Nom</label>
+                      <label>{t('auth.lastName')}</label>
                       <input type="text" value={form.nom} onChange={(e) => setForm({...form, nom: e.target.value})} />
                     </div>
                   </div>
                   <div className="form-group">
-                    <label>Téléphone</label>
+                    <label>{t('common.phone')}</label>
                     <input type="tel" value={form.telephone} onChange={(e) => setForm({...form, telephone: e.target.value})} placeholder="+33 6 12 34 56 78" />
                   </div>
                   <div className="form-actions">
                     <button className="btn btn-primary" onClick={handleSave} disabled={saving}>
-                      {saving ? 'Enregistrement...' : 'Enregistrer'}
+                      {saving ? t('common.saving') : t('common.save')}
                     </button>
-                    <button className="btn btn-outline" onClick={() => setEditing(false)}>Annuler</button>
+                    <button className="btn btn-outline" onClick={() => setEditing(false)}>{t('common.cancel')}</button>
                   </div>
                 </div>
               ) : (
                 <div className="profile-details">
                   <div className="detail-row">
-                    <span className="detail-label">Prénom</span>
+                    <span className="detail-label">{t('auth.firstName')}</span>
                     <span className="detail-value">{user.prenom}</span>
                   </div>
                   <div className="detail-row">
-                    <span className="detail-label">Nom</span>
+                    <span className="detail-label">{t('auth.lastName')}</span>
                     <span className="detail-value">{user.nom}</span>
                   </div>
                   <div className="detail-row">
-                    <span className="detail-label">Email</span>
+                    <span className="detail-label">{t('common.email')}</span>
                     <span className="detail-value">{user.email}</span>
                   </div>
                 </div>
@@ -255,8 +259,8 @@ const MonProfil = () => {
         {activeSection === 'avatar' && (
           <ScrollReveal delay={0.2}>
             <div className="profile-edit-card card">
-              <h3>Photo de profil</h3>
-              <p style={{ color: 'var(--ivory-subtle)', marginBottom: 16 }}>Téléchargez une nouvelle photo de profil</p>
+              <h3>{t('profile.profilePhoto')}</h3>
+              <p style={{ color: 'var(--ivory-subtle)', marginBottom: 16 }}>{t('profile.uploadNewPhoto')}</p>
               <ImageUpload
                 value={user.avatar}
                 onChange={handleAvatarUpload}
@@ -268,10 +272,10 @@ const MonProfil = () => {
         {activeSection === 'password' && (
           <ScrollReveal delay={0.2}>
             <div className="profile-edit-card card">
-              <h3>Changer mon mot de passe</h3>
+              <h3>{t('profile.changeMyPassword')}</h3>
               <div className="profile-form">
                 <div className="form-group">
-                  <label>Mot de passe actuel</label>
+                  <label>{t('auth.currentPassword')}</label>
                   <input
                     type="password"
                     value={passwordForm.oldPassword}
@@ -279,16 +283,16 @@ const MonProfil = () => {
                   />
                 </div>
                 <div className="form-group">
-                  <label>Nouveau mot de passe</label>
+                  <label>{t('auth.newPassword')}</label>
                   <input
                     type="password"
                     value={passwordForm.newPassword}
                     onChange={(e) => setPasswordForm({...passwordForm, newPassword: e.target.value})}
-                    placeholder="Minimum 8 caractères"
+                    placeholder={t('profile.minChars')}
                   />
                 </div>
                 <div className="form-group">
-                  <label>Confirmer le nouveau mot de passe</label>
+                  <label>{t('auth.confirmNewPassword')}</label>
                   <input
                     type="password"
                     value={passwordForm.confirmPassword}
@@ -301,7 +305,7 @@ const MonProfil = () => {
                     onClick={handleChangePassword}
                     disabled={changingPassword || !passwordForm.oldPassword || !passwordForm.newPassword}
                   >
-                    {changingPassword ? 'Modification...' : 'Modifier le mot de passe'}
+                    {changingPassword ? t('profile.modifying') : t('profile.modifyPassword')}
                   </button>
                 </div>
               </div>
@@ -310,9 +314,9 @@ const MonProfil = () => {
         )}
 
         <div className="profile-danger card">
-          <h3>Session</h3>
-          <p>Se déconnecter de votre compte Guide Africa.</p>
-          <button className="btn btn-danger" onClick={logout}>Déconnexion</button>
+          <h3>{t('profile.session')}</h3>
+          <p>{t('profile.logoutDescription')}</p>
+          <button className="btn btn-danger" onClick={logout}>{t('auth.logout')}</button>
         </div>
       </div>
     </div>

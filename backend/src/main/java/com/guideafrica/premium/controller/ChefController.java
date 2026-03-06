@@ -4,6 +4,7 @@ import com.guideafrica.premium.model.Chef;
 import com.guideafrica.premium.service.ChefService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -46,16 +47,19 @@ public class ChefController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Chef> create(@Valid @RequestBody Chef chef) {
         return ResponseEntity.status(HttpStatus.CREATED).body(chefService.create(chef));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Chef> update(@PathVariable Long id, @Valid @RequestBody Chef chef) {
         return ResponseEntity.ok(chefService.update(id, chef));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         chefService.delete(id);
         return ResponseEntity.noContent().build();

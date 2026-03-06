@@ -4,6 +4,7 @@ import Breadcrumbs from '../components/Breadcrumbs';
 import BackToTop from '../components/BackToTop';
 import { SkeletonGrid } from '../components/Skeleton';
 import usePageTitle from '../hooks/usePageTitle';
+import SEOHead from '../components/SEOHead';
 import ScrollReveal from '../components/ScrollReveal';
 import SectionDivider from '../components/SectionDivider';
 
@@ -28,6 +29,7 @@ const AtlasCulinaire = () => {
 
   return (
     <div className="page-container">
+      <SEOHead title="Atlas Culinaire — Guide Africa Premium" />
       <Breadcrumbs items={[{ label: 'Accueil', to: '/' }, { label: 'Atlas Culinaire' }]} />
 
       <ScrollReveal>
@@ -86,8 +88,8 @@ const AtlasCulinaire = () => {
                     <div className="atlas-details">
                       <h4 className="atlas-ingredients-title">Ingrédients clés</h4>
                       <div className="atlas-ingredients">
-                        {cuisine.ingredients && cuisine.ingredients.map((ing, i) => (
-                          <span key={i} className="atlas-ingredient">{ing}</span>
+                        {cuisine.ingredients && cuisine.ingredients.map((ing) => (
+                          <span key={ing} className="atlas-ingredient">{ing}</span>
                         ))}
                       </div>
                     </div>

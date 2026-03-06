@@ -14,4 +14,4 @@ COPY --from=build /app/target/*.jar app.jar
 RUN mkdir -p /app/uploads && chown -R appuser:appgroup /app
 USER appuser
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar", "--spring.profiles.active=prod"]
+ENTRYPOINT ["java", "-Xms256m", "-Xmx512m", "-XX:+UseG1GC", "-jar", "app.jar", "--spring.profiles.active=prod"]

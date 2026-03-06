@@ -81,6 +81,17 @@ export const AuthProvider = ({ children }) => {
     verifyToken();
   }, []);
 
+  // Listen for auth:logout events dispatched by the API interceptor
+  useEffect(() => {
+    const handleAuthLogout = () => {
+      logout();
+    };
+    window.addEventListener('auth:logout', handleAuthLogout);
+    return () => {
+      window.removeEventListener('auth:logout', handleAuthLogout);
+    };
+  }, [logout]);
+
   const value = {
     user,
     loading,

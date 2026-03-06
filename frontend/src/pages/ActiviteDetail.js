@@ -184,8 +184,8 @@ const ActiviteDetail = () => {
             >
               <h3 className="subsection-title">Inclus</h3>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                {activite.inclus.map((item, i) => (
-                  <li key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 0', color: 'var(--ivory-muted)', fontSize: '0.9rem' }}>
+                {activite.inclus.map((item) => (
+                  <li key={`inclus-${item}`} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 0', color: 'var(--ivory-muted)', fontSize: '0.9rem' }}>
                     <FiCheck style={{ color: '#27ae60', flexShrink: 0 }} />
                     {item}
                   </li>
@@ -204,8 +204,8 @@ const ActiviteDetail = () => {
             >
               <h3 className="subsection-title">Non inclus</h3>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                {activite.nonInclus.map((item, i) => (
-                  <li key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 0', color: 'var(--ivory-muted)', fontSize: '0.9rem' }}>
+                {activite.nonInclus.map((item) => (
+                  <li key={`non-inclus-${item}`} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 0', color: 'var(--ivory-muted)', fontSize: '0.9rem' }}>
                     <FiX style={{ color: '#e74c3c', flexShrink: 0 }} />
                     {item}
                   </li>
@@ -224,8 +224,8 @@ const ActiviteDetail = () => {
             >
               <h3 className="subsection-title">Langues disponibles</h3>
               <div className="badges">
-                {activite.languesDisponibles.map((langue, i) => (
-                  <span key={i} className="badge">{langue}</span>
+                {activite.languesDisponibles.map((langue) => (
+                  <span key={langue} className="badge">{langue}</span>
                 ))}
               </div>
             </motion.div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { StarInput } from './StarRating';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
@@ -41,8 +42,11 @@ const ReviewForm = ({ onSubmit }) => {
 
     setLoading(true);
     try {
+      const forcedAuteur = isAuthenticated && user
+        ? `${user.prenom} ${user.nom.charAt(0)}.`
+        : auteur.trim();
       const reviewData = {
-        auteur: auteur.trim(),
+        auteur: forcedAuteur,
         note,
         commentaire: commentaire.trim(),
       };
@@ -72,6 +76,17 @@ const ReviewForm = ({ onSubmit }) => {
       setLoading(false);
     }
   };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="review-form">
+        <h3>Laisser un avis</h3>
+        <p style={{ color: 'var(--ivory-subtle)', margin: '16px 0' }}>
+          <Link to="/connexion" className="btn btn-outline">Connectez-vous pour laisser un avis</Link>
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="review-form">

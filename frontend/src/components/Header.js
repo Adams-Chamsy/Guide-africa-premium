@@ -96,7 +96,7 @@ const Header = () => {
   return (
     <header className={`app-header ${hidden ? 'header-hidden' : ''}`}>
       <a href="#main-content" className="skip-to-content">
-        Aller au contenu principal
+        {t('common.skipToContent')}
       </a>
       <div className="header-container">
         {/* Brand */}
@@ -109,7 +109,7 @@ const Header = () => {
         <button
           className="mobile-menu-btn"
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+          aria-label={menuOpen ? t('common.closeMenu') : t('common.openMenu')}
           aria-expanded={menuOpen}
         >
           <span className={`hamburger ${menuOpen ? 'open' : ''}`}></span>
@@ -138,7 +138,7 @@ const Header = () => {
                 aria-expanded={moreOpen}
                 aria-haspopup="true"
               >
-                Explorer <FiChevronDown size={14} className={`more-chevron ${moreOpen ? 'rotated' : ''}`} />
+                {t('nav.explore')} <FiChevronDown size={14} className={`more-chevron ${moreOpen ? 'rotated' : ''}`} />
               </button>
               {moreOpen && (
                 <div className="nav-more-dropdown">
@@ -210,7 +210,7 @@ const Header = () => {
                 <button
                   className="user-menu-trigger"
                   onClick={() => setDropdownOpen(!dropdownOpen)}
-                  aria-label="Menu utilisateur"
+                  aria-label={t('common.userMenu')}
                   aria-expanded={dropdownOpen}
                   aria-haspopup="true"
                 >

@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class FavoriService {
@@ -37,20 +39,19 @@ public class FavoriService {
 
     public List<Favori> getFavoris(Long utilisateurId) {
         List<Favori> favoris = favoriRepository.findByUtilisateurId(utilisateurId);
-        enrichFavoris(favoris);
+        enrichFavorisBatch(favoris);
         return favoris;
     }
 
     public List<Favori> getFavorisByType(Long utilisateurId, TypeEtablissement type) {
         List<Favori> favoris = favoriRepository.findByUtilisateurIdAndType(utilisateurId, type);
-        enrichFavoris(favoris);
+        enrichFavorisBatch(favoris);
         return favoris;
     }
 
     public Favori ajouterFavori(Long utilisateurId, FavoriRequest request) {
         if (favoriRepository.existsByUtilisateurIdAndTypeAndTargetId(
                 utilisateurId, request.getType(), request.getTargetId())) {
-            // Already a favorite, return existing
             return favoriRepository.findByUtilisateurIdAndTypeAndTargetId(
                     utilisateurId, request.getType(), request.getTargetId()).get();
         }
@@ -106,9 +107,58 @@ public class FavoriService {
         return synced;
     }
 
-    private void enrichFavoris(List<Favori> favoris) {
+    /**
+     * Batch enrichment: collect all IDs per type, fetch in bulk, then map back.
+     * This avoids N+1 queries when enriching a list of favorites.
+     */
+    private void enrichFavorisBatch(List<Favori> favoris) {
+        if (favoris.isEmpty()) return;
+
+        // Collect IDs by type
+        List<Long> restaurantIds = favoris.stream()
+                .filter(f -> f.getType() == TypeEtablissement.RESTAURANT)
+                .map(Favori::getTargetId)
+                .collect(Collectors.toList());
+
+        List<Long> hotelIds = favoris.stream()
+                .filter(f -> f.getType() == TypeEtablissement.HOTEL)
+                .map(Favori::getTargetId)
+                .collect(Collectors.toList());
+
+        // Batch fetch
+        Map<Long, Restaurant> restaurantMap = restaurantIds.isEmpty()
+                ? Map.of()
+                : restaurantRepository.findAllById(restaurantIds).stream()
+                    .collect(Collectors.toMap(Restaurant::getId, r -> r));
+
+        Map<Long, Hotel> hotelMap = hotelIds.isEmpty()
+                ? Map.of()
+                : hotelRepository.findAllById(hotelIds).stream()
+                    .collect(Collectors.toMap(Hotel::getId, h -> h));
+
+        // Enrich from maps
         for (Favori favori : favoris) {
-            enrichFavori(favori);
+            if (favori.getType() == TypeEtablissement.RESTAURANT) {
+                Restaurant r = restaurantMap.get(favori.getTargetId());
+                if (r != null) {
+                    favori.setNomEtablissement(r.getNom());
+                    favori.setImageEtablissement(r.getImage());
+                    favori.setNoteEtablissement(r.getNote());
+                    if (r.getVille() != null) {
+                        favori.setVilleEtablissement(r.getVille().getNom());
+                    }
+                }
+            } else if (favori.getType() == TypeEtablissement.HOTEL) {
+                Hotel h = hotelMap.get(favori.getTargetId());
+                if (h != null) {
+                    favori.setNomEtablissement(h.getNom());
+                    favori.setImageEtablissement(h.getImage());
+                    favori.setNoteEtablissement(h.getNote());
+                    if (h.getVille() != null) {
+                        favori.setVilleEtablissement(h.getVille().getNom());
+                    }
+                }
+            }
         }
     }
 

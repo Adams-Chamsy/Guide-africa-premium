@@ -1,13 +1,16 @@
 package com.guideafrica.premium.controller;
 
+import com.guideafrica.premium.dto.SocialPostRequest;
 import com.guideafrica.premium.model.SocialPost;
 import com.guideafrica.premium.service.SocialService;
+import com.guideafrica.premium.util.HtmlSanitizer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import java.util.Map;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/social")
@@ -26,15 +29,11 @@ public class SocialController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createPost(
-            @RequestBody Map<String, String> body,
+    public ResponseEntity<SocialPost> createPost(
+            @RequestBody @Valid SocialPostRequest request,
             Authentication authentication) {
-        String contenu = body.get("contenu");
-        if (contenu == null || contenu.trim().isEmpty()) {
-            return ResponseEntity.badRequest().body(Map.of("message", "Le contenu ne peut pas etre vide"));
-        }
-        String image = body.getOrDefault("image", null);
-        return ResponseEntity.ok(socialService.createPost(contenu.trim(), image, authentication.getName()));
+        String contenu = HtmlSanitizer.sanitize(request.getContenu());
+        return ResponseEntity.ok(socialService.createPost(contenu, null, authentication.getName()));
     }
 
     @PostMapping("/{id}/like")

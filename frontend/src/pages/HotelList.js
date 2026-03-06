@@ -8,9 +8,11 @@ import BackToTop from '../components/BackToTop';
 import { SkeletonGrid } from '../components/Skeleton';
 import usePageTitle from '../hooks/usePageTitle';
 import SEOHead from '../components/SEOHead';
+import { useTranslation } from 'react-i18next';
 
 const HotelList = () => {
-  usePageTitle('H\u00f4tels');
+  const { t } = useTranslation();
+  usePageTitle(t('hotel.title'));
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -49,7 +51,7 @@ const HotelList = () => {
         setTotalElements(res.data.length);
       }
     } catch (err) {
-      setError('Erreur lors du chargement des h\u00f4tels.');
+      setError(t('hotel.loadError'));
     } finally {
       setLoading(false);
     }
@@ -76,61 +78,61 @@ const HotelList = () => {
 
   return (
     <>
-      <SEOHead title="Hôtels" description="Les plus beaux hôtels d'Afrique" />
+      <SEOHead title={t('hotel.title')} description={t('home.subtitle')} />
       <div>
-        <Breadcrumbs items={[{ label: 'Accueil', to: '/' }, { label: 'H\u00f4tels' }]} />
+        <Breadcrumbs items={[{ label: t('nav.home'), to: '/' }, { label: t('hotel.title') }]} />
 
         <div className="page-header">
-          <div className="page-label">S\u00e9jours d'Exception</div>
-          <h2>H\u00f4tels</h2>
-          <p className="page-subtitle">{totalElements} \u00e9tablissements \u00e0 d\u00e9couvrir</p>
+          <div className="page-label">{t('hotel.pageLabel')}</div>
+          <h2>{t('hotel.title')}</h2>
+          <p className="page-subtitle">{totalElements} {t('common.establishments')} {t('common.toDiscover')}</p>
           <div className="gold-line" style={{ marginTop: 16 }}></div>
         </div>
 
         <div className="section-header" style={{ marginBottom: 0 }}>
           <div></div>
-          <Link to="/hotels/new" className="btn btn-primary">+ Ajouter</Link>
+          <Link to="/hotels/new" className="btn btn-primary">+ {t('common.add')}</Link>
         </div>
 
         <form className="search-bar" onSubmit={handleSearch}>
-          <input type="text" className="search-input" placeholder="Rechercher par nom..."
+          <input type="text" className="search-input" placeholder={t('common.searchByName')}
             value={searchNom} onChange={(e) => setSearchNom(e.target.value)} />
           <select className="search-select" value={filterEtoiles} onChange={(e) => { setFilterEtoiles(e.target.value); setPage(0); }}>
-            <option value="">Toutes les \u00e9toiles</option>
-            <option value="5">5 \u00e9toiles</option>
-            <option value="4">4+ \u00e9toiles</option>
-            <option value="3">3+ \u00e9toiles</option>
+            <option value="">{t('hotel.allStars')}</option>
+            <option value="5">5 {t('hotel.stars')}</option>
+            <option value="4">4+ {t('hotel.stars')}</option>
+            <option value="3">3+ {t('hotel.stars')}</option>
           </select>
           <select className="search-select" value={filterVille} onChange={(e) => { setFilterVille(e.target.value); setPage(0); }}>
-            <option value="">Toutes les villes</option>
+            <option value="">{t('common.allCities')}</option>
             {cities.map(c => <option key={c.id} value={c.id}>{c.nom}</option>)}
           </select>
           <select className="search-select" value={filterPrix} onChange={(e) => { setFilterPrix(e.target.value); setPage(0); }}>
-            <option value="">Tous les prix</option>
-            <option value="150">Moins de 150\u20ac/nuit</option>
-            <option value="300">Moins de 300\u20ac/nuit</option>
-            <option value="500">Moins de 500\u20ac/nuit</option>
+            <option value="">{t('common.allPrices')}</option>
+            <option value="150">{t('hotel.lessThan')} 150{'\u20ac'}/{t('hotel.perNight').trim()}</option>
+            <option value="300">{t('hotel.lessThan')} 300{'\u20ac'}/{t('hotel.perNight').trim()}</option>
+            <option value="500">{t('hotel.lessThan')} 500{'\u20ac'}/{t('hotel.perNight').trim()}</option>
           </select>
-          <button type="submit" className="btn btn-primary btn-sm">Rechercher</button>
+          <button type="submit" className="btn btn-primary btn-sm">{t('common.search')}</button>
           {(searchNom || filterEtoiles || filterVille || filterPrix) && (
-            <button type="button" className="btn btn-outline btn-sm" onClick={clearFilters}>Effacer</button>
+            <button type="button" className="btn btn-outline btn-sm" onClick={clearFilters}>{t('common.clear')}</button>
           )}
         </form>
 
         <div className="sort-controls">
-          <span className="sort-label">Trier par :</span>
+          <span className="sort-label">{t('common.sortBy')}</span>
           <select className="sort-select" value={`${sortBy}-${direction}`} onChange={(e) => {
             const [s, d] = e.target.value.split('-');
             setSortBy(s);
             setDirection(d);
             setPage(0);
           }}>
-            <option value="nom-asc">Nom (A-Z)</option>
-            <option value="nom-desc">Nom (Z-A)</option>
-            <option value="etoiles-desc">Plus d'\u00e9toiles</option>
-            <option value="prixParNuit-asc">Prix croissant</option>
-            <option value="prixParNuit-desc">Prix d\u00e9croissant</option>
-            <option value="note-desc">Meilleure note</option>
+            <option value="nom-asc">{t('common.nameAZ')}</option>
+            <option value="nom-desc">{t('common.nameZA')}</option>
+            <option value="etoiles-desc">{t('hotel.moreStars')}</option>
+            <option value="prixParNuit-asc">{t('common.priceAsc')}</option>
+            <option value="prixParNuit-desc">{t('common.priceDesc')}</option>
+            <option value="note-desc">{t('common.bestRating')}</option>
           </select>
         </div>
 
@@ -141,8 +143,8 @@ const HotelList = () => {
         ) : hotels.length === 0 ? (
           <div className="empty-state">
             <div className="empty-icon">&#127976;</div>
-            <h3>Aucun h\u00f4tel trouv\u00e9</h3>
-            <p>Essayez de modifier vos crit\u00e8res de recherche.</p>
+            <h3>{t('hotel.noHotels')}</h3>
+            <p>{t('common.tryModifySearch')}</p>
           </div>
         ) : (
           <>
@@ -163,11 +165,11 @@ const HotelList = () => {
                     </p>
                     <p className="card-description">{h.description}</p>
                     <div className="card-footer">
-                      <span className="price">{h.prixParNuit}\u20ac / nuit</span>
+                      <span className="price">{h.prixParNuit}\u20ac {t('hotel.perNight')}</span>
                       <div className="badges">
                         {h.wifi && <span className="badge badge-amenity">Wi-Fi</span>}
-                        {h.piscine && <span className="badge badge-amenity">Piscine</span>}
-                        {h.spa && <span className="badge badge-amenity">Spa</span>}
+                        {h.piscine && <span className="badge badge-amenity">{t('hotel.pool')}</span>}
+                        {h.spa && <span className="badge badge-amenity">{t('hotel.spa')}</span>}
                       </div>
                     </div>
                   </div>

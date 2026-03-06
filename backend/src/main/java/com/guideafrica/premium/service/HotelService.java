@@ -19,14 +19,17 @@ public class HotelService {
         this.hotelRepository = hotelRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<Hotel> findAll() {
         return hotelRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Page<Hotel> findAll(Pageable pageable) {
         return hotelRepository.findAll(pageable);
     }
 
+    @Transactional(readOnly = true)
     public Hotel findById(Long id) {
         return hotelRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Hôtel", id));

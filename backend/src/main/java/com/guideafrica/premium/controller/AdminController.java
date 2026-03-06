@@ -1,8 +1,9 @@
 package com.guideafrica.premium.controller;
 
+import com.guideafrica.premium.dto.UpdateStatutRequest;
+import com.guideafrica.premium.dto.UserDTO;
 import com.guideafrica.premium.model.Reservation;
 import com.guideafrica.premium.model.Review;
-import com.guideafrica.premium.model.Utilisateur;
 import com.guideafrica.premium.model.enums.StatutReservation;
 import com.guideafrica.premium.service.AdminService;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
@@ -29,7 +31,7 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<Page<Utilisateur>> getUsers(
+    public ResponseEntity<Page<UserDTO>> getUsers(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -37,7 +39,7 @@ public class AdminController {
     }
 
     @PutMapping("/users/{id}/toggle-active")
-    public ResponseEntity<Utilisateur> toggleUserActive(@PathVariable Long id) {
+    public ResponseEntity<UserDTO> toggleUserActive(@PathVariable Long id) {
         return ResponseEntity.ok(adminService.toggleUserActive(id));
     }
 
@@ -66,8 +68,8 @@ public class AdminController {
     @PutMapping("/reservations/{id}/statut")
     public ResponseEntity<Reservation> updateReservationStatut(
             @PathVariable Long id,
-            @RequestBody Map<String, String> body) {
-        StatutReservation statut = StatutReservation.valueOf(body.get("statut"));
+            @RequestBody @Valid UpdateStatutRequest request) {
+        StatutReservation statut = StatutReservation.valueOf(request.getStatut());
         return ResponseEntity.ok(adminService.updateReservationStatut(id, statut));
     }
 }

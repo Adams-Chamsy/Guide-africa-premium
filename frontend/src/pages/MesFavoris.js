@@ -5,9 +5,12 @@ import Breadcrumbs from '../components/Breadcrumbs';
 import FavoriteButton from '../components/FavoriteButton';
 import { SkeletonGrid } from '../components/Skeleton';
 import usePageTitle from '../hooks/usePageTitle';
+import SEOHead from '../components/SEOHead';
+import { useTranslation } from 'react-i18next';
 
 const MesFavoris = () => {
-  usePageTitle('Mes Favoris');
+  const { t } = useTranslation();
+  usePageTitle(t('favorites.title'));
   const [favoris, setFavoris] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
@@ -43,26 +46,27 @@ const MesFavoris = () => {
 
   return (
     <div className="page-container">
+      <SEOHead title={`${t('favorites.title')} — Guide Africa Premium`} />
       <Breadcrumbs items={[
-        { label: 'Accueil', to: '/' },
-        { label: 'Mes Favoris' },
+        { label: t('nav.home'), to: '/' },
+        { label: t('favorites.title') },
       ]} />
 
       <div className="page-header">
-        <span className="page-subtitle">Mon espace personnel</span>
-        <h2 className="page-title">Mes Favoris</h2>
-        <p>{favoris.length} {favoris.length > 1 ? 'établissements' : 'établissement'} sauvegardé{favoris.length > 1 ? 's' : ''}</p>
+        <span className="page-subtitle">{t('common.myPersonalSpace')}</span>
+        <h2 className="page-title">{t('favorites.title')}</h2>
+        <p>{favoris.length} {favoris.length > 1 ? t('common.establishments') : t('common.establishmentSingular')} {favoris.length > 1 ? t('common.savedPlural') : t('common.saved')}</p>
       </div>
 
       <div className="filter-bar" style={{ marginBottom: 24 }}>
         <button className={`tab-btn ${filter === 'all' ? 'active' : ''}`} onClick={() => setFilter('all')}>
-          Tous ({favoris.length})
+          {t('favorites.all')} ({favoris.length})
         </button>
         <button className={`tab-btn ${filter === 'RESTAURANT' ? 'active' : ''}`} onClick={() => setFilter('RESTAURANT')}>
-          Restaurants ({restaurants.length})
+          {t('favorites.restaurants')} ({restaurants.length})
         </button>
         <button className={`tab-btn ${filter === 'HOTEL' ? 'active' : ''}`} onClick={() => setFilter('HOTEL')}>
-          Hôtels ({hotels.length})
+          {t('favorites.hotels')} ({hotels.length})
         </button>
       </div>
 
@@ -70,8 +74,8 @@ const MesFavoris = () => {
         <SkeletonGrid count={6} />
       ) : favoris.length === 0 ? (
         <div className="empty-state">
-          <p>Vous n'avez pas encore de favoris.</p>
-          <p>Explorez nos <Link to="/restaurants">restaurants</Link> et <Link to="/hotels">hôtels</Link> pour en ajouter !</p>
+          <p>{t('favorites.empty')}</p>
+          <p>{t('favorites.emptyExplore')} <Link to="/restaurants">{t('favorites.restaurants').toLowerCase()}</Link> {t('favorites.emptyAnd')} <Link to="/hotels">{t('favorites.hotels').toLowerCase()}</Link> {t('favorites.emptyToAdd')}</p>
         </div>
       ) : (
         <div className="card-grid">
@@ -83,11 +87,11 @@ const MesFavoris = () => {
                     <img src={favori.imageEtablissement} alt={favori.nomEtablissement} className="card-image" />
                   )}
                   <span className={`card-type-badge ${favori.type === 'RESTAURANT' ? 'badge-restaurant' : 'badge-hotel'}`}>
-                    {favori.type === 'RESTAURANT' ? 'Restaurant' : 'Hôtel'}
+                    {favori.type === 'RESTAURANT' ? 'Restaurant' : t('hotel.title')}
                   </span>
                 </div>
                 <div className="card-content">
-                  <h3 className="card-title">{favori.nomEtablissement || 'Chargement...'}</h3>
+                  <h3 className="card-title">{favori.nomEtablissement || t('common.loading')}</h3>
                   {favori.villeEtablissement && (
                     <p className="card-location">{favori.villeEtablissement}</p>
                   )}
@@ -96,7 +100,7 @@ const MesFavoris = () => {
                   )}
                 </div>
               </Link>
-              <button className="btn-remove-fav" onClick={() => handleRemove(favori)} title="Retirer des favoris">
+              <button className="btn-remove-fav" onClick={() => handleRemove(favori)} title={t('favorites.remove')}>
                 ✕
               </button>
             </div>

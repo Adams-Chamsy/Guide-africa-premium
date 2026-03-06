@@ -87,11 +87,11 @@ public class Hotel {
 
     private boolean actif = true;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id")
     private City ville;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "hotel_amenities",
             joinColumns = @JoinColumn(name = "hotel_id"),
@@ -106,7 +106,7 @@ public class Hotel {
     @Column(name = "photo_url")
     private List<String> galeriePhotos = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "hotel_categories",
             joinColumns = @JoinColumn(name = "hotel_id"),

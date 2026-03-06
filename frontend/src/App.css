@@ -3,6 +3,23 @@
    Refined Contemporary African Aesthetic
    ============================================================ */
 
+/* ===== Accessibility — Skip Link ===== */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--gold, #C6A962);
+  color: var(--bg-dark, #070707);
+  padding: 8px 16px;
+  z-index: 10000;
+  font-weight: 600;
+  text-decoration: none;
+  transition: top 0.3s;
+}
+.skip-link:focus {
+  top: 0;
+}
+
 /* ===== CSS Custom Properties ===== */
 :root {
   /* Primary Palette — Champagne Gold */
@@ -5280,6 +5297,272 @@ body {
   background: rgba(255, 255, 255, 0.95);
 }
 
+/* ===== Light Theme — Extended Overrides ===== */
+
+/* --- Cards: restaurant, hotel, activity, voiture, stat, admin --- */
+[data-theme="light"] .card:hover,
+[data-theme="light"] .restaurant-card:hover,
+[data-theme="light"] .hotel-card:hover {
+  background: #FFFFFF;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .card h3,
+[data-theme="light"] .restaurant-card h3,
+[data-theme="light"] .hotel-card h3,
+[data-theme="light"] .card-title {
+  color: #1A1A1A;
+}
+
+[data-theme="light"] .card p,
+[data-theme="light"] .card-description,
+[data-theme="light"] .restaurant-card p,
+[data-theme="light"] .hotel-card p {
+  color: #444444;
+}
+
+[data-theme="light"] .stat-card {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(158, 135, 68, 0.1);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .stat-label {
+  color: #666666;
+}
+
+[data-theme="light"] .admin-stat-card {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(158, 135, 68, 0.1);
+}
+
+/* --- Form inputs: visible borders and proper backgrounds --- */
+[data-theme="light"] input:focus,
+[data-theme="light"] textarea:focus,
+[data-theme="light"] select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(198, 169, 98, 0.1);
+}
+
+[data-theme="light"] input::placeholder,
+[data-theme="light"] textarea::placeholder {
+  color: #999999;
+}
+
+[data-theme="light"] .search-input {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(158, 135, 68, 0.15);
+  color: #1A1A1A;
+}
+
+[data-theme="light"] .search-input::placeholder {
+  color: #999999;
+}
+
+[data-theme="light"] .form-container {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(158, 135, 68, 0.12);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .form-title {
+  color: #1A1A1A;
+}
+
+[data-theme="light"] .form-group label {
+  color: #333333;
+}
+
+/* --- Tables: visible borders and proper contrast --- */
+[data-theme="light"] .admin-table {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(158, 135, 68, 0.12);
+}
+
+[data-theme="light"] .admin-table th {
+  border-bottom-color: rgba(158, 135, 68, 0.15);
+  background: rgba(248, 245, 240, 0.5);
+}
+
+[data-theme="light"] .admin-table td {
+  color: #1A1A1A;
+  border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .admin-table tr:hover td {
+  background: rgba(248, 245, 240, 0.6);
+}
+
+/* --- Navigation: bottom nav, breadcrumbs --- */
+[data-theme="light"] .bottom-nav {
+  background: rgba(255, 255, 255, 0.95);
+  border-top-color: rgba(158, 135, 68, 0.12);
+}
+
+[data-theme="light"] .bottom-nav-item {
+  color: #666666;
+}
+
+[data-theme="light"] .bottom-nav-item.active {
+  color: var(--gold-dark);
+}
+
+[data-theme="light"] .breadcrumb-link {
+  color: #666666;
+}
+
+[data-theme="light"] .breadcrumb-separator {
+  color: #AAAAAA;
+}
+
+[data-theme="light"] .breadcrumb-current {
+  color: #999999;
+}
+
+/* --- Pagination --- */
+[data-theme="light"] .pagination-btn {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(158, 135, 68, 0.12);
+  color: #1A1A1A;
+}
+
+[data-theme="light"] .pagination-btn:hover:not(:disabled) {
+  border-color: var(--gold);
+  background: rgba(248, 245, 240, 0.8);
+}
+
+[data-theme="light"] .pagination-btn.active {
+  background: var(--gold);
+  color: #FFFFFF;
+}
+
+/* --- Modals --- */
+[data-theme="light"] .modal-overlay {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="light"] .modal-content {
+  background: #FFFFFF;
+  border-color: rgba(158, 135, 68, 0.12);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+}
+
+/* --- Toast notifications --- */
+[data-theme="light"] .toast {
+  background: rgba(255, 255, 255, 0.97);
+  border-color: rgba(158, 135, 68, 0.12);
+  color: #1A1A1A;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .toast-success {
+  background: rgba(255, 255, 255, 0.97);
+  border-color: rgba(198, 169, 98, 0.25);
+}
+
+[data-theme="light"] .toast-error {
+  background: rgba(255, 255, 255, 0.97);
+  border-color: rgba(191, 88, 57, 0.25);
+}
+
+/* --- Chat widget --- */
+[data-theme="light"] .chat-panel {
+  background: #FFFFFF;
+  border-color: rgba(158, 135, 68, 0.15);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .chat-header {
+  background: rgba(248, 245, 240, 0.95);
+  border-bottom-color: rgba(158, 135, 68, 0.1);
+}
+
+[data-theme="light"] .chat-message.bot {
+  background: rgba(248, 245, 240, 0.8);
+  color: #1A1A1A;
+}
+
+[data-theme="light"] .chat-message.user {
+  color: #1A1A1A;
+}
+
+[data-theme="light"] .chat-input-area input {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(158, 135, 68, 0.15);
+  color: #1A1A1A;
+}
+
+/* --- Page text elements --- */
+[data-theme="light"] .page-header h1,
+[data-theme="light"] .page-header h2 {
+  color: #1A1A1A;
+}
+
+[data-theme="light"] .page-subtitle {
+  color: #666666;
+}
+
+[data-theme="light"] .section-title {
+  color: #1A1A1A;
+}
+
+[data-theme="light"] .luxury-subtitle {
+  color: var(--gold-dark);
+}
+
+/* --- General text and link overrides --- */
+[data-theme="light"] .page-container h2,
+[data-theme="light"] .page-container h3 {
+  color: #1A1A1A;
+}
+
+[data-theme="light"] .page-container p {
+  color: #444444;
+}
+
+/* --- Skeleton loading --- */
+[data-theme="light"] .skeleton {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .skeleton::after {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+}
+
+/* --- Page loading spinner --- */
+[data-theme="light"] .page-loading {
+  background: rgba(248, 245, 240, 0.5);
+}
+
+/* --- Filter buttons and tags --- */
+[data-theme="light"] .filter-btn,
+[data-theme="light"] .tag-btn {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(158, 135, 68, 0.12);
+  color: #444444;
+}
+
+[data-theme="light"] .filter-btn:hover,
+[data-theme="light"] .tag-btn:hover,
+[data-theme="light"] .filter-btn.active,
+[data-theme="light"] .tag-btn.active {
+  background: var(--gold);
+  color: #FFFFFF;
+  border-color: var(--gold);
+}
+
+/* --- Admin page specifics --- */
+[data-theme="light"] .admin-stat-number {
+  color: var(--gold-dark);
+}
+
+[data-theme="light"] .admin-stat-label {
+  color: #666666;
+}
+
+[data-theme="light"] .admin-table-wrapper {
+  background: rgba(255, 255, 255, 0.5);
+}
 
 /* ===== Luxury Typography ===== */
 .luxury-subtitle {

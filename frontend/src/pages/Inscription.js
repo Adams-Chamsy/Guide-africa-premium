@@ -4,9 +4,11 @@ import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import SEOHead from '../components/SEOHead';
 import usePageTitle from '../hooks/usePageTitle';
+import { useTranslation } from 'react-i18next';
 
 const Inscription = () => {
-  usePageTitle('Inscription');
+  const { t } = useTranslation();
+  usePageTitle(t('auth.register'));
   const [form, setForm] = useState({
     nom: '',
     prenom: '',
@@ -37,12 +39,12 @@ const Inscription = () => {
     setError('');
 
     if (form.motDePasse !== form.confirmMotDePasse) {
-      setError('Les mots de passe ne correspondent pas');
+      setError(t('auth.passwordMismatch'));
       return;
     }
 
     if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(form.motDePasse)) {
-      setError('Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre');
+      setError(t('auth.passwordRequirements'));
       return;
     }
 
@@ -54,10 +56,10 @@ const Inscription = () => {
         email: form.email,
         motDePasse: form.motDePasse,
       });
-      showToast('Compte créé avec succès !', 'success');
+      showToast(t('auth.accountCreated'), 'success');
       navigate('/', { replace: true });
     } catch (err) {
-      const msg = err.response?.data?.message || 'Erreur lors de l\'inscription';
+      const msg = err.response?.data?.message || t('auth.registerError');
       setError(msg);
     } finally {
       setLoading(false);
@@ -66,18 +68,18 @@ const Inscription = () => {
 
   return (
     <div className="auth-page">
-      <SEOHead title="Inscription — Guide Africa Premium" />
+      <SEOHead title={`${t('auth.register')} — Guide Africa Premium`} />
       <div className="auth-container">
         <div className="auth-header">
           <span className="brand-icon">&#9733;</span>
-          <h2>Inscription</h2>
-          <p>Rejoignez la communauté Guide Africa</p>
+          <h2>{t('auth.register')}</h2>
+          <p>{t('auth.joinCommunity')}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="prenom">Prénom</label>
+              <label htmlFor="prenom">{t('auth.firstName')}</label>
               <input
                 type="text"
                 id="prenom"
@@ -90,7 +92,7 @@ const Inscription = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="nom">Nom</label>
+              <label htmlFor="nom">{t('auth.lastName')}</label>
               <input
                 type="text"
                 id="nom"
@@ -104,7 +106,7 @@ const Inscription = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="email">Adresse e-mail</label>
+            <label htmlFor="email">{t('auth.email')}</label>
             <input
               type="email"
               id="email"
@@ -118,7 +120,7 @@ const Inscription = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="motDePasse">Mot de passe</label>
+            <label htmlFor="motDePasse">{t('auth.password')}</label>
             <input
               type="password"
               id="motDePasse"
@@ -132,7 +134,7 @@ const Inscription = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="confirmMotDePasse">Confirmer le mot de passe</label>
+            <label htmlFor="confirmMotDePasse">{t('auth.confirmPassword')}</label>
             <input
               type="password"
               id="confirmMotDePasse"
@@ -147,12 +149,12 @@ const Inscription = () => {
           {error && <div className="form-error" role="alert">{error}</div>}
 
           <button type="submit" className="btn btn-primary auth-btn" disabled={loading}>
-            {loading ? 'Création...' : 'Créer mon compte'}
+            {loading ? t('auth.creating') : t('auth.createMyAccount')}
           </button>
         </form>
 
         <div className="auth-footer">
-          <p>Déjà un compte ? <Link to="/connexion">Connectez-vous</Link></p>
+          <p>{t('auth.hasAccount')} <Link to="/connexion">{t('auth.loginLink')}</Link></p>
         </div>
       </div>
     </div>
